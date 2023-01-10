@@ -1,0 +1,571 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Mi202 - Télécom Paris & Ensta</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/ensta.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/github.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section class="cover" data-background="figures/background-blur.jpg"  data-state="no-title-footer no-progressbar has-dark-background">
+
+					<h2 id='coverh2'>Apprentissage Statistique appliqué au son</h2>
+					<h1  id='title_seminar'> Mi202 </h1>
+					<h3><a href="https://matfontaine.github.io/MI202", id='github_url'>matfontaine.github.io/Mi202</a></h3>
+					<p id='coverauthors'>
+						Gianni FRANCHI, Mathieu FONTAINE<br />
+						<a href="mailto:gianni.franchi@ensta-paris.fr", class="mail">gianni.franchi@ensta-paris.fr,</a>
+						<a href="mailto:gianni.franchi@ensta-paris.fr", class="mail">mathieu.fontaine@telecom-paris.fr</a>
+					</p>
+					<p id="date">
+					Janvier-Mars 2023
+					</p>
+
+					<p id='intervenants'>
+						<span style="text-decoration-line:underline;"><b>Intervenants TD & TP : </b></span><br />
+						Louis BAHRMAN, Elio GRUTTADAURIA<br />
+						<a href="mailto:louis.bahrman@telecom-paris.fr">louis.bahrman@telecom-paris.fr,</a>
+						<a href="mailto:elio.gruttadauria@telecom-paris.fr">elio.gruttadauria@telecom-paris.fr</a>
+					</p>
+
+					<p>
+					<img src="css/theme/img/logo-ensta.svg" id="ensta" class="logo" alt="">
+					<img src="css/theme/img/logo-Telecom.svg" id="telecom" class="logo" alt="">
+					<aside class="notes">
+						<ul><li>We will consider historical audio source separation technique</li>
+									<li>e.g. no deep learning extensions or nonnegative matrix factorization</li>
+								<li>the Handbook for that course is available on the moodle (PAM/Audio_source_separation)</li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- Outline of the presentation -->
+				<section>
+					<h1> Organisation du module (1/2)</h1>
+					<h2>Evaluation</h2>
+
+					<h3> Examen sur table - 1h (CC, /10)</h3>
+					<ul>
+						<li>Notes de cours uniquement autorisées</li>
+						<li>Date : 15 mars 2023</li>
+					</ul></br>
+					<h3> Présentation papier - 2h (Oral, /10)</h3>
+					<ul>
+						<li>Notes de cours uniquement autorisées</li>
+						<li>Date : 15 mars 2023</li>
+					</ul>
+					</ul></br></br>
+
+     <p class="remarque">Addition des 2 notes $\implies$ note sur /20</p>               
+				</section>
+
+				<section>
+					<h1> Organisation du module (2/2)</h1>
+					<h2>Programme par tranche horaire (TH)</h2>
+					<ul>
+						<li>25.01.23 - Optimisation <em>(1H de cours + 2h de TD)</em></li>
+						<li>01.02.23 - Traitement du signal audio <em>(1h de cours + 2h de TD/TP)</em></li>
+						<li>08.02.23 - Espérance Maximisation <em>(1h de cours + 2h de TD)</em></li>
+						<li>15.02.23 - Factorisation de matrices non-negatives (NMF) <em>(1h de cours + 2h de TP)</em></li>
+						<li>22.02.23 - NMF Multicanal (MNMF) <em>(1h de cours + 2h de TD/TP)</em></li>
+						<li>08.03.23 - Processus Gaussien <em>(1h de cours + 2h de TP)</em></li>
+						<li><span style="color:red">Examen <em>(3h)</em></span></li>
+					
+				    </ul>
+					</section>
+
+					<section>
+						<h1>Matériel et activités</h1>
+						<h2>Bibliographie</h2>
+						<ul>
+							<li>Processus gaussiens pour la séparation de sources <a href="https://pastel.archives-ouvertes.fr/pastel-00790841/document"> Téléchargeable ici</a></li>
+							<li>Convex Optimization <a href="https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf">Téléchargeable ici</a></li>
+							<li>Pattern Recognition and Machine Learning <a href="https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf">Téléchargeable ici</a></a></li>
+							<li>Cours de traitement du signal de Télécom (OASIS) : <a href="https://perso.telecom-paristech.fr/ladjal/PDFS/OASIS.pdf">Téléchargeable ici</a></li>
+						</ul>
+						<h2>Activités</h2>
+						<ul>
+							<li>Diaporama résumant le contenu du cours (démonstration au tableau)</li>
+							<li>TD + TP sur des exercices (à la maison ou traité directement en cours)</li>
+							<!-- <li>Petit QCM pendant le cours (non noté)
+							   </br>$\quad \rightarrow$ Matériel nécessaire : <b>Téléphone ou ordinateur</b> (test juste après)
+							</li> -->
+						</ul>
+						</section>
+					<section>
+						<h1>Compétences acquises</h1>
+						<ul>
+							<li>Comprendre des méthodes d'apprentissage statistiques</li>
+							<li>Appliquer ses méthodes pour un problème concret: la séparation de sources sonores</li>
+						</ul>
+					</section>
+					<!-- <section>
+						<h1> QCM Wooclap</h1>
+						<iframe style="pointer-events: none;" frameborder="0" height="500" width="100%" mozallowfullscreen src="https://app.wooclap.com/events/MDI104GRP2/"></iframe>
+						<ul>
+							<li>www.wooclap.com/MDI104GRP2 ou  @MDI104GRP2 par SMS et 1,2,3 ou 4 etc.</li>
+							<li>Les questions sont limitées par le temps <b>(n'est pas pris en compte dans la note)</b></li>
+						</ul>
+					</section> -->
+
+				<!-- Introduction -->
+				<section class="cover" data-background="figures/background.jpg" data-state="no-title-footer no-progressbar has-dark-background">
+					<h2 id='coverh2'>I - Optimisation</h2>
+
+				</section>
+				<section>
+					<h1>Motivations</h1>
+					<h2>Notations</h2>
+					<ul>
+						<li>$\Theta$: ensemble des paramètres</li>
+						<li>$\ell$: loss function</li>
+					</ul>
+					<h2>Apprentissage automatique</h2>
+					<ul>
+						<li>Dans le(s) cas <b>(non-)supervisé</b>, on a $(y_1, \dots, y_N)$ des données cibles et $y^\prime_i = f(x;\Theta)$ un estimateur pour une donnée d'entrée $x$.</li>
+						<li>Dans les deux cas, on cherche en général à minimiser une fonction de perte.</li>
+						<li>Dans le cas supervisé, il peut s'agir de minimiser :</li>
+						<center>$$
+							L(\Theta)= \frac{1}{N}\sum_{n=1}^{N}\ell(f(x_i;\Theta), y_i))
+						$$
+					</center>
+					<li>
+						Non-supervisé : plus délicat à rédiger...</br>
+						$\quad \rightarrow$ Clustering des données :  alors on peut se ramener à un cas supervisé.</li>
+						$\quad \rightarrow$ Approche statistique : negative log-likelihood minimization (cf algo EM etc.)</li>
+					</li>
+					</ul>
+					<p class="affirmation">Dans tous les cas, on doit minimiser une fonction $\implies$ <b>problème d'optimisation</b></p>
+
+				</section>
+				<!-- <section>
+					<h1>Motivations (2/2)</h1>
+					<h2>Illustration du problème supervisé</h2>
+					<h2>Illustration de deux problèmes non-supervisés</h2>
+				</section> -->
+				<section>
+					<h1>Fonction et Ensemble Convexe</h1>
+					Commençons par rappeler quelques definitions essentielles : 
+					<div class="exemple"> 
+						<div id="title"> Définition (fonction convexe, ensemble convexe) : </div> 
+						<ul style="margin-left:-1.8em;">
+							<li>Un ensemble $\mathcal{C}$ est <b>convexe</b> si pour tout point $A,B \in \mathcal{C}$ le segment
+								 $ \quad \quad\quad ~~~[A,B]= \{\theta A + (1-\theta) B , \theta \in [0,1]\}$ est inclus dans $\mathcal{C}$.</li>
+							<li>Une fonction $f$ est <b>convexe</b> si son domaine $dom(f)$ est convexe et 
+								<center>
+								$$
+								\forall \theta \in [0,1], \forall t_1,t_2 \in dom(f),~ f(\theta t_1 + (1-\theta)t_2) \leq \theta f(t_1) + (1-\theta)f(t_2)
+								$$
+							</center>
+							</li>
+						</ul>
+						</div>
+						<p>
+						<center><figure>
+							<img src="figures/images/convex.png" width="65%">
+							<figcaption><em>Figure : Convexe à gauche, Non-Convexe à droite. (Mais le minimum global existe)</em></figcaption>
+							</figure>
+							</center>
+						</p>
+				</section>
+
+				<section>
+					<h1>Gradient, Hessienne et matrice semi définie positive</h1>
+					On rappelle que :  </br>
+					<ul> 
+						<li>Le <b>gradient</b> est définit pour $\bold{x} = [x_1, \dots, x_d]^\top$ par 
+					<center style="margin-top:1em;">
+					$$\nabla f(\bold{x}) = [\frac{\partial f}{\partial x_1} (\bold{x}), \dots, \frac{\partial f}{\partial x_d} (\bold{x})]^\top$$
+				</center>
+			</li>
+
+				<li>La <b>Hessienne</b> est définie par 
+					<center style="margin-top:1em;">
+						$$\nabla^2 f(\bold{x})=\left[\begin{array}{cccc}
+						\frac{\partial^2 f}{\partial x_1^2}(\bold{x}) & \frac{\partial^2 f}{\partial x_1 \partial x_2}(\bold{x}) & \cdots & \frac{\partial^2 f}{\partial x_1 \partial x_d}(\bold{x}) \\
+						\vdots & \vdots & \ddots & \vdots \\
+						\frac{\partial^2 f}{\partial x_d \partial x_1}(\bold{x}) & \frac{\partial^2 f}{\partial x_d \partial x_2}(\bold{x}) & \cdots & \frac{\partial^2 f}{\partial x_d^2}(\bold{x})
+						\end{array}\right]$$
+					</center>		
+			</li>
+			<li>Une matrice $M \in \mathbb{R}^{d\times d}$ est <b>semie-définie positive</b> si pour tout 
+				$\bold{x} \in \mathbb{R}^d\backslash\{\bold{0}_d\}, \bold{x}^\top M \bold{x} \geq 0$. On note $M \geq 0$.
+	
+			</li>
+			<li>
+
+				De manière équivalente,  $M \geq 0 \Leftrightarrow$ l'ensemble des valeurs propres de $M$ (le spectre) est dans $\mathbb{R}^+$  <b>(Preuve ?)</b>
+			</li>
+		</ul>
+		</section>
+
+		<section>
+			<h1> Condition au 1er et 2nd ordre de la convexité</h1>
+			On a les résultats suivant pour une fonction convexe $f$ : 
+			<div class="exemple"> 
+				<div id="title"> Théorème (Condition au 1er et 2nd ordre de la convexité) : </div> 
+				<ul style="margin-left:-1.8em;">
+					<li> $f$ est convexe et différentiable ssi $dom(f)$ est convexe et $\forall x,y \in dom(f),$
+
+						<center>
+							$$
+							\forall x,y \in dom(f),~ f(y) \geq f(x) + \nabla f(x)^\top(y-x)
+							$$
+						</center>
+					</li>
+					<li> $f$ est  et deux fois différentiable ssi son domaine $dom(f)$ est convexe et 
+						$\quad\quad\quad\quad\forall x \in dom(f), \nabla^2 f(x) \geq 0$ 
+
+					</li>
+				</ul>
+				</div>
+			<p><b>Preuve:</b> Du premier point. Le second sera démontré en TD. </p>
+		</section>
+
+		<section>
+			<h1>Descente de Gradient</h1>
+		<ul>
+			<li>algorithme classique pour résoudre un problème d'optimisation</li>
+			<li>fonction convexe $ f$ alors  $- \nabla f$ est la direction optimale  </li>
+		</ul>
+		
+		<p>
+		L'algorithme se résume comme suit : 
+	    </p>
+		<div class="exemple"> 
+			<div id="title"> Algorithme descente de gradient : </div> 
+			<ul style="margin-left:-1.8em;">
+				<li>Valeur initiale $x_0$, learning rate $\gamma > 0$ et fonction convexe $f:\mathbb{R}^d \to \mathbb{R}$</li>
+				<li> On calcule $x_{1}, \dots, x_{T}$ itérativement comme suit :
+
+					<center>
+						$
+						x_1 \rightarrow x_0 - \gamma \nabla f(x_0) \\
+						\vdots \\
+						x_T \rightarrow x_{T-1} - \gamma \nabla f(x_{T-1})
+						$
+					</center>
+				</li>
+			</ul>
+			</div>
+			<p class="affirmation">si $f$ convexe et $\gamma$ choisit correctement, alors $x_T \underset{T\to \infty}{\rightarrow} x^\star$ 
+		avec $x^\star \in  \arg \min _{x \in \text{dom}(f)}f(x)$ une valeur optimale.
+			</p>
+	</section>
+	<section>
+		<h1>Fonction Lipischitzienne</h1>
+	La convergence de la descente de gradient sera montré dans le cas de fonction convexe et Lipschitzienne.
+
+	<div class="exemple"> 
+		<div id="title"> Définition[fonction continue lipschitzienne] </div> 
+		On dit qu'nune fonction $f$ est $K$-Lipschitzienne et continue ssi $\forall t_1, t_2 \in \text{dom}(f)$, 
+		<center>
+			$|f(t_1) - f(t_2)| \leq K ||t_1 - t_2 ||$
+		</center>
+		</div>
+	
+	<p><b>Remarque: </b>
+	<ul>
+		<li>Une fonction $K$-Lipschitzienne n'est pas forcément dérivable.</li>
+		<li> Si elle est cependant dérivable, sa dérivée est bornée par $K$ (démo au tableau)</li>
+	</ul>
+	</p>
+	Dans ce cas alors 
+	<div class="exemple"> 
+		<div id="title"> Théorème[convergence algorithme de descente du gradient] </div> 
+		Soit $f$ convexe et $K$-Lipschitzienne et $T \in \mathbb{N}$. 
+		Si on prend $\gamma = \frac{||x_1 - x^\star||_2}{K\sqrt{T}}$ alors: 
+		<center>
+			$$
+			f\left(\frac{1}{T}\sum_{t=1}^T x_t\right) - f(x^\star) \leq \frac{||x_1-x^\star||K}{\sqrt{T}}
+			$$
+		</center>
+	</div>
+	<p><b>Preuve: au tableau.</b></p>
+</section>
+<section>
+<h1>Problème sous contraintes</h1>
+Certains problèmes d'optimisation sont réalisés sous contrainte.
+C'est à dire que l'on souhaite par exemple résoudre :
+<center>
+	$$\underset{\bold{g}(x) < 0, \bold{h}(x) = 0}{\min} f(x)$$
+</center>
+avec $\bold{g} = (g_1, \dots, g_I)$ et $\bold{h}=  (h_1, \dots, h_E)$ des contraintes d'inégalités et d'égalités respectivement.
+
+<p>Dans ce cours, nous survolons les résultats généraux pour prouver:
+<ul>
+	<li>Si des solutions existent (et dans quel cas);</li>
+	<li>Comment déterminer ses solutions.</li>
+</ul>
+
+<p>Les preuves concrètes sont dans le Boyd.</p>
+</p>
+</section>
+
+<section>
+<h1>Condition d'existence de solutions</h1>
+Une première question est quand avons-nous existence d'au moins une solution ?
+
+<div class="exemple">
+	<div id="title"> Définition[Fonctions Coercives] </div>
+	$f:\mathbb{R}^n \to \mathbb{R}$ est <b>coercive</b> si
+	<center>
+		$$
+		\lim_{||x|| \to +\infty}f(x) = +\infty
+		$$
+	</center>
+</div>
+<div class="exemple">
+	<div id="title"> Théorème[Existence d'une solution] </div>
+	Soit $U$ une partie non vide et fermée de $\mathbb{R}^n$ et $f:\mathbb{R}^n \to \mathbb{R}$ continue, 
+	 (et coercive  si $U$ est non borné). Alors il existe au moins $x^\star \in U$ tel que
+	<center>
+		$$
+		f(x^\star) = \underset{x\in U}{\inf} f(x)
+		$$
+	</center>
+</div>
+<p><b>Preuve:</b> Au tableau.</p>
+
+<div class="exemple">
+	<div id="title"> Théorème[Condition nécessaire d'extremum local] </div>
+	Soit $f:\Omega \subset \mathbb{R}^n \to \mathbb{R}$ avec $\Omega$ un ouvert de $\mathbb{R}^n$. Si $f$ admet un extremum local
+	 en un point $x \in \Omega$ et si elle est différentiable en $x$ alors:
+	<center>
+		$$
+		\nabla f(x) =0
+		$$
+	</center>
+	$x$ est un <b>point critique</b> de $f$ si $\nabla f(x) = 0$
+</div>
+
+</section>
+<section>
+	<h1>Cas des fonctions convexes</h1>
+	<h2>Cas convexe</h2>
+Si on se place dans le cas où $f$ est une fonction convexe et que $U$ est un convexe On a le résultat suivant :
+<div class="exemple">
+	<div id="title"> Théorème[minimum de fonction convexe] </div>
+	Avec les hypothèses précentes  $x \in U$ est un minimum global ssi. $\nabla f(x) =0$
+</div>
+
+</section>
+<section>
+<h1>Fonction Lagrangienne,  Karush-Kuhn-Tucker</h1>
+On reprend notre problème :
+<center>
+	$$\underset{\bold{g}(x) < 0, \bold{h}(x) = 0}{\min} f(x)$$
+</center>
+<div class="exemple">
+	<div id="title"> Définition [Lagrangien] </div>
+	Le <b>Lagrangien</b> avec $\lambda = (\lambda_1, \dots, \lambda_E)^\top$ et $\mu = (\mu_1, \dots, \mu_I)^\top$ du problème précédent est défini par :
+	<center>
+		$$\mathcal{L}(x,\lambda, \mu) = f(x) + \sum_{e=1}^{E} \lambda_{e}h_{e}(x) + \sum_{i=1}^{I} \mu_{i}g_{i}(x)$$
+	</center>
+</div>
+
+En un point critique du Lagrangien $x^\star$, on peut montrer qu'il existe $\lambda \in \mathbb{R}^E, \mu \in \mathbb{R}^I$ tel que: 
+<center>
+	$$\begin{cases}
+	\nabla\mathcal{L}(x^\star,\lambda, \mu) = \nabla f(x^\star) +
+	 \sum_{e=1}^{E} \lambda_{e} \nabla h_{e}(x^\star) + \sum_{i=1}^{I} \mu_{i}\nabla g_{i}(x^\star) = 0 \\
+	 \mu_{i} \geq 0, \mu_{i}g_i(x^\star)=0
+	 \end{cases}$$
+</center>
+Ces conditions s'appellent conditions de Karush-Kuhn-Tucker. </br>
+<div class="remarque">
+Il peut cependant arriver que de tels conditions ne soient pas totalement satisfaites. D'autres hypothèses doivent êtres rajoutées
+pour que les points soient <b>qualifiées</b>.
+</div>
+</section>
+
+<section>
+<h1 style="margin-top:-1em;">Qualifications de contraintes</h1>
+On cite ici deux qualifications de contraintes importantes (mais d'autres existent dans la littérature).
+On définit $I^\star$ l'ensemble des entiers tel que $g_i(x^\star)=0$.
+<h2>Qualification des contraintes d'indépendance linéaire (LICQ)</h2>
+
+
+<div class="exemple">
+	<div id="title"> Définition [LICQ] </div>
+	On dit que les LICQ sont satisfaites en $x^\star$ si la matrice 
+	<center>$$
+	\left(\begin{array}{c}
+\nabla\boldsymbol{h}\left(x^{\star}\right)\\
+\nabla \bold{g}_{I^{\star}}\left(x^{\star}\right)
+\end{array}\right)
+	$$</center>
+est de rang plein ligne (le rang de cette matrice est égale au nombre de lignes de la matrice) avec $\nabla \bold{g}_{I^\star}(x^\star)$ 
+est la matrice dont les lignes sont les $\nabla g_{i^\star}(x^\star)$ avec $i^\star \in I^\star$
+</div>
+
+<h2>Qualification des contraintes de Mangasarian-Fromovitz (MFCQ)</h2>
+<div class="exemple">
+	<div id="title"> Définition [MFCQ] </div>
+	On dit que les MFCQ sont satisfaites en $x^\star$ si la matrice $\nabla\boldsymbol{h}\left(x^{\star}\right)$ est de plein rang et 
+	$\exists v \in \mathbb{R}^E, \left<\nabla \bold{g}_{I^\star}(x^\star),v \right> <0, \left<\nabla \bold{h}(x^\star),v \right>  = 0$ 
+</div>
+<p><b>Remarque :</b> LICQ $\implies$ MFCQ</p>
+</section>
+
+<section>
+<h1>Problème avec contraintes d'égalités</h1>
+On considère le problème : $\underset{\bold{h}(x) = 0}{\min} f(x)$
+
+<div class="exemple"> 
+	<div id="title"> Théorème [Condition de Lagrange] </div> 
+	Si $x^\star$ est un minimum local de $f$ avec les LICQ, alors il existe un unique $\lambda \in \mathbb{R}^E_{+}$ tel que :
+	<center>
+		$$\nabla\mathcal{L}(x^\star,\lambda) = 0$$
+	</center>  
+</div>
+<p><b>Attention ! 
+Il s'agit en général d'un point-selle 
+(pas forcément le minimum global)</b></p>
+Les conditions de KKT au final sont bien satisfaites (sauf la dernière ligne car nous n'avons pas de contraintes d'inégalités)
+</section>
+
+<section>
+	<h1>Problème avec contraintes mixtes</h1>
+	On considère le problème : <center>
+		$$\underset{\bold{g}(x) < 0, \bold{h}(x) = 0}{\min} f(x)$$
+	</center>
+	
+	<div class="exemple"> 
+		<div id="title"> Théorème </div> 
+		Si $x^\star$ est un minimum local de $f$ avec les LICQ, alors il existe des uniques $\lambda \in \mathbb{R}^E_{+}, \mu \in \mathbb{R}^I$ tel que :
+		les conditions de KKT soient vérifiées.
+	</div>
+
+	<p>Cependant, les LICQ sont parfois fortes à vérifier on a donc alternativement le résultat suivant :</p>
+
+	<div class="exemple"> 
+		<div id="title"> Théorème </div> 
+		$x^\star$ est un minimum local de $f$ avec les MFCQ, si et seulement si il existe $\lambda \in \mathbb{R}^E_{+}, \mu \in \mathbb{R}^I$ tel que :
+		les conditions de KKT soient vérifiées. Le nombre de vecteurs est non vide et borné.
+	</div>
+
+	</section>
+
+	<section class="cover" data-background="figures/background.jpg" data-state="no-title-footer no-progressbar has-dark-background">
+		<h2 id='coverh2'>II - Traitement du signal audio</h2>
+
+	</section>
+
+	<section>
+		<h2>La transformée de Fourier discrète</h2>
+	Soit un signal discret $x_0,\dots,x_{N-1}$. Sa transformée de Fourier (discrète) est: 
+
+	<center>$$
+	X(f) = \sum_{n=0}^{N-1}x_ne^{-i\frac{2\pi f n}{N}}
+	$$
+	</center>
+	<ul>
+		<li>On obtient une représentation fréquentielle du signal</li>
+		<li>Complexité algorithmique : $O(N^2)$</li>
+	</ul></br>
+	Il existe une version édulcorée qui réduit la complexité $O(N^2)$ en $O(N\log(N))\\$ (cf. <a href ="https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm">Cooley-Tukey FFT algorithm</a>)</br>
+	<center><figure>
+	<img src="figures/images/fft.jpg" width="65%">
+	<figcaption><em>Figure : champ d'une Baleine. On remarque l'activité dans les basses fréquences.</em></figcaption>
+	</figure>
+	</center>
+	<p>
+	<div class="remarque">On emploiera la FFT dans la suite.</div>
+	</p>
+ </section>
+
+ <section>
+	<h2>Transformée de Fourier à Court Terme (TFCT)</h2>
+	<ul>
+		<li>Découpage d'un signal en plusieurs séquences</li>
+		<li>multiplication par un fenêtrage (Pourquoi ? <em>cf.</em> <a href="https://perso.telecom-paristech.fr/ladjal/PDFS/OASIS.pdf">poly OASIS</a>) </li>
+		<li>FFT sur chacune des séquences</li>
+	</ul>
+	<center><figure>
+		<img src="figures/images/STFT.png" width="50%">
+		<figcaption><em>TFCT d'un signal de parole (selon Laroche)</em></figcaption>
+		</figure>
+	</center>
+ <div class="remarque">On obtient un signal "temps-fréquence" $X(f,t)$</div>
+</section>
+
+<section>
+	<h2>Spectrogramme de puissance</h2>
+	<ul><li>Module au carré des coefficients</li>
+	<center>$$
+		S(f,t) = |X(f,t)|^2 \qquad\qquad\qquad \texttt{(Spectrogramme de Puissance)}
+		$$
+	</center>
+	<li>Pour une meilleure représentation, on calcule le log du SP.</li>
+	</ul>
+	<center><figure>
+		<img src="figures/images/spectrogram.png" width="70%">
+		<figcaption><em>Figure : Log-Spectrogramme d'un signal de parole.</em></figcaption>
+		</figure>
+		</center>
+	</section>
+
+
+</div>
+
+<div class='footer'>
+	<img src="css/theme/img/logo-ensta.svg" id="logo2" alt="Logo"/>	
+	<img src="css/theme/img/logo-Telecom.svg" id="logo1" alt="Logo"/>
+	<div id="middlebox">Apprentissage statistique & son - Mi202</div>
+	<ul>
+	</ul>
+</div>
+			</div>
+
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: false,
+				slideNumber: true,
+				minScale: 0.1,
+				maxScale: 5,
+				transition: 'none', //
+
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/math-katex/math-katex.js', async: true },
+					{ src: 'plugin/reveald3/reveald3.js' },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+
+	</body>
+
+</html>

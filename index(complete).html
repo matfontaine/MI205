@@ -1,0 +1,2517 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>MDI104 - Télécom Paris</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/telecom.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/github.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section class="cover" data-background="figures/background-blur.png"  data-state="no-title-footer no-progressbar has-dark-background">
+
+					<h2 id='coverh2'>Probabilités</h2>
+					<h1  id='title_seminar'> MDI104 </h1>
+					<h3><a href="https://matfontaine.github.io/MDI104", id='github_url'>matfontaine.github.io/MDI104</a></h3>
+					<p id='coverauthors'>
+						Mathieu FONTAINE<br />
+						mathieu.fontaine@telecom-paris.fr
+					</p>
+					<p id="date">
+					Septembre-Decembre 2022
+					</p>
+					<p>
+					<img src="css/theme/img/logo-Telecom.svg" id="telecom" class="logo" alt="">
+					<aside class="notes">
+						<ul><li>We will consider historical audio source separation technique</li>
+									<li>e.g. no deep learning extensions or nonnegative matrix factorization</li>
+								<li>the Handbook for that course is available on the moodle (PAM/Audio_source_separation)</li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- Outline of the presentation -->
+				<section>
+					<h1> Organisation du module (1/2)</h1>
+					<h2>Evaluation</h2>
+
+					<h3> Note de contrôle continu  (CC, /10)</h3>
+					<ul>
+						<li>2 CC (/20)
+
+							<ul>
+								<li>Date pour les contrôles continus : <b>30/09</b> et <b>18/11</b></li>
+								<li>1h30 - une feuille A4 recto/verso de révision autorisée pendant le devoir</li>
+							</ul>
+
+						</li>
+						<li> Devoir Maison (/10) : à faire tout seul ou en binôme (à rendre pour le lundi <b>26/09</b>)</li>
+					</ul></br></br>
+
+     <p class="remarque">Note sur /50 ramenée sur 10</p>               
+					<h3>Examen Final (EF, /10)</h3>
+					<ul style="margin-bottom:1em;">
+						<li>Une feuille A4 recto/verso de révision autorisée pendant le devoir</li>
+						<li>Durée : 3h</li>
+					</ul>
+					<p class="remarque"> EF + CC = Note finale /20 pour MDI104</p>
+				</section>
+
+				<section>
+					<h1> Organisation du module (2/2)</h1>
+					<h2>Programme par tranche horaire (TH)</h2>
+					<ul>
+						<li>Probabilités Discrète (TH 1-2)</li>
+						<li>Théorie de la Mesure (TH 3-5)</li>
+						<li>Intégration (TH 8-9)</li>
+						<li>Variables Aléatoires et Espérance (TH 10-12)</li>
+						<li><font color ="red">CC1 (TH 13, 30/09)</font></li>
+						<li>Théorème de Fubini et Indépendance (TH 14)</li>
+						<li>Changement de Variables (TH 15-16)</li>
+						<li>Fonction Caractéristique (TH 17-18)</li>
+						
+						<li>Vecteurs Gaussiens (TH 19-21)</br>
+							<b>(TH 19-20 le 28/10 remplacement par Bruno Costacèque)</b>
+
+						</li>
+						<li>Espérance conditionnelle (TH 22 & 24)</li>
+						<li><font color ="red">CC2 (TH 23, 18/11)</font></li>
+						<li>Convergences (TH 25 & 26)</li>
+				    </ul>
+					</section>
+
+					<section>
+						<h1>Matériel et activités</h1>
+						<h2>Bibliographie</h2>
+						<ul>
+							<li>Le polycopié du MDI104: contient des exercices corrigés</li>
+							<li>Cours de Jean-François Delmas (Partie I) <a href="http://cermics.enpc.fr/%7Edelmas/Enseig/ensta_cours.pdf"> Téléchargeable ici</a></li>
+							<li>Probability and Measure - Patrick Billingsley <a href="https://www.colorado.edu/amath/sites/default/files/attached-files/billingsley.pdf"> Téléchargeable ici</a></li>
+      					</ul>
+						<h2>Activités</h2>
+						<ul>
+							<li>Diaporama résumant le contenu du cours (démonstration au tableau)</li>
+							<li>Travaux dirigés sur des exercices (à la maison ou traité directement en cours)</li>
+							<!-- <li>Petit QCM pendant le cours (non noté)
+							   </br>$\quad \rightarrow$ Matériel nécessaire : <b>Téléphone ou ordinateur</b> (test juste après)
+							</li> -->
+						</ul>
+						</section>
+
+					<!-- <section>
+						<h1> QCM Wooclap</h1>
+						<iframe style="pointer-events: none;" frameborder="0" height="500" width="100%" mozallowfullscreen src="https://app.wooclap.com/events/MDI104GRP2/"></iframe>
+						<ul>
+							<li>www.wooclap.com/MDI104GRP2 ou  @MDI104GRP2 par SMS et 1,2,3 ou 4 etc.</li>
+							<li>Les questions sont limitées par le temps <b>(n'est pas pris en compte dans la note)</b></li>
+						</ul>
+					</section> -->
+
+				<!-- Introduction -->
+				<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+					<h2 id='coverh2'>I - Probabilités discrète</h2>
+
+				</section>
+
+				<section>
+					<h1>Rappels & notations (1/2)</h1>
+					<ul>
+						<li> $\Omega$: ensemble de réalisation possible (parfois appelé <b>Univers</b>)</li>
+						$\quad \rightarrow$ durée de vie d'une population (continue, $\Omega = \mathbb{R}_{+}$)$ \\ $ 
+					    $\quad \rightarrow$ comptage d'objet défaillant durant une période donnée ($\Omega = \mathbb{N}$)$\\$ 
+						<p class="remarque"> Dans cette 1$^{\mathrm{ère}}$partie, $\Omega$ sera au plus égal à $\mathbb{N}$</p>
+						<li>$\omega \in \Omega$: <b>épreuve, issue</b> </li>
+						$\quad \rightarrow$ représente le résultat d'un(e) phénomène/expérience aléatoire. 
+						<li>$A \subset \Omega$ ou $A \in \mathcal{P}(\Omega)$ (partie de $\Omega$): évènement aléatoire</li>
+						<!-- $\quad \rightarrow$ $A$ est <b>réalisé</b> ssi. le résultat de l'expérience $\omega \in A$ -->
+					</ul>
+					<div class="exemple"> 
+					<div id="title"> Exemple (lancé de dés) : </div> 
+					Considérons 2 dés et l'évènement $A=\{$ Faire au moins 10 après un lancer de 2 dés$\}$. 
+					On a l'ensemble $\Omega=\left\{1,\dots,6\right\} \times \left\{1,\dots,6\right\}$ et 
+					<center>$$
+					A = \left\{(\omega_1,\omega_2) \in \Omega \mid \omega_1 + \omega_2 \geq 10 \right\}
+					$$</center>
+		
+					</div>
+					<center><img src="figures/images/2_des.jpg" width="10%" style="margin-top:1em"></center>
+					
+				</section>
+
+				<section>
+					<h1>Rappels & notations (2/2)</h1>
+					Dans ce contexte, on rappelle également que:$\\$
+					<ul>
+						<li>$\bigcup_{i \in \mathbb{N}} A_i = \{\omega \in \Omega \mid  \exists i \in \mathbb{N}, \omega \in A_i \}$</li>
+						<li> $\bigcap_{i \in \mathbb{N}} A_i = \{\omega \in \Omega \mid  \forall i \in \mathbb{N}, \omega \in A_i \}$</li>
+						<li> Soit $I \subset \mathbb{N}$, <b>$(A_i)_{i \in I}$  partition de $\Omega$ </b>$  \Leftrightarrow \forall i \neq j, A_i \cap A_j = \emptyset$ et $\Omega = \bigcup_{i \in \mathbb{N}} A_i$</li>
+						<li> $A, \bar{A}$ forment une partition de $\Omega$</li>
+					</ul>
+					$\\$
+					Notion de limite de suite croissante/décroissante d'évènements :
+					<ul>
+						<li>Si $(A_i)_i$ tel que $A_i \subset A_{i+1}$ alors on note $A:= \lim_{i} A_i = \bigcup_{n} A_i$ ou $A_i \uparrow A$ </li>
+						<li>Si $(A_i)_i$ tel que $A_{i+1} \subset A_{i}$ alors on note $A:= \lim_{i} A_i = \bigcap_{n} A_i$ ou $A_i \downarrow A$</li>
+					</ul> 
+					<center><img src="figures/images/suite_croi_dec.png" width="100%" style="margin-top:1em"></center>
+				</section>
+
+				<section>
+					<h1>Mesure de probabilité</h1>
+					Intuitivement, on souhaite définir une application/mesure telle que :
+					<ul style="margin-bottom:1.3em;">
+					<li>la mesure de l'union d'ensembles disjoints soit la somme de la mesure de chaque ensemble </li>
+					<li>mesure de  l'ensemble vide $=0$ et mesure de  $\Omega = 1$ (probabilité)</li>
+				</ul>
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Définition (Mesure de probabilité) : </div> 
+						Une <b>mesure de probabilité</b> sur $\Omega$ est une application 
+						<center>$\mathbb{P}: \mathcal{P}(\Omega) \to \mathbb{R} \\ $
+							$ \qquad \qquad ~ A \mapsto \mathbb{P}(A)$
+						</center>
+						Qui vérifie </br>
+						$\qquad$
+						<ol>
+							<li> $\mathbb{P}(\emptyset) = 0$ et $\mathbb{P}(\Omega)=1$</li>
+							<li> $\forall (A_i)_{i \in \mathbb{N}}$ d'évènements 2 à 2 disjoints <br>
+								<center>$\mathbb{P}(\bigcup_{i \in \mathbb{N}} A_i) = \sum_{i \in \mathbb{N}} \mathbb{P}(A_i) \qquad \qquad \qquad  \qquad \qquad  (\sigma\texttt{-additivité})$</center>
+
+
+							</li>
+						</ol>
+			
+						</div>
+				</section>
+				<section>
+				<h1>Propriétés</h1>
+				<div class="exemple"> 
+					<div id="title"> Propriétés sur la mesure de probabilité : </div> 
+					Soit $\mathbb{P}$ une mesure de probabilité. Elle satisfait les propriétés suivantes : 
+					<ol style="margin-left:1.8em;">
+						<li> $\mathbb{P}(\bar{A}) = 1-\mathbb{P}(A)$</li>
+						<li>$\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$</li>
+						<li>Si $A \subset B$ alors $\mathbb{P}(A) \leq \mathbb{P}(B)$</li>
+						<li>Si $(A_i)_i$ forme une partition de $\Omega$ alors pour tout $B \subset \Omega$
+							<center>$\mathbb{P}(B) = \sum_{i} \mathbb{P}(B \cap A_i) \quad  (\texttt{Formule des probabilités totales})$</center> 
+						</li>
+						<li>
+							$\mathbb{P}(\cup_{i}A_i) \leq \sum_{i} \mathbb{P}(A_i) \quad ~~~ (\texttt{Borne de l'union})$
+						</li>
+						<li>
+							Si </br>
+							$\qquad \rightarrow A_n \uparrow A$, alors $\mathbb{P}(A) = \lim_{n \to +\infty} \mathbb{P}(A_n) \\$
+							$\qquad \rightarrow A_n \downarrow A$, alors $\mathbb{P}(A) = \lim_{n \to +\infty} \mathbb{P}(A_n) \\$
+						</li>
+						<li>
+							Si $\forall n \in \mathbb{N}^{\star}, \mathbb{P}(A_n) =1$ alors $\mathbb{P}(\bigcap_{n=1}^{\infty} A_n) = 1$
+						</li>
+					</ol>
+					
+					</div>
+					<!-- <p><center><b>Esquisse de preuve au tableau. </b></center>
+					</p> -->
+				</section>
+
+				<section>
+					<h1>Probabilité conditionnelle</h1>
+					 Proba conditionnelle de $A$ sachant $B \rightarrow$ quantifie l'occurence $A$ sachant que $B$ s'est produit. 
+					 <div class="exemple"> 
+						<div id="title"> Définition (Probabilité conditionnelle) : </div> 
+						Soit $\mathbb{P}$ une mesure de probabilité et $B$ tel que $\mathbb{P}(B)>0$.
+						 On définit la <b>probabilité conditionnelle de $A$ sachant $B$</b> comme suit : $\\$
+						<center>$\mathbb{P}(A\mid B) =\dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$</center>
+
+						</div>
+						<p>
+						 <b>Remarque </b>: $A \mapsto \mathbb{P}(A \mid B)$ est une mesure de probabilité <b> (vérifier les axiomes)</b>
+		
+						</p>
+
+						<div class="exemple"> 
+							<div id="title"> Propriétés : </div> 
+							<ol style="margin-left:1.8em;">
+							<li>Si on considère $(B_i)_{i \in I}$ une partition de $\Omega$ alors: $\\$
+							<center>$\mathbb{P}(A) = \sum_{i \in I} \mathbb{P}(A \mid B_i) \mathbb{P}(B_i)$</center>
+						</li>
+						<li>Pour tout évènement $A$ et $B$ on a:
+							<center>$ \qquad \qquad \qquad\mathbb{P}(B \mid A) = \dfrac{\mathbb{P}(A \mid B) \mathbb{P}(B)}{\mathbb{P}(A)}$ 
+								$ \quad  \texttt{(Formule de Bayes)} $</center>
+								
+
+						</li>
+				     	</ol>	
+						</div>
+							<!-- <p><center><b>Preuve au tableau. </b></center>
+							</p> -->
+				</section>
+				<section>
+					<h1>Indépendance</h1>
+
+					<div class="exemple"> 
+						<div id="title"> Definition : </div> 
+						<ol style="margin-left:1.8em;">
+						<li>$A$ et $B$ sont dits <b>indépendants</b> ($A \perp \! \! \! \perp B$) si <center>$\mathbb{P}(A\cap B) = \mathbb{P}(A) \mathbb{P}(B) \Leftrightarrow \mathbb{P}(A \mid B) = \mathbb{P}(A)$</center>
+
+						</li>
+					<li> Une famille d'évènements $(A_i)_{i \in I}$ est dite <b>indépendante</b> si <br>
+						 pour tout ensemble fini $J \subset I$ la sous-famille $(A_j)_{j \in J}$  vérifie :
+
+						<center>$\mathbb{P}(\bigcap_{j \in J}A_j) = \prod_{j \in J} \mathbb{P}(A_j)$</center>
+							
+
+					</li>
+					 </ol>	
+						</div>
+
+                     <p><b>Exemple :</b> $A \perp \! \! \! \perp B \perp \! \! \! \perp C
+						 \Leftrightarrow 
+						 \begin{cases}
+						  \mathbb{P}(A \cap B) &= \mathbb{P}(A)\mathbb{P}(B); \\
+						 \mathbb{P}(A \cap C) &= \mathbb{P}(A)\mathbb{P}(C); \\
+						 \mathbb{P}(A \cap B \cap C) &= \mathbb{P}(A)\mathbb{P}(B)\mathbb{P}(C).
+						 \end{cases}
+						 $</p>
+					<!-- <p class="remarque"> Petit QCM juste après sur Wooclap (Proba conditionnelle & indépendance)</p>  -->
+				</section>
+				<!-- <section>
+				<h1>QCM Wooclap (Proba conditionnelle & indépendance) </h1>
+				<iframe style="pointer-events: none;" frameborder="0" height="500" width="100%" mozallowfullscreen src="https://app.wooclap.com/events/MDI104GRP2/"></iframe>
+				<ul>
+					<li>www.wooclap.com/MDI104GRP2 ou  @MDI104GRP2 par SMS et 1,2,3 ou 4 etc.</li>
+					<li>Les questions sont limitées par le temps <b>(n'est pas pris en compte dans la note)</b></li>
+				</ul>
+				</section> -->
+				<section>
+					<h1>Variable aléatoire</h1>
+				$\Omega$ et $E$ sont des espaces discrets.
+
+				<div class="exemple" style="margin-bottom:1em;"> 
+					<div id="title"> Définition (Variable aléatoire) </div> 
+					Une variable aléatoire (v.a.) $X$ sur $E$ est une fonction  $X:\Omega \to E$.
+					</div>
+				$X(\omega)$ est parfois appelé une réalisation de $X \\$
+				$\quad \rightarrow$ elle dépend du résultat d'une expérience. $\\ \\$
+
+				On s'intéresse aux évènements suivants associés à une v.a. $X~: \\$
+				<ul>
+				<li>$A=X^{-1}(\{x\}) \rightarrow $"La variable $X$ prend la valeur $x$"</li>
+				<li>$A=\{\omega \in \Omega \mid X(\omega) \in H\} := X^{-1}(H) \rightarrow $"La variable $X$ appartient à $H$"</li>
+				<li>$X^{-1}(H)$ est appelé <b>l'image réciproque de $H$ par $X$</b></li>
+				
+
+				</ul>
+				</section>
+
+				<section>
+					<h1>Loi d'une variable aléatoire</h1>
+
+				<div class="exemple" style="margin-bottom:1em;"> 
+					<div id="title"> Définition (Loi d'une variable aléatoire) </div> 
+					La <b>loi</b> d'une v.a. $X$ est l'application
+					<center>$\mathbb{P}_X: E \to \mathbb{R} \\ $
+						$ \qquad \qquad \quad \qquad \qquad ~ H \mapsto \mathbb{P}(X^{-1}(H))$
+					</center>
+					</div>
+					
+					<p>
+					<b>Notations:</b> On note  $\mathbb{P}_X = \mathbb{P} \circ X^{-1}$ mais également :
+					<center>
+                    $$\begin{aligned}
+					\mathbb{P}(X^{-1}(H))  &=\mathbb{P}(\{\omega \in \Omega: X(\omega) \in H\})\\
+										   &:=\mathbb{P}(\{X \in H\}) \\
+										   &:=\mathbb{P}(X \in H) \\
+					\end{aligned}
+					$$
+	
+
+					</center>
+					On a de plus les notations équivalentes suivantes :
+					<center>$\mathbb{P}_{X}(H) := \mathbb{P}(X \in H) = \sum_{x \in H} \mathbb{P}_{X}(x) = \sum_{x \in H} \mathbb{P}(X=x)$</center> 
+
+					</p>
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Propriété </div> 
+						$\mathbb{P}_{X}$ est une mesure de probabilité
+						</div>
+
+						<p><center><b>Preuve dans le poly. </b></center>
+						</p>
+				</section>
+				<section>
+					<h1>Loi jointe, loi marginale</h1>
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Définition (Loi jointe, loi marginale) </div> 
+						Soit $X$ et $Y$ deux v.a; de $\Omega$ dans $E$ de lois respectives $\mathbb{P}_{X}$ et $\mathbb{P}_{Y}$. La loi du couple $(X,Y)$, 
+						notée $\mathbb{P}_{(X,Y)}$, s'appelle <b>la loi jointe de $X$ et $Y$</b>.  </br>
+						Les lois de $\mathbb{P}_{X}$ et $\mathbb{P}_{Y}$ sont respectivement <b>les marginales de $X$ et $Y$</b>.
+						</div>
+					<p>
+						La marginale peut être retrouvée à partir de la loi jointe via la relation suivante :
+					</p>
+						<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Propriété </div> 
+						<center>
+							$\forall x \in E, \mathbb{P}_{X}(x) = \sum_{y \in E} \mathbb{P}_{(X,Y)}(x,y)$</b>.
+						</center>
+						</div>
+					<b>Preuve : Appliquer la formule des probabilités totales sur les ensembles $\{Y=y\}$ où $y \in E$.</b>
+				</section>
+				<section>
+					<h1>Indépendance de variables aléatoires</h1>
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Définition (Indépendance de v.a.) </div> 
+						Deux v.a. $X$ et $Y$ sont dites <b>indépendantes </b> si pour tout $A,B \subset E$ on a l'indépendance des évènements
+						$\{X \in A\}$ et $\{Y \in B\}$. C'est-à-dire :
+						<center>
+							$\forall A,B \subset E, \underbrace{\mathbb{P}(\{X \in A\} \cap \{Y \in B\})}_{=\mathbb{P}(X \in A,~ Y \in B)}=\mathbb{P}(X \in A)\mathbb{P}(X \in B)$
+
+						</center>
+						</div>
+						<b>Remarque:</b> On retrouve parfois la notation $\mathbb{P}(X\in A, Y\in B) = \mathbb{P}_{(X,Y)}(A \times B)$.
+						$\\$ En effet $$
+						\begin{aligned}
+						\mathbb{P}(X\in A, Y\in B) &= \mathbb{P}(\{\omega \in \Omega \mid X(\omega)\in A, Y(\omega)\in B\})\\
+						 						   &= \mathbb{P}(\{\omega \in \Omega \mid (X(\omega),Y(\omega))\in A\times B\})\\
+												   &= \mathbb{P}_{(X,Y)}(A \times B)
+						\end{aligned}						   $$
+						<div class="exemple" style="margin-bottom:1em;"> 
+							<div id="title"> Propriété </div> 
+							$$ \begin{aligned}
+							    X \perp \! \! \! \perp Y &\Leftrightarrow \forall (A,B) \subset \Omega^2, \mathbb{P}_{(X,Y)}(A \times B) = \mathbb{P}_{X}(A) \mathbb{P}_{Y}(B)\\
+								&\Leftrightarrow \forall (x,y) \in \Omega^2, \mathbb{P}(X=x,Y=y) =  \mathbb{P}(X=x) \mathbb{P}(Y=y)
+								
+								\end{aligned}
+								$$
+							</div>
+							<b>Preuve: Au tableau.</b>
+					</section>
+				<section>
+					<h1>Espérance</h1>
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Définition (Espérance)</div> 
+						Soit $E \subset \mathbb{R}$, <b>l'espérance d'une v.a. $X$ </b> est définie (quand elle existe) par :
+						<center>
+						$$\mathbb{E}(X) = \sum_{x \in E} x \mathbb{P}(X=x)$$
+
+						</center>
+						</div>
+						<p>
+						<b>Remarque :</b> L'espérance existe si :
+						<ul>
+							<li> la série $\mathbb{E}(X)$ est absolument sommable $\left(\sum_x |x|\mathbb{P}(X=x) < \infty \right)$</li>
+							<li>$\forall x < 0, \mathbb{P}(X=x) = 0 \rightarrow$ que $X$ est positive $\mathbb{P}$-presque partout $(X \geq 0)$</li>
+						</ul>
+					</p>
+				<p>
+					<b>Exemple :</b> On considère la fonction indicatrice : 
+					<center>$$ 
+					
+					\begin{aligned}
+					\bold{1}_{A}: \Omega &\to  \{0,1\}\\
+					  \omega & \mapsto  
+					  \begin{cases}
+					  1 & \mathrm{si~\omega \in A} \\
+					  0 & \mathrm{sinon}
+					\end{cases}
+					  \end{aligned} 
+					  $$
+					</center>
+				</p>
+				Alors: $\mathbb{E}(\bold{1}_{A}) = 0\mathbb{P}(\bold{1}_{A}=0) + 1\mathbb{P}(\bold{1}_{A}=1) = \mathbb{P}(A) \implies \boxed{\mathbb{E}(\bold{1}_{A}) = \mathbb{P}(A)}
+				  $
+				</section>
+
+				<section>
+					<h1>Propriétés autour de l'éspérance (1/2)</h1>
+
+					On définit l'égalité $\mathbb{P}$- presque partout ($\mathbb{P}$-p.p.) c'est à dire avec probabilité 1 ($X=a ~\mathbb{P}$-p.p. veut dire $\mathbb{P}(X=a) = 1$)
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Propriétés</div> 
+						Soit $X$ et $Y$ deux v.a. dans $E$ telles que $\mathbb{E}(|X|) < +\infty$ et $\mathbb{E}(|Y|) < +\infty, \alpha, \beta \in \mathbb{R}$ et $a \in E$. Alors :
+						<ol style="margin-left:1.8em;">  
+							<li style="margin-top:0.5em;">$\hspace{-2em} \mathbb{E}(\alpha X + \beta Y)$ est bien définie et $\mathbb{E}(\alpha X + \beta Y) = \alpha\mathbb{E}(X) + \beta\mathbb{E}(Y)$ </li>
+							<li style="margin-top:0.5em;"> $\hspace{-2em} \text{Si } X \geq 0~\mathbb{P}-$ p.p. alors $\mathbb{E}(X) \geq 0$</li>
+							<li style="margin-top:0.5em;"> $\hspace{-2em}\text{Si } X \geq 0~\mathbb{P}-$ p.p. et $\mathbb{E}(X) = 0$ alors $X=0~\mathbb{P}-$ p.p.</li>
+							<li style="margin-top:0.5em;">$\hspace{-2em} \left|\mathbb{E}(X)\right| \leq \mathbb{E}(\left|X\right|)$  </li>
+							<li style="margin-top:0.5em;">$\hspace{-2em}\text{Si } X \leq Y~\mathbb{P}-$ p.p. alors $\mathbb{E}(X) \leq \mathbb{E}(Y)$</li>
+							<li style="margin-top:0.5em;">$\hspace{-2em}\text{Si } X = a~\mathbb{P}-$ p.p. alors $\mathbb{E}(X) = a$</li>
+						</ol>
+						</div>
+					</section>
+
+				<section>
+				<h1>Propriétés autour de l'éspérance (2/2)</h1>
+				<div class="exemple" style="margin-bottom:1em;"> 
+					<div id="title"> Propriétés</div> 
+					Soit $X$ et $Y$ deux v.a. dans $E$ telles que $\mathbb{E}(|X|) < +\infty$ et $\mathbb{E}(|Y|) < +\infty$ et $ \\g: E \to \mathbb{R}$. Alors :
+					<ol style="margin-left:1.8em;">  
+						<li style="margin-top:0.5em;">$\hspace{-2em} \text{Les résultats élémentaires de Prop. 1.16.}$ </li>
+						<li style="margin-top:0.5em;"> $\hspace{-2em}\forall \epsilon >0, \forall p \geq 1, \mathbb{P}(|X|>\epsilon) \leq \dfrac{\mathbb{E}(|X|^p)}{\epsilon^p} ~~ (\texttt{Inégalité de Markov})$</li>
+						<li style="margin-top:0.5em;">$\hspace{-2em}\mathbb{E}(|XY|) \leq \sqrt{\mathbb{E}(X^2)\mathbb{E}(Y^2)}~~~~ (\texttt{Inégalité de Cauchy-Schwarz})$</li>
+						<li style="margin-top:0.5em;">$\hspace{-2em} \mathbb{E}(g(X)) = \sum_{x\in E}g(x)\mathbb{P}(X=x) \quad ~~~ (\texttt{Théorème de transfert})$  </li>
+						<li style="margin-top:0.5em;">$\hspace{-2em} \text{Si~} X \perp \! \! \! \perp Y$ alors $\mathbb{E}(f(X)g(Y)) = \mathbb{E}(f(X))\mathbb{E}(g(Y))$</li>
+					</ol>
+					</div>
+					<p><b>Preuve : au tableau pour ii. et v.</b></p>
+					<p><b>Remarque :</b> iv. peut se généraliser pour $X_1,\dots,X_n$ et $g:E^n \to \mathbb{R}$:
+					<center>
+					$$
+					\mathbb{E}(g(X_1,\dots,X_n)) = \sum_{(x_1,\dots,x_n)\in E^n}g(x_1,\dots,x_n)\mathbb{P}(X_1=x_1,\dots,X_n=x_n)
+					$$
+
+					</center>
+					</p>
+				</section>
+				<section>
+					<h1>Moments, variances et covariance</h1>
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Définition</div> 
+						Soit $p \geq 0$. et soit $X$ une v.a. tel que $\mathbb{E}(|X|^p)<+\infty$. Alors :
+						<ol style="margin-left:1.8em;">  
+							<li style="margin-top:0.5em;">$\hspace{-3em}\mathbb{E}(X^p)$ est appellé le <b>moment d'ordre $p$ de $X$</b>. $X$ est alors dit d'ordre $p$.   </li>
+							<li style="margin-top:0.5em;"> $X$ d'ordre 2. Sa <b>variance</b>, notée $\mathrm{Var}(X)$,  est définie par:
+							<center>$$\mathrm{Var}(X):= \mathbb{E}\left[(X-\mathbb{E}(X))^2\right] $$</center>
+
+							</li>
+							<li style="margin-top:0.5em;">$X,Y $deux v.a. d'ordre $2$. On définit leur <b>covariance</b> $\mathrm{Cov}(X,Y)$ par:
+								<center>$$\mathrm{Cov}(X,Y):= \mathbb{E}\left[(X-\mathbb{E}(X)(Y-\mathbb{E}(Y))\right] $$</center>
+								Si $\mathrm{Cov}(X,Y)=0$ $X,Y$ sont dits <b>décorrélées</b>. 
+							</li>
+						</ol>
+					</div>
+
+					Rappelons quelques propriétés importantes parmis celles du polycopié :
+				
+					<div class="exemple" style="margin-bottom:1em;"> 
+						<div id="title"> Propriétés</div> 
+						Soit $X,Y$ deux v.a. d'ordre $2$. Alors:$\\$
+						<ol style="margin-left:1.8em;">  
+							<li style="margin-top:0.5em;">$ \hspace{-3em} \text{Les résultats élémentaires de Prop. 1.20. sur la Variance/Covariance}$</li>
+							<li style="margin-top:0.5em;">$\hspace{-3em} $ $X \perp \! \! \! \perp Y \implies \mathrm{Cov}(X,Y) =0$ (⚠ le contraire est généralement faux)</li>
+							<li style="margin-top:0.5em;">$\hspace{-3em} $ $X$ et $Y$ ont mêmes lois $\implies$ leurs moments sont égaux.</li>
+
+						</ol>
+
+					</div>
+				</section>
+
+				<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+					<h2 id='coverh2'>II - Théorie de la Mesure</h2>
+
+				</section>				
+				<section>
+					<h1>Notion de mesure et de tribu (Exemple sur $\mathbb{R}$)</h1>
+					Intuitivement, on aimerait une application $\mu:\mathcal{P }(\mathbb{R}) \to [0,+\infty]$ telle que :
+					<ul><li>Si  $A, B \subset \mathcal{P }(\mathbb{R})$ sont disjoints alors $\mu(A \cup B) = \mu(A) + \mu(B)$</li>
+						<li>Plus généralement, si $(A_i)_i$ sont disjoints alors $\mu(\cup_i A_i) = \sum_i \mu(A_i)$ </li>
+						<li>$\mu(\emptyset) = 0 \\$</li>
+						<li>$\mu([a,b]) = b-a$</li>
+					</ul></br>
+					Cela définit une mesure $\mu$ incluant notion de longueur. Cependant, une telle mesure n'existe pas sur $\mathcal{P}(\mathbb{R})$.
+					Nous allons alors restreindre $\mathcal{P}(\mathbb{R})$ sur un sous ensemble $E$.
+<p>
+					Intuitivement, $E$ doit respecter certaines contraintes pour définir une mesure comme </p>
+					<ul>
+					<li>L'ensemble vide doit être dans $E$</li> 
+					<li>Si  $A$ est dans $E$ alors son complémentaire l'est aussi  </li>
+					<li>Une union d'ensemble dans $E$ est toujours dans $E$</li>
+				    </ul>
+					$ \\ \rightarrow$ Les trois axiomes précédents définissent <b>une tribu</b>. 
+				</section>
+			    
+				<section>
+				<h1>Mesure de probabilité sur $\mathbb{R}$</h1>
+				Dans le cadre de ce cours, on aimerait également pour une v.a. $X: \Omega \to \mathbb{R}$ définir $P_{X} = \mathbb{P}(X\in H)$ la loi de $X$.
+				Afin d'obtenir des lois ayant des propriétés intéressantes, il sera également aisé de restreindre $\mathcal{P}(\mathbb{R})$. 
+				</section>
+
+				<section>
+					<h1>Tribus</h1>
+					Considerons $F$ un ensemble. 
+					<div class="exemple"> 
+						<div id="title"> Définition [Tribu] </div> 
+						Une collection de sous-ensemble de $F$ notée $\mathcal{F}$ est une <b>tribu</b> si :</br> 
+						<ol style="margin-right:-4em;">
+						<li><span style="margin-left:-3em;">$\emptyset \in \mathcal{F}$</span></li>
+					<li><span style="margin-left:-3em;">$A \in \mathcal{F} \implies A^{\mathsf{c}} \in \mathcal{F}~\texttt{(stabilité par passage au complémentaire)}$</span></li>
+					<li><span style="margin-left:-3em;">$A_1, A_2,\dots \in \mathcal{F} \text{ dénombrable} \Rightarrow  \bigcup_i A_i \in \mathcal{F}~\qquad\texttt{(union dénombrable)}$</span></li>
+					 </ol>
+					</div>
+
+					<p>
+						<b>Exemple :</b> 
+						<ul style="margin-top:-1.0em;">
+							<li>$\mathcal{F} = \mathcal{P}(F)\qquad \qquad \texttt{(tribu des parties de F)}$</li>
+							<li>$\mathcal{F} = \{\emptyset, F\} \qquad \quad ~~ \texttt{(tribu grossière)}$</li>
+						</ul>
+					</p>
+
+					<div class="exemple"> 
+						<div id="title"> Propriétés </div> 
+						Soit $\mathcal{F}$ et $\mathcal{F}^{\prime}$ deux tribus. Alors : </br> 
+						<ul>
+							<li>$\mathcal{F}$ est stable par intersection dénombrable</li>
+							<li> $\mathcal{F} \cap \mathcal{F}^{\prime}$ est une tribu &nbsp&nbsp(⚠ ce n'est pas le cas pour l'union)</li>
+						</ul>
+					</div>
+					<p style="margin-top:0.5em;"><b>Preuve : esquisse au tableau </b></br>
+						<b>Remarque : </b>
+						$(F, \mathcal{F}$) est appelé <b>espace mesurable</b>
+					</p>
+		
+					
+				</section>
+
+				<section>
+				<h1> Tribu engendrée et tribu de Borel </h1>
+				<div class="exemple"> 
+					<div id="title"> Définition & Propriété [Tribu engendrée] </div> 
+					Soit $\mathcal{C}$ une collection d'ensembles de $F$. L'intersection de toute les tribus contenant $\mathcal{C}$ est une tribu 
+					appelée <b>tribu engendrée par $\mathcal{C}$</b> (notée $\sigma(\mathcal{C})$).
+				</div>
+				<p><b>Preuve : au tableau </b>
+				</br>Donnons un exemple de tribu engendrée sur une collection de $\mathbb{R}^{d}, d\geq 1$.</p>
+				<div class="exemple"> 
+					<div id="title"> Définition [Tribu de Borel] </div> 
+					On définit la <b>tribu de Borel sur $\mathbb{R}$</b> l'ensemble $\mathcal{B}(\mathbb{R})$ ci-dessous :
+					<center>
+						$\mathcal{B}(\mathbb{R}) = \sigma\left(\{[a,b]: a < b\}\right) \quad \texttt{(tribu engendrée par les [a,b])}$
+					</center>
+					Plus généralement, on définit la <b>tribu de Borel sur $\mathbb{R}^{d}$</b> comme suit : 
+					<center>
+					$$
+					\mathcal{B}(\mathbb{R}^d) = \sigma\left(\left\{\prod_{i=1}^{d}[a_i,b_i]:  \forall i \in \llbracket 1, d \rrbracket, a_i < b_i\right\}\right)
+					$$</center> 
+					Un ensemble de $\mathcal{B}(\mathbb{R}^d)$ est un "borélien"
+				</div>
+				<p>
+					<b>Exemple :</b> 
+				</br>
+				$\rightarrow\{a\},~]a,b[,~]-\infty, b], ~\mathbb{Q}, ~\mathbb{R}\backslash \mathbb{Q} \in \mathcal{B}(\mathbb{R})$
+				</p>
+				</section>
+
+				<section>
+					<h1>Autres définition de la tribu de Borel</h1>
+					<div class="exemple"> 
+						<div id="title"> Propriétés </div> 
+							On a les définitions équivalentes suivantes  pour $\mathcal{B}(\mathbb{R})^{d}$: </br>
+							<ul>
+								<li> $\mathcal{B}(\mathbb{R}^{d}) = \sigma\left(\left\{\prod_{i=1}^{d}]-\infty,b_i]:  b_1, \dots, b_d \in \mathbb{R}\right\}\right)$</li>
+								<li> $\mathcal{B}(\mathbb{R}^{d}) = \sigma\left(\text{ouverts de }\mathbb{R}^d\right)$</li>
+							</ul>
+					</div>
+					<p><b>Preuve du premier point au tableau</b></p>
+					<p>
+						<b>Remarque :</b>
+					On parle également de la <b>trace de $\mathcal{B}(\mathbb{R})$ sur $E$</b> pour un ensemble $E \subset \mathbb{R}$, noté $\mathcal{B}(E)$, et définit comme : 
+					<center>
+					$$
+					\mathcal{B}(E) = \left\{H \cap E : H \in \mathcal{B}(\mathbb{R})\right\}
+					$$
+				</center>
+					</p> 
+				</section>
+				<section>
+					<h1>Mesures</h1>
+					Soit $(F, \mathcal{F})$ un espace mesurable. 
+
+					<div class="exemple"> 
+						<div id="title"> Définition [Mesure et espace mesuré] </div> 
+						Une application $\mu : \mathcal{F} \to [0,+\infty]$ est une mesure sur $(F, \mathcal{F})$ si  :</br> 
+						<ol style="margin-right:-4em;">
+						<li><span style="margin-left:-3em;">$\mu(\emptyset) = 0$</span></li>
+					<li><span style="margin-left:-3em;">$\forall A_1, A_2, \dots \in \mathcal{F}$ 2 à 2 disjoints, $\mu(\bigcup_{i} A_i) = \sum _{i} \mu(A_i) \quad (\sigma-\texttt{additivité})$</span></li>
+					</br>De plus : 
+					<li><span style="margin-left:-3em;">$\mu(F) < +\infty \implies \mu$ est dite <b>finie</b></span></li>
+					<li><span style="margin-left:-3em;">$\mu(F) =1 \implies \mu$ est dite <b>mesure de probabilité</b></span></li>
+					<li><span style="margin-left:-3em;">$(F, \mathcal{F}, \mu)$ est appelé <b>espace mesurable</b>.</span></li>
+					 </ol>
+					</div>
+										
+					<p> <b>Remarque :</b></br>
+						
+						Les propriétés sur les mesures sont identiques, à quelques subtilités près, à celles sur les mesures de probabilités (cf. Thm 3.7) 
+					</p>
+					 
+				</section>
+
+				<!-- <section>
+					<h1>QCM Wooclap (Tribus & mesure) </h1>
+					<iframe style="pointer-events: none;" frameborder="0" height="500" width="100%" mozallowfullscreen src="https://app.wooclap.com/events/MDI104GRP2/"></iframe>
+					<ul>
+						<li>www.wooclap.com/MDI104GRP2 ou  @MDI104GRP2 par SMS et 1,2,3 ou 4 etc.</li>
+						<li>Les questions sont limitées par le temps <b>(n'est pas pris en compte dans la note)</b></li>
+					</ul>
+					</section> -->
+
+				<section>
+					<h1>Caractérisation de mesures sur un $\pi$-système (1/2)</h1>
+					Il est souvent compliqué de montrer que deux mesures coïncident sur une même tribu. 
+					On se restreint donc à des ensembles plus simples comme les $\pi$-système :
+					<div class="exemple"> 
+						<div id="title"> Définition [$\pi$-système] </div> 
+						Un <b>$\pi$-système </b> $\mathcal{P}$ est une classe d'ensembles telle que $\forall P, P^{\prime} \in \mathcal{P}, P \cap P^{\prime} \in \mathcal{P}$
+					</div>
+					<p> <b>Exemples :</b>
+					<ul>
+						<li>$\mathcal{P}_1=\left\{[a, b], a \leq b\right\} \cup \{\emptyset\}$ est un $\pi$-système (et $\mathcal{B}(\mathbb{R})=\sigma\left(\mathcal{P_1}\right)$).</li>
+						<li>$\mathcal{P}_2=\left\{]-\infty, a], a \in \mathbb{R}\right\}$ est un $\pi$-système  (et $\mathcal{B}(\mathbb{R})=\sigma\left(\mathcal{P_2}\right)$).</li>
+					</ul> 
+					</p>
+
+					On a le résultat suivant pour les mesures de probabilités sur un $\pi$-système :
+					<div class="exemple"> 
+						<div id="title"> Théorème </div> 
+						Soit $\mu,\nu$ deux mesures de probabilités sur $(F,\mathcal{F})$ et $\mathcal{P}$
+						un $\pi$-système tel que $\mathcal{F} = \sigma\left(\mathcal{P}\right)$  et $\mu,\nu$ coincïdent sur $\mathcal{P}$. Alors $\mu = \nu$.
+					</div>
+					<p> <b>Preuve :</b> Admise (cf Annexe. Fait appel aux $\lambda$-systèmes)
+				</p>
+				</section>
+
+				<section>
+					<h1>Application : Fonction de répartition</h1>
+				La fonction de répartition est un outils très utile qui permet de caractériser les mesures de probabilités. 
+				Nous verrons plus tard qu'elle sert également à caractériser les lois de probabilités (ces dernières étant des mesures de probas).
+				<div class="exemple"> 
+					<div id="title"> Définition [Fonction de répartition]</div> 
+					Soit $\mu$ une mesure de probabilité sur $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$. La fonction :
+					<center>$$ 
+					
+						\begin{aligned}
+						F_{\mu}: \mathbb{R} &\to  \mathbb{R}\\
+						  x & \mapsto  \mu\left(]-\infty, x]\right)
+						  \end{aligned} 
+						  $$
+						</center>
+					est appelée la <b>fonction de répartition de $\mu$.</b>
+				</div>
+					<p>On a alors le résultat suivant :</p>
+					<div class="exemple"> 
+						<div id="title"> Corollaire</div> 
+						Si $\mu$ et $\nu$ sont deux mesures de probabilités sur $(\mathbb{R}, \mathcal{B}(\mathbb{R})$ telles que $F_{\mu} = F_{\nu}$ alors $\mu = \nu$.</b>
+					</div>
+
+
+				<p> <b>Preuve : au tableau.</b>
+			</p>	
+				</section>
+				<section>
+					<h1>Caractérisation de mesures sur un $\pi$-système (2/2)</h1>
+				Une autre catégorie de mesures plus restreinte que les mesures finies coïncident également sur les $\pi$-système : les mesures $\sigma$-finies.
+					<div class="exemple"> 
+						<div id="title"> Définition [Mesure $\sigma$-finie] </div> 
+						Une mesure $\mu$ sur $(F, \mathcal{F})$ est $\sigma$-finie sur $\mathcal{P}$ si il existe $(A_i)$ telle que  :</br> 
+						<ol style="margin-right:-4em;">
+						<li><span style="margin-left:-3em;">$\forall i, A_i \in \mathcal{P}$</span></li>
+					<li><span style="margin-left:-3em;">$\bigcup_i A_i = F$</span></li>
+					<li><span style="margin-left:-3em;">$\forall i, \mu(A_i) < \infty $</span></li>
+					 </ol>
+					</div>
+				On a le résultat suivant pour les mesures $\sigma$-finies sur un $\pi$-système :
+				<div class="exemple"> 
+					<div id="title"> Théorème </div> 
+					Soit $\mu,\nu$ deux mesures $\sigma$-finies sur $(F,\mathcal{F})$ et $\mathcal{P}$
+					un $\pi$-système tel que $\mathcal{F} = \sigma\left(\mathcal{P}\right)$  et $\mu,\nu$ coincïdent sur $\mathcal{P}$. Alors $\mu = \nu$.
+				</div>
+				<p> <b>Preuve : admise.</b> 	 
+				</p>
+				</section>
+				<section>
+					<h1>Application : Mesure de Lebesgue</h1>
+					<div class="exemple"> 
+						<div id="title"> Théorème [Mesure de Lebesgue]</div> 
+						Il existe sur $(\mathbb{R}^d, \mathcal{B}(\mathbb{R}^d))$ une unique mesure $\lambda_d$ telle que $\forall a_1 < b_1, \dots, a_d < b_d$
+						<center>
+							$$\lambda_d \left([a_1,b_1] \times \dots \times [a_d, b_d]\right) = \prod_{i=1}^d (b_i - a_i)$$
+						</center>
+						$\lambda_d$ est appelée <b>mesure de Lebesgue sur $\mathbb{R}^{d}$</b>.
+					</div>
+					<p> <b>Preuve : existence admise. Unicité au tableau.</b> 	</br>
+					<b>Remarques : </b>
+					<ul>
+						<li>Intuitivement, $\lambda_1 =$ "longueur", $\lambda_2 =$ "aire" etc. </li>
+						<li>$\forall A \in \mathcal{B}(\mathbb{R}^d) \forall x \in \mathbb{R}^{d}, \lambda_d(A+x) =  \lambda_d(x)$ (les pavés forment un $\pi$-système) </li>
+						<li>$\lambda_d(\{a\}) = 0$</li>						
+					</ul>
+					</p>
+
+					Nous reverrons cette mesure plus en détails dans le chapitre sur l'intégration.
+				</section>
+
+				<section>
+					<h1>Fonction Mesurables, Boréliennes</h1>
+					Soit $(F,\mathcal{F})$ et $(E,\mathcal{E})$ deux espaces mesurables. 
+					<div class="exemple"> 
+						<div id="title"> Définition [fonctions mesurables et fonctions boréliennes]</div> 
+						Une application $X:F \to E$ est dite <b>$\mathcal{F/\mathcal{E}}$-mesurable</b>, ou mesurable, si : 
+						<center>$$
+							\forall H \in \mathcal{E}, X^{-1}(H) \in \mathcal{F}
+						$$</center>
+						Si on a $(F,\mathcal{F})=(\mathbb{R}^n,\mathcal{B}(\mathbb{R}^n))$ et $(E,\mathcal{E}) = (\mathbb{R}^d,\mathcal{B}(\mathbb{R}^d))$, on dira que $X$ est une <b>fonction borélienne</b>. 
+						En probabilité, $X$ mesurable est une variable aléatoire.
+					</div>
+					
+					<p>Nous donnons ci-après un résultat sur les fonctions mesurables : </p> 
+					
+					<div class="exemple"> 
+						<div id="title"> Propriété </div>
+						Soit $(E^\prime, \mathcal{E}^\prime)$ un espace mesurable. Si $X:F \to E$ et $f: E \to E^\prime$ sont mesurables alors $f\circ X:F \to E^\prime$ est également mesurable.
+					</div>		
+					<p> <b>Preuve : cf. Poly.</b></p>
+
+					
+				</section>
+
+				<section>
+
+					<h1>Propriétés sur les fonction Boréliennes</h1>
+					<div class="exemple"> 
+						<div id="title"> Propriétés </div>
+					Soit $f: \mathbb{R}^d \to \mathbb{R}^{n}$ une fonction continue et $X,Y$ des fonctions boréliennes sur $\mathbb{R}$ et $(X_n)_{n \in \mathbb{N}}$ une suite de fonction mesurables sur $\bar{\mathbb{R}}$.
+					Alors :
+					<ol style="margin-right:-4em;">
+						<li><span style="margin-left:-3em;">$f$ est borélienne.</span></li>
+					<li><span style="margin-left:-3em;"> $X+Y, XY, \max(X,Y), \min(X,Y)$ sont boréliennes.</span></li>
+					<li><span style="margin-left:-3em;"> Si $\lim_{n \to + \infty}(X_n)$ existe alors cette limite est borélienne. </span></li>
+					<li><span style="margin-left:-3em;"> $\sup X_n$ et $\inf X_n$ sont boréliennes. </span></li>
+					 </ol>
+					</div>	
+					<p> <b>Preuve : cf. Poly.</b></p>
+			
+					<div class="exemple"> 
+						<div id="title"> Propriété </div>
+						Soit $\forall x \in F, \bold{Y}(x)=(Y_1(x), \dots, Y_d(x))$ une application de $F$ dans $\mathbb{R}^{d}$ où $Y_1, \dots, Y_d$ sont des fonctions de $F$ dans $\mathbb{R}$. 
+						Les assertions suivantes sont équivalentes :  </br>
+					<ol style="margin-right:-4em;">
+						<li><span style="margin-left:-3em;">$\bold{Y}$ est borélienne sur $\mathbb{R}^{d}$.</span></li>
+					<li><span style="margin-left:-3em;"> Les composantes $Y_1, \dots, Y_d$ sont boréliennes sur $\mathbb{R}$.</span></li>
+					 </ol>
+					</div>	
+
+
+				</section>
+				<section>
+					<h1>Mesure image</h1>
+					Soit $(F,\mathcal{F}, \mu)$ un espace mesuré et $(E,\mathcal{E})$ un espace mesurable. S'il existe une fonction mesurable entre $F$ et $E$, on peut alors transferer
+					$\mu$ vers l'espace d'arrivée $(E, \mathcal{E})$ et ainsi obtenir un espace mesuré. 
+
+					<div class="exemple"> 
+						<div id="title"> Théorème [mesure image]</div> 
+						Soit $X:F \to E$ une application mesurable. L'application :
+						<center>$$ 
+						
+							\begin{aligned}
+							\mu\circ X^{-1}: \mathcal{E} &\to  [0,+\infty]\\
+							  H & \mapsto  \mu\left(X^{-1}(H)\right)
+							  \end{aligned} 
+							  $$
+							</center>
+						est une mesure sur $(E, \mathcal{E})$ appelée <b>mesure image de $\mu$ par $X$.</b>
+					</div>
+					<p> <b>Preuve : vérifier les axiomes. Pour ii) utiliser $X^{-1}(\bigcup_n A_n) = \bigcup_n X^{-1}(A_n)$.</b></p>
+				</section>
+
+				<section>
+					<h1>Application : loi d'une variable aléatoire</h1>
+					Dans un contexte probabiliste, on pose : 
+					<ul>
+						<li>$(F,\mathcal{F}, \mu)=(\Omega, \mathcal{F}, \mathbb{P})~ \qquad \qquad  \qquad  \texttt{(espace probabilisé)}$</li>
+						<li>$(E,\mathcal{E}) = (\mathbb{R}, \mathcal{B}(\mathbb{R})) ~ \qquad \qquad  \qquad \quad\texttt{(espace probabilisable)}$</li>
+						<li>$X : \Omega \to E$  une fonction mesurable $ \quad \texttt{(variable aléatoire réelle)}$ </li>
+					</ul>
+					<p>Alors, d'après le théorème précédent,  on a plus précisement : </p> 
+					<ul>
+						<li>$\mathbb{P} \circ X^{-1}:H\to\mathbb{P}(X^{-1}(H))$ est une mesure image.$\texttt{(Loi de X)}$ </li>
+
+						<li>$\mathbb{P}_{X} := \mathbb{P} \circ X^{-1}$ est même une mesure de probabilité sur $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$ </li>
+						<li>Elle est par conséquent entièrement caractérisée par sa fonction de répartition : </li>
+				
+						<center>
+							$$\begin{aligned}
+						    \cancel{F_{\mathbb{P}_X}} = F_X(x) &= \mathbb{P}_{X}(]-\infty, x])\\
+												   &:=\mathbb{P}(\{\omega \in \Omega \mid X(x) \in ]-\infty, x]\}) \\
+												   &:=\mathbb{P}(X \in ]-\infty, x]) \\
+												   &:= \mathbb{P}(X \leq x)
+							\end{aligned}
+							$$
+		
+		
+							</center>
+
+					</ul>
+					Ainsi deux variable aléatoires réelles (v.a.r.) qui ont même fonction de répartition suivent la même loi. 
+				</section>
+
+				<!-- Partie 3 : Intégration -->
+				<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+					<h2 id='coverh2'>III - Intégration</h2>
+				</section>
+
+					<section>
+						<h1>Motivations en probabilités</h1>
+					On cherche à généraliser la notion d'espérance pour n'importe qu'elle variable aléatoire réelle  avec $(\Omega,\mathcal{F},\mathbb{P})$ un espace probabilisable et $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$ un espace probabilisé: </br>
+					<ul>
+						<li>$\mathbb{E}(X) = \sum_{\omega \in \Omega} X(\omega)\mathbb{P}(\{\omega\})$ pour les variables discrètes.</li>
+						<li>
+
+							On souhaite donc avoir une formule générale du type : 
+							<center>$$
+							\mathbb{E}(X)= \int_{\omega \in \Omega}X(\omega)\mathbb{P}(d\omega)
+							$$
+							
+						</center>
+						pour une v.a.r. $X:\Omega \to \mathbb{R}$.
+						</li>
+						<li>L'intégrale de Riemann s'avère en fait insuffisante (limite uniforme de suite de fonctions en escalier)</li>
+						<li>On souhaite définir une intégrale pour toute fonction mesurable (c'est l'<b>intégrale de Lebesgue</b>)</li>
+						<li>L'intégrale de Lebesgue par ailleurs coïncide avec l'intégrale de Riemann</li>
+					</ul>
+					<p>Pour ce faire, nous allons nous replonger dans la théorie de la mesure pour définir l'intégrale dans ce contexte. </p>
+					
+					 
+				
+						
+			</section>
+			
+			<section>
+				<h1>Intégrale d'une fonction étagée (1/2)</h1>
+			Afin de définir l'intégrale d'une fonction quelconque, on s'intéresse d'abord à l'intégrale de fonctions mesurables très simple. Dans la suite, on adoptera la convention "$0\times f(x) = 0$"
+			pour n'importe quelle fonction même si $f(x) = \pm \infty$.
+
+			<div class="exemple" style="margin-top:0.6em;"> 
+				<div id="title"> Définition [fonction mesurable étagée]</div> 
+				Une fonction $\mathcal{F}/\mathcal{B}(\mathbb{R})$-mesurable $f:F \to \mathbb{R}$  est dite <b>étagée</b> si elle prend un nombre fini de valeurs. 
+				$f$ s'écrit alors : 
+				<center>
+					$$
+					\forall x \in F, f(x)= \sum_{i=1}^{n} \alpha_i \bold{1}_{A_i}(x)
+					$$
+				</center>
+				où les $(\alpha_i)_{i=1}^{n}$ sont les valeurs distinctes prises par la fonction $f$ et $(A_i)_{i=1}^{n} \in F^{n}$ forment une partition de $F$.
+			</div>
+			<p><b>Remarque:</b></br>
+				$\rightarrow$ On a $ \forall i \in \llbracket 1, n\rrbracket, f^{-1}(\{\alpha_i\}) = \{x \in F \mid f(x) = \alpha_i\} = A_i$
+			</p>
+			</section>
+
+			<section>
+				<h1>Intégrale d'une fonction étagée (2/2)</h1>
+				Pour généraliser l'espérance, on veut en particulier 
+			<center>$$\mathbb{E}(\bold{1}_{A}) = \int_{\omega \in \Omega} \bold{1}_{A}\mathbb{P}(d\omega) = \mathbb{P}(A).$$</center> 
+				Plus généralement en théorie de la mesure, on veut donc 
+				<center>$$\int_{x\in F}\bold{1}_{A}(x)\mu(dx) := \int \bold{1}_{A} d\mu =  \mu(A) \qquad \qquad (1)$$</center>
+
+			On définit alors l'intégrale d'une fonction étagée positive $f$ comme suit:
+			<div class="exemple"> 
+				<div id="title"> Définition [$\mu$-intégrabilité d'une fonction étagée positive]
+				</div> 
+				La $\mu$-intégrale d'une fonction étagée positive $f$ est donné par: 
+				<center>
+				$$
+				\int f d\mu = \sum_{k=1}^{n}\alpha_{k}\mu(A_k)
+				$$
+				</center>	  
+			</div>
+			<p>Exemple : </br> 
+			$\rightarrow$ En posant $\alpha_1 = 1$ et $A_1 = A$ on a bien l'égalité $(1)$ recherchée. </br>
+			$\rightarrow$ Soit $\lambda$ la mesure de Lebesgue sur $\mathbb{R}$. Alors $\int \bold{1}_{\mathbb{Q}}d\lambda = 0$ (non Riemann intégrable).
+
+		    </p>
+			</section>
+			<section>
+				<h1>Propriétés</h1>
+			<div class="exemple"> 
+				<div id="title"> Propriété
+				</div> 
+				Soient $\alpha_1,\dots,\alpha_n \geq 0$, $A_1, \dots, A_n \in \mathcal{F}$ (pas forcément distincts et ne formant par forcément une partition). Alors : 
+				<center>
+					$$
+					\int \sum_{k=1}^{n} \alpha_{k} \bold{1}_{A_k} d\mu = \sum_{k=1}^{n}\alpha_{k}\mu(A_k)
+					$$
+					</center>
+				En particulier pour $f,g$ deux fonctions étagées positives et $\alpha, \beta \geq 0$ : 
+				<center>
+					$$
+					\int (\alpha f + \beta g) d\mu = \alpha\int f d\mu + \beta\int g d\mu  
+					$$
+					</center>	
+				  
+			</div>
+			<p> <b>Preuve : </b> Esquisse au tableau. 
+				</p>
+
+				<div class="exemple"> 
+					<div id="title"> Propriété
+					</div> 
+					Soit $f$ une fonction mesurable positive. Alors il existe $(f_n)$ une suite de fonction mesurable étagées telle que $0 \leq f_n \uparrow f$ où 
+					<center>
+						$$
+						f_n \uparrow f \Leftrightarrow
+						\begin{cases}
+						\forall n, f_n \leq f_{n+1}, \\
+						\forall x \in F, f(x) = \lim_{n\to \infty}f_n(x)
+						\end{cases}
+						$$
+					</center>
+					  
+				</div>
+				<p style="margin-top:0.2em;"> <b>Preuve : </b> Exercice. 
+				</p>
+			
+			</section>
+		
+			<section>
+				<h1>Intégrale d'une Fonction Mesurable Positive</h1>
+				<div class="exemple"> 
+					<div id="title"> Définition [intégrale d'une fonction mesurable positive]
+					</div> 
+					Soit $f$ une fonction mesurable positive. On définit l'intégrale de $f$ comme suit : 
+					<center>
+						$$
+						\int f d\mu = \sup \left\{ \int g d\mu : 0 \leq g \leq f \mid  g \text{ étagée et mesurable}\right\}
+						$$
+					</center>
+				</div>
+				<p><b>Remarques : </b></br>
+				$\rightarrow$ Il n'est pas impossible que l'intégrale soit égale à $+\infty$.</br>
+				$\rightarrow$ Si $f$ est étagée positive, alors l'intégrale coïncide avec la définition précédente.  
+				
+				</p>
+			Nous allons maintenant énoncer un lemme qui nous permettra de démontrer plusieurs résultats par la suite :
+			<div class="exemple"> 
+				<div id="title"> Lemme [Convergence Monotone faible]
+				</div> 
+				Soit $(f_n)$ et $f$ des fonctions mesurables positives tel que $f_n \uparrow f$. Alors :
+				<center>
+					$$
+					\lim_{n \to +\infty}\int f_n d\mu = \int f d\mu
+					$$
+				</center>
+
+
+			</div>		
+			<p><b>Preuve : Au tableau </b>
+			</p> 
+
+			</section>
+			
+			<section>
+				<h1>Fonction mesurables et premières propriétés</h1>
+
+				<div class="exemple"> 
+					<div id="title"> Définition [$\mu$-intégrabilité d'une fonction mesurable]
+					</div> 
+					Soif $f:\Omega \to [-\infty, +\infty]$ mesurable. On définit l'intégrale de $f$ comme suit  avec $\\f^{+}:=\max(f,0)$ et $f^{-}:=\max(-f,0)$: 
+					<center>
+						$$
+						\int f d\mu = \int f^{+} d\mu - \int f^{-} d\mu
+						$$
+					</center>
+					$\rightarrow$ L'intégrale de $f$ est <b>bien définie</b> si $\int f^{+} d\mu  < +\infty$ <b>ou</b> $\int f^{-} d\mu < +\infty $.</br>
+					 $\rightarrow f$ est <b>$\mu$-intégrable</b> si $\int f^{+} d\mu  < +\infty$ <b>et</b> $\int f^{-} d\mu < +\infty $ 
+					 <center>(on note alors $\mathcal{L}^1(\mu)$ l'ensemble des fonctions $\mu$-intégrables)</center>
+				</div>
+			
+				<p>On a les premières propriétés suivantes :</p>
+
+
+				<div class="exemple"> 
+					<div id="title"> Propriétés 
+					</div> 
+					Soif $f,g$ deux fonctions mesurables bien définies. Alors :  
+					<ol>
+						<li><span style="margin-left:-3em;">$f \leq g \implies \int f d\mu \leq \int g d\mu$</span></li>
+						<li><span style="margin-left:-3em;"> $\left|\int f d\mu\right| \leq \int |f|d\mu$</span></li>
+					</ol>
+				</div>
+				<p><b>Preuve : Au tableau </b>
+				</p> 
+			</section>
+			
+			<section>
+				<h1>Propriété de linéarité et corollaires</h1>
+				<div class="exemple"> 
+					<div id="title"> Propriété [linéarité] 
+					</div> 
+					Soit $f,g$ deux fonctions mesurables tels que $f,g \geq 0$ et $\alpha,\beta \geq 0$ ou $f,g \in \mathcal{L}^{1}(\mu)$. Alors :  
+					<center>
+						$$
+						\int (\alpha f  + \beta g) d\mu = \alpha\int f d\mu + \beta\int g d\mu
+						$$
+					</center>
+				</div>
+				<p><b>Preuve : Au tableau </b>
+				</p> 
+
+			Deux corollaires sont alors issus du résultat précédent :
+	
+			<div class="exemple"> 
+				<div id="title"> Corollaire 
+				</div> 
+				On a les résultats suivants : </br>
+				<ol style="margin-right:-4em;">
+					<li><span style="margin-left:-3em;">$f \in \mathcal{L}^1(\mu) \Leftrightarrow \int |f| d\mu < +\infty$</span></li>
+					<li><span style="margin-left:-3em;"> Soit $(f_n)_n$ des fonctions mesurables positives. Alors :
+
+
+
+					</span></li>
+				</ol>
+				<center>
+					$$np
+					\sum_{n=0}^{+\infty} \int f_n d\mu =  \int \left(\sum_{n=0}^{+\infty} f_n \right) d\mu
+					$$
+				</center>
+			</div>
+
+			</section>
+
+			<section>
+				<h1>Ensembles $\mu$-négligeables, $\mu$-presque partout</h1>
+		    <b>Motivations pour MDI103  : </b> 
+			
+			$(\mathcal{L}^{1}(\mu), ||f|| := \int |f|d\mu)$ n'est pas un espace vectoriel normé (parfois, $||f||=0 \cancel{\implies} f=0$). 
+			Cependant si on choisit l'égalité pour tout ensemble de mesure non nul, on obtient bien un espace vectoriel normé.
+
+			<div class="exemple"> 
+				<div id="title"> Définition [ensemble $\mu$-négligeable,  propriété $\mu$-presque partout]</div>
+
+				Soit $(F, \mathcal{F}, \mu)$ un espace mesuré alors : </br>
+				$\quad \rightarrow$ Un ensemble est dit <b>$\mu$-négligeable</b> si $\mu(A)=0$.</br>
+				$\quad \rightarrow$ Une propriété $\mathcal{P}(x)$ est dite vraie <b>$\mu$-presque partout ($\mu$-pp)</b> si $\forall x \in F, \mathcal{P}(x)$
+				$\quad\quad$ est vraie hors d'un ensemble $\mu$-négligeable.
+
+			</div>
+			<p><b>Exemples : </b>
+				<ul style="margin-top:-1.0em;"><li>$f=g \quad \mu$-pp $\Leftrightarrow \mu(\left\{x\in F \mid f(x) \neq g(x)\right\}) = 0$</li>
+				<li>$f_n \to f \quad \mu$-pp $\Leftrightarrow \mu(\left\{x\in F \mid f_n(x) \not\to f(x)\right\}) = 0$</li>
+				</ul>
+			</p> 
+			
+			<div class="exemple"> 
+				<div id="title">Lemme</div>
+
+				Si $N$ est $\mu$-négligeable, alors $\int f \bold{1}_N d\mu = 0$
+
+			</div>
+			<p><b>Preuve : au tableau </b>
+			</p> 
+			</section>
+
+			<section>
+				<h1>Propriétés en vrac</h1>
+				Commençons par une propriété sur les fonctions positives mesurables.
+				<div class="exemple"> 
+					<div id="title">Propriété</div>
+	
+					Si $f \geq 0$ et $\int fd\mu = 0$ alors $f=0 \quad\mu$-pp
+	
+				</div>	
+				<p><b>Preuve : au tableau </b>
+				</p> 
+				Les propriétés suivants revisitent des propriétés vues auparavant :
+				<div class="exemple"> 
+					<div id="title">Propriétés</div>
+	
+					On a les résultats suivant pour des fonctions mesurables : 
+
+					<ol style="margin-right:-4em;">
+					<li><span style="margin-left:-3em;">$f \leq g \quad\mu$-pp $\implies \int f d\mu \leq \int g d\mu$</span></li>
+					<li><span style="margin-left:-3em;"> $f = g \quad\mu$-pp $\implies \int f d\mu = \int g d\mu$</span></li>
+				</ol>
+
+				</div>				 
+				<p><b>Preuve : au tableau </b>
+				</p>			
+			</section>
+<section>
+	<h1>Convergence Monotone et Lemme de Fatou</h1>
+	Les théorèmes suivants sont des résultats fondamentaux en théorie de l'intégration : 
+	<div class="exemple"> 
+		<div id="title">Théorème [de Convergence Monotone ou Beppo-Levi]</div>
+
+		$0\leq f_n \uparrow f \quad \mu$-pp $\implies \lim_{n\to \infty}\int f_n d\mu = \int f d\mu$
+
+	</div>
+	<p><b>Preuve : Utiliser le Lemme de convergence monotone faible + décomposer $1 = 1_N + 1_{\bar{N}}$ </b>
+	</p>	
+	On définit :</br>
+	<ul>
+		<li> $\lim \inf u_n = \lim_{n\to \infty} \left(\inf_{k\geq n} u_k\right)$</li>
+		<li>$\lim \sup u_n = \lim_{n\to \infty} \left(\sup_{k\geq n} u_k\right)$</li>
+	</ul>
+	<p><b>Exemple:</b>
+	$u_n = (\sin n)$ alors $\lim \inf_{n \to \infty} (u_n) = -1$ et $\lim \sup_{n \to \infty} (u_n) = 1$
+	</p>
+	<div class="exemple"> 
+		<div id="title">Théorème [Lemme de Fatou]</div>
+		Soif $(f_n) \geq 0$. Alors: 
+
+		<center>
+			$ \int \lim \inf_{n\to \infty} f_n d\mu  \leq \lim \inf_{n\to \infty} \int f_n d\mu$ 
+		</center>
+
+		
+
+	</div>
+	<p><b>Preuve : Au tableau.</b>
+	</p>
+
+</section>
+<section>
+<h1>Théorème de Convergence Dominée</h1>
+
+<div class="exemple"> 
+	<div id="title">Théorème [de Convergence Dominée]</div>
+
+	Soit $(f_n),f,g$  des fonctions mesurables telles que :</br>
+	<ul>
+		<li> $f_n \to f \quad \mu-$pp</li>
+		<li>$|f_n| \leq g, \forall n$ et $\int g d\mu \leq +\infty$</li>
+	</ul></br>
+	Alors :
+ <center> $$\int f_n d\mu \to_{n\to \infty} \int f d\mu$$</center>
+
+</div>
+<p><b>Preuve : Au Tableau. </b>
+</p>
+
+</section>
+
+<section>
+	<h1>Lien entre intégrale de Riemann et intégrale de Lebesgue (1/2)</h1>
+	Rappelons comment est définie l'intégrale de Riemann. On considère :
+<ul>
+	<li>$\Pi = \{x_0,\dots,x_n\}$ une subdivision de $[a,b]$ (i.e. $a=x_0< x_1 \dots < x_n = b$)</li>
+	<li>$f$ bornée sur $[a,b]$ dans à valeurs dans $\mathbb{R}$</li>
+	<li>Les <b>sommes de Darboux</b>  supérieures $S_\Pi$ et inférieures $s_\Pi$ :
+	<center>
+		$S_\pi = \sum_{i=1}^{n} (x_i - x_{i-1}) \underset{x\in [x_{i-1}, x_i]}{\sup} f(x) \\
+		s_\pi = \sum_{i=1}^{n} (x_i - x_{i-1}) \underset{x\in [x_{i-1}, x_i]}{\inf} f(x)		
+		$
+	</center>
+	</li>
+	On dit que $f$ est <b>Riemann intégrable</b> si pour tout $\epsilon > 0$ on a existence d'une subdivision $\Pi$ tel que $S_\Pi - s_\pi < \epsilon$. Dans ce cas, $\inf_{\Pi}S_\Pi = \sup_{\Pi}s_\Pi$ et cette valeur
+	est <b>l'intégrale de Riemann</b> notée $\int_{a}^{b}f(x)dx.$ Il peut être montré que toute fonction continue, cpm, en escalier ou monotone est Riemann intégrable. 
+</ul>	
+
+<p><b>L'intégrale de Lebesgue</b> existe quant à elle pour toute fonction mesurable et est définie par $\int f(x) \lambda(dx)$ ou plus simplement noté $\int f(x) dx$ quand il n'y a pas d'ambiguité. 
+
+
+</p>
+
+</section>
+
+<section>
+	<h1>Lien entre intégrale de Riemann et intégrale de Lebesgue (2/2)</h1>
+Henri Lebesgue a démontré le résultat suivant : 
+
+<div class="exemple"> 
+	<div id="title">Théorème</div>
+
+	Si $f$ est Riemann intégrable alors il existe $g \in \mathcal{L}^{1}(\lambda)$ muni de la tribu de Borel et telle que $f=g \quad \lambda$-pp.
+
+</div>
+
+<p>On voit que la réciproque est fausse pour beaucoup de fonctions mesurables. Par exemple si on prend $f=\bold{1}_{\mathbb{Q} \cap [0,1]}$ par densité des rationnels dans $\mathbb{R}$
+ pour tout sous intervalle $[x_i, x_{i-1}]$, il existe un rationnel et un irrationnel. Par conséquent, $S_{\Pi} = 1$ et $s_{\Pi} = 0$. Hors on sait que l'intégrale de Lebesgue vaut $0$ (union dénombrable).
+</p>
+<p>Cela montre entre autre l'intérêt de considérer l'intégration par rapport à la mesure de Lebesgue.</p>
+</section>
+
+<!-- Variables Aléatoires -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>IV - Variables Aléatoires et Espérance</h2>
+
+</section>
+
+<section>
+	<h1>Rappels : Variables aléatoires</h1>
+On considère $(\Omega, \mathcal{F}, \mathbb{P})$ un espace de probabilité et $(E, \mathcal{E})$ un espace probabilisable. On rappelle que : 
+
+<ul>
+	<li>$X$ est une variable aléatoire (v.a.) $\Leftrightarrow$ $X : \Omega \to E$ est mesurable. </li>
+	<li>La loi de la v.a. $X$, notée $\mathbb{P}_{X}$, est la mesure image de $\mathbb{P}$ i.e. $\mathbb{P}_{X}=\mathbb{P} \circ X^{-1}$:
+		<center>$$
+		\begin{aligned}
+		\mathbb{P}_{X}: \mathcal{E} &\to  [0,1]\\
+		  H & \mapsto \mathbb{P}(X\in H) = \mathbb{P}(X^{-1}(H))
+		  \end{aligned} 
+		$$
+	</center>
+	</li>
+
+
+	<!-- <li> Si $\mathbb{P}_{X}$ est une mesure à densité par rapport à une mesure $\mu$, il existe alors $f_X \geq 0$ telle que :
+
+		<center>
+			$\forall H \in \mathcal{E},~ \mathbb{P}_{X}(H) = \mathbb{P}(X\in H) = \int_{x \in H} f_X(x)d\mu(x) $
+		</center>
+	</li>
+	<li>On a démontré en TD que $f$ est mesurable positive et que $\int f_X d\mu = 1$</li>
+	<li>Le lien entre fonction de répartition </li> -->
+</ul>
+
+Dans le cas où $(E, \mathcal{E})=(\mathbb{R}^d, \mathcal{B}(\mathbb{R}^d))$ :
+<ul>
+	<li>$X$ est une variable aléatoire réelle (v.a.r) $\Leftrightarrow$ $X : \Omega \to \mathbb{R}^{d}$ est mesurable. </li>
+	<li>On a la fonction de répartition de $X$ pour $x=(x_1,\dots,x_d) \in \mathbb{R}^{d}$ :
+		<center>
+		$$F_X(x) = \mathbb{P}(X \leq x) = \mathbb{P}(X \in ]-\infty, x_1] \times \dots \times ]-\infty, x_d])
+		$$
+	</center></li>
+	<li> $F_X = F_Y \Leftrightarrow \mathbb{P}_{X} = \mathbb{P}_{Y}$ (même loi $\Leftrightarrow$ même fonction de répartition)</li>
+</ul> 
+</br> On rappelle (cf. poly) :
+<ul>
+	<li>$F_X$ est croissante, continue à droite et $\underset{x \to -\infty}{\lim} F(x) = 0, \underset{x \to +\infty}{\lim} F(x) = 1$</li>
+	<li>$F_X(x^-) = \mathbb{P}(X < x)$</li>
+	<li>$F_X(x^-) + \mathbb{P}(X=x) = F_X(x)$</li>
+</ul>
+</section>
+
+<section>
+<h1>Variables aléatoires à densité</h1>
+On rappelle qu'on a vu en TD : 
+
+</ul>
+D'après ce que l'on a vu en TD. On peut donner la définition suivante : 
+<div class="exemple"> 
+	<div id="title">Définition [densité de probabilité d'une variable aléatoire]</div>
+		Si $\mathbb{P}_{X}$ est une mesure à densité par rapport à une mesure $\mu$, il existe alors $f_X$ mesurable positive vérifiant $\int f_X d\mu = 1$ et :
+
+<center>				$\forall H \in \mathcal{E},~ \mathbb{P}_{X}(H) = \mathbb{P}(X\in H) = \int_{x \in H} f_X(x)d\mu(x) $</center>
+On dit que $f_X$ est <b>la densité de probabilité</b> de $X$.
+
+</div>
+
+On a par ailleurs un lien entre la densité de probabilité de $f_X$ et la fonction de répartition $F_X$ :  
+
+<div class="exemple"> 
+	<div id="title">Propriété </div>
+	Si $X$ est une v.a.r. dont $F_X$ est continue et $C^1$ par morceaux alors : 
+	
+
+<center>
+$f_X(x) = F_X^\prime(x)$
+</center>
+</div>
+
+</section>
+
+<section>
+	<h1>Espérance</h1>
+Dans le cas discret $\mathbb{E}(X) = \sum_{n}x_n \mathbb{P}(X=x_n)$ avec $X\in \{x_1,\dots ,\}$. Dans le cas des v.a.r. ? 
+
+<div class="exemple"> 
+	<div id="title">Définition</div>
+	Si $X$ est une v.a.r. telle que $X \geq 0$ ou $\int_{\omega \in \Omega} |X(\omega)|d\mathbb{P}(\omega) < \infty$, on définit <b>l'espérance de $X$</b>, notée $\mathbb{E}(X)$, par : 
+</p>
+
+<center>
+$\mathbb{E}(X) = \int_{\omega \in \Omega} X(\omega) d\mathbb{P}(\omega)$
+</center>
+</div>
+
+
+<p><b>Remarque :</b> $\mathbb{E}(\bold{1}_A) = \int_{\Omega} \bold{1}_A(\omega)d\mathbb{P}(\omega) = \mathbb{P}(A)$  soit pour $A = \{X\in H\} \in \mathcal{B}(\mathbb{R}^d)$ :
+
+<center>
+$\mathbb{E}(\bold{1}_{X\in H}) = \mathbb{P}(X \in H)$
+</center>
+</p>
+
+En pratique, cette définition n'est pas applicable car nous n'avons pas une formule de $X$ directement ni une expression de $\mathbb{E}(X)$ en fonction de $\mathbb{P}$. 
+<p>Nous pouvons cependant avoir une expression de $\mathbb{E}(X)$ en fonction de $\mathbb{P}_{X}$, voire de $\mathbb{E}(g(X))$ en fonction de $\mathbb{P}_X$ (et non de $\mathbb{P}_{g(X)}$) </p>
+</section>
+
+<section><h1>Théorème de Transfert</h1>
+Les deux paragraphes précédents sont des résultats représentées par le théorème de transfert : 
+
+<div class="exemple"> 
+	<div id="title">Théorème [de Transfert]</div>
+	Si $X$ est une v.a.r. telle que $X:\Omega \to E$  et  $g: E \to \mathbb{R}$ meusrable telle que $\mathbb{E}(g(X))$ soit bien définie. Alors : 
+
+<center>
+$\mathbb{E}(g(X)) = \int g d\mathbb{P}_X$
+</center>
+</div>
+<p><b>Preuve : </b> Esquisse au tableau. </p>
+<p><b>Application (Espérance d'une variable à densité) :</b></br>
+	$\rightarrow$ Dans le cas des variables à densité, Soit $X$ de densité $f_X$ p/r à Lebesgue. D'après Exo 14 $\mathbb{P}(X\in H) = \int_{H}f_X(x)dx$. D'après Exo 16, $\int gd\mathbb{P}_X = \int g(x)f_X(x)dx$.
+	Finalement par le théorème de Transfert on a alors :</p> 
+	<center>
+		$\mathbb{E}(g(X)) = \int_{x \in \Omega} g(x) f_X(x) dx$
+		</center>
+
+	$\rightarrow$ en particulier dans le cas où $g = x$ on a : 
+	<center>
+		$\mathbb{E}(g(X)) = \int_{x \in \Omega} xf_X(x) dx = \text{"barycentre de }f_X \text{"}$
+		</center>
+</section>
+
+<section><h1>Inégalités importantes, variance, moments d'ordre supérieur</h1>
+Nous listons ici des inégalités classiques. Les démonstrations sont disponibles dans le polycopié : 
+
+<div class="exemple"> 
+	<div id="title">Théorème [Inégalités de Markov, de Hölder et de Jensen]</div>
+On a les inégalités suivantes pour des v.a.r. $X, Y$ : </br>
+	<ol>
+		<li><span style="margin-left:-3em;">$\forall \epsilon >0, p \geq 1 :
+			 \mathbb{P}(|X| > \epsilon) \leq \frac{\mathbb{E}(|X|^p)}{\epsilon^p} \quad\quad\quad\quad\quad\quad\quad~~\texttt{(Markov)}$
+		</span></li>
+
+		<li><span style="margin-left:-3em;"> $p,q \geq 0, \frac{1}{p} + \frac{1}{q} = 1:
+			 \mathbb{E}(|XY|) \leq \mathbb{E}(|X|^p)^{\frac{1}{p}}\mathbb{E}(|X|^q)^{\frac{1}{q}} \quad \texttt{(Hölder)}$  </span></li>
+		<li><span style="margin-left:-3em;"> $\varphi:\mathbb{R} \to \mathbb{R}$ convexe et $\mathbb{E}(|X|), \mathbb{E}(|\varphi(X)|) < \infty :$ </br>
+			$ \qquad\qquad\qquad\varphi(\mathbb{E}(X) )\leq \mathbb{E}(\varphi(X)) \quad \qquad \qquad \qquad\quad~ \texttt{(Jensen)}$  </span></li>
+	</ol>
+</div>
+
+Les définitions, propriétés et résultats sur les variance covariance et moments d'ordre $p$ sont exactement les mêmes que dans le cas discret (c.f. Poly)
+</section>
+
+<!-- Indépendance -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>V - Théorème de Fubini et Indépendance</h2>
+</section>
+
+<section>
+	<h1>Tribu Produit</h1>
+	On considère $(F, \mathcal{F}, \mu)$ un espace mesurée,  et $(E_1, \mathcal{E}_1) , (E_2, \mathcal{E}_2)$ des espace mesurables, $f_1:F \to E_1$ et $f_2:F \to E_2$ des fonctions mesurables. Egalement : 
+	<center>
+$$			\begin{aligned}
+			f: F &\to  E_1 \times E_2\\
+			  f & \mapsto  
+			 (f_1(x_1), f_2(x_2))
+			  \end{aligned} 
+			  $$
+
+	</center>
+En proba, une variable aléatoire sur $E_1 \times E_2$ est aussi appelé <b>vecteur aléatoire</b>. Définissons la tribu choisie sur $E_1 \times E_2$.
+
+<div class="exemple"> 
+	<div id="title">Définition [tribu produit]</div>
+	La <b>tribu produit</b> sur $E_1 \times E_2$ est définie comme suit :
+<center>
+$$\mathcal{E}_1 \otimes \mathcal{E}_2 = \sigma(\{H_1 \times H_2 : H_1 \in \mathcal{E}_1, H_2 \in \mathcal{E}_2\})$$
+</center>
+C'est la plus petite tribu qui contient les pavés du type $H_1 \times H_2$.
+
+</div>
+
+<p>On a la propriété suivante sur les boréliens : </p>
+
+<div class="exemple"> 
+	<div id="title">Propriété</div>
+
+	Avec la définition précédente, on a : 
+	$\bigotimes_{d=1}^{D}\mathcal{B}(\mathbb{R}) = \mathcal{B}(\mathbb{R}^d)$
+
+
+</div>
+
+
+</section>
+
+<section>
+	<h1>Mesure produit</h1>
+	Un des choix majeurs d'une telle tribu produit est le résultat suivant :
+	<div class="exemple"> 
+		<div id="title">Théorème [mesure produit]</div>
+		Il existe une unique  <b>mesure produit </b> sur $\mathcal{E}_1 \otimes \mathcal{E}_2$  et notée $\mu_1 \otimes \mu_2$ telle que :
+	<center>
+	$$\mu_1 \otimes \mu_2 (H_1 \times H_2) = \mu_1(H_1) \mu_2 (H_2)$$
+	</center>
+	</div>
+	<p><b>Exemple : </b> 
+		Considérons $E_1=E_2=\mathbb{R}$ et $\mu_1=\mu_2=\lambda$ la mesure de Lebesgue </br>
+	$\lambda \otimes \lambda$ est l'unique mesure sur $\mathcal{B}(\mathbb{R}) \otimes \mathcal{B}(\mathbb{R})$ telle que 
+	$\lambda \otimes \lambda (H_1 \times H_2) = \lambda(H_1) \lambda(H_2)$ en particulier : 
+	<center>
+	$$\begin{aligned}
+	\lambda \otimes \lambda ([a_1,b_1] \times [a_2,b_2])  &=(b_1 - a_1)(b_2-a_2)\\
+						   &:=\lambda_2([a_1, b_1]\times [a_2, b_2]) 
+	\end{aligned}
+	$$
+
+
+</center>
+Donc $\lambda \otimes \lambda $ coïncide sur $\mathcal{B}(\mathbb{R}^2)$ avec $\lambda_2$.
+	</p>
+	
+	
+	
+	
+
+</section>
+
+<section>
+	<h1>Théorème de Fubini</h1>
+	Nous énonçons deux théorèmes fondamentaux en intégrations :
+	<div class="exemple"> 
+		<div id="title">Théorème [Fubini-Tonelli et Fubini]</div>
+	<ol>
+		<li><span style="margin-left:-3em;">
+			Soit $f: E_1 \times E_2 \to \mathbb{R}_+$ une fonction mesurable. alors : 
+
+			<center>
+				$$\begin{aligned}
+				\int_{E_1 \times E_2}f d(\mu_1 \otimes \mu_2) &= \int_{E_1} \left( \int_{E_2}f(x,y) d\mu_2(y) \right)d\mu_1(x) \\
+									   &=\int_{E_2} \left( \int_{E_1}f(x,y) d\mu_1(x) \right)d\mu_2(y) ~ \texttt{(Fubini-Tonelli)}
+				\end{aligned}
+				$$
+			
+			
+			</center>
+
+
+		</span></li>
+		<li><span style="margin-left:-3em;"> Soit $f$ telle que $\int |f| d\mu_1 \otimes d\mu_2 < \infty$ alors : 
+			<center>
+		    i) reste vraie  $ \qquad \qquad \qquad \qquad \qquad \quad \texttt{(Fubini)}$
+			
+			
+			</center>
+		
+		</span></li>
+	</ol>
+	</div>
+	<p><b>Preuve : </b> esquisse de i) au tableau. </p>
+</section>
+
+	<section>
+		<h1>Exemples d'application directe du théorème de Fubini</h1>
+		<p><b>Exemples : </b></br>
+			$\rightarrow$ $E_1=E_2=\mathbb{R}, \mu_1 = \mu_2 = \lambda, \lambda \otimes \lambda = \lambda_2$ alors : 
+			</center>$$ \int_{\mathbb{R}^2} f d\lambda_2 = \int_{\mathbb{R}} \left(\int_{\mathbb{R}} f(x,y)dx\right)dy = \int_{\mathbb{R}} \left(\int_{\mathbb{R}} f(x,y)dy\right)dx$$</center>
+
+			$\rightarrow$ $E_1=E_2=\mathbb{R}, \mu_1 = \mu_2 = \sum_{i=0}^{+\infty}\delta_i$ (mesure de comptage sur $\mathbb{N}$) alors :</br>
+			$\quad \triangleright$ $\left(\sum_{i=0}^{+\infty}\delta_i\right)\otimes\left(\sum_{i=0}^{+\infty}\delta_i\right) = \sum_{i,j\in \mathbb{N}^2}\delta_{(i,j)}$ (à la maison) </br>
+			Par Fubini pour $f \geq 0$ on obtient que :  
+		<center>$$ \int_{\mathbb{R}^2} f d\left(\sum_{i,j\in \mathbb{N}^2}\delta_{(i,j)}\right) = \int_{\mathbb{R}} \left(\int_{\mathbb{R}} f(x,y)d\left(\sum_{i=0}^{+\infty}\delta_i\right)(x)\right)d\left(\sum_{i=0}^{+\infty}\delta_i\right)(y)
+			 = \sum_{j\in\mathbb{N}}\sum_{i\in\mathbb{N}} f(i,j)$$</center>
+		</br>
+		$\rightarrow$ $E_1=E_2=\mathbb{R}, \mu_1  = \lambda, \mu_2 = \sum_{i} \delta_i$. Le théorème de Fubini devient alors le théorème de permutation somme-intégrale (à la maison)
+			</p>
+	</section>
+
+<section>
+	<h1>Généralisation des résultats précédents</h1>
+	On peut généraliser sur $(E_1, \mathcal{E}_1) \times \dots \times (E_d, \mathcal{E}_d)$ trivialement : 
+	<p><b>Tribu produit :</b> $\bigotimes_{i=1}^{d}\mathcal{E}_i = \sigma\left(\{H_1 \times \dots \times H_d : H_1 \in \mathcal{E}_1, \dots, H_d \in \mathcal{E}_d\}\right)$</p>
+	<p><b>Mesure produit :</b> $\bigotimes_{i=1}^d\mu_i$ unique mesure telle que: 
+	<center>
+		$$
+		\forall H_1 \in \mathcal{E}_1, \dots, H_d \in \mathcal{E}_d, ~\bigotimes_{i=1}^d\mu_i(H_1 \times \dots H_d) = \prod_{i=1}^{d}\mu_i(H_i)
+		$$
+	</center>
+	</p>
+
+	<p><b>Théorème de Fubini :</b> $f: E_1 \times \dots \times E_d \to \mathbb{R}$ positive ou intégrale p/r à $\bigotimes_{i=1}^d\mu_i$ :
+		<center>
+			
+			$$\begin{aligned}
+			\int_{E_1 \times \dots E_d}f d\bigotimes_{i=1}^d\mu_i &= \int_{E_d} \dots\left( \int_{E_1}f(x_1, \dots, x_d) d\mu_1(x_1) \right) \dots d\mu_d(x_d) \\
+								   &=\int_{E_{\sigma(d)}} \dots\left( \int_{E_{\sigma(1)}}f(x_1, \dots, x_d) d\mu_{\sigma(1)}(x_{\sigma(1)}) \right) \dots d\mu_{\sigma(d)}(x_{\sigma(d)})
+			\end{aligned}
+			$$			
+		</center>
+
+		$\forall \sigma \in \mathfrak{S}_d$ (l'espace des permutations de $\{1,\dots,d\}$)
+	</section>
+ <section>
+	<h1 style="margin-top:-0.5em;">Vecteurs aléatoires réels, marginales et densités</h1>
+	Considérons $(\Omega, \mathcal{F}, \mathbb{P})$ un espace probabilisé et :
+	<center>
+		$$			\begin{aligned}
+					X: \Omega &\to  \mathbb{R}^d\\
+					  \omega & \mapsto  
+					 (X_1(\omega_1),\dots, X_d(\omega_d))
+					  \end{aligned} 
+					  $$
+		
+			</center>
+	un vecteur aléatoire réel. $X$ est un vecteur aléatoire réel $\Leftrightarrow \forall i$ $X_i$ est une v.a.r.
+	<p>la loi de $X$ est donnée par : $ \forall H \in \mathcal{B}(\mathbb{R}^d),~ \mathbb{P}_X(H) := \mathbb{P}(X\in H)$
+
+	</p>  
+	<p> Si $X$ est de densité $f_X$ p/r à $\lambda_d$ alors par définition (et que $\lambda_d = \otimes_{i=1}^d\lambda$):
+		<center>
+			$\mathbb{P}_X(H) = \int_{H}f_X(x_1, \dots, x_d)dx_1 \dots dx_d$
+		</center>
+
+	</p>
+	<p>
+		On définit par ailleurs $\mathbb{P}_{X_i} = $ loi marginale de $X_i$. On a alors le résultat suivant :
+	</p>
+	<div class="exemple"> 
+		<div id="title">Propriété</div>
+		Si $X$ admet une densité $f_X$ alors $X_1$ admet pour densité
+
+			<center>
+				$$f_{X_1}(x_1) = \int\dots\int f_X(x_1, \dots, x_d) dx_2 \dots dx_d
+				$$
+			
+			
+			</center>
+
+	</div>
+	<p>Preuve: cas $d=2$</p>
+ </section>
+ <section><h1>Application de Fubini : Indépendance (1/2)</h1>
+ <div class="exemple"> 
+	<div id="title">Définition [indépendance]</div>
+	On dit que $X_1, \dots, X_d$ sont indépendantes ssi $\forall H_1 \in \mathcal{E_1}, \dots, H_1 \in \mathcal{E_d}$ les évènements 
+	$\{X_1 \in H_1\}, \dots, \{X_1 \in H_d\}$ sont indépendants : 
+	<center>
+		$$
+		\mathbb{P}(X_1 \in H_1, \dots, X_d \in H_d) = \prod_{i=1}^{d} \mathbb{P}(X_i \in H_i)
+		$$
+	</center>
+
+</div>
+</p>
+<p>On note $X_1 \perp X_2 \Leftrightarrow X_1$ et $X_2$ indépendants. On a les résultats suivants : </p>
+<div class="exemple"> 
+	<div id="title">Propriétés </div>
+	Les assertions suivantes sont équivalentes avec $X=(X_1, \dots, X_d)$ et $(h_i)_{i\in \{1, \dots, d\}}$ mesurables telle que $h_i(X_i) \geq 0$ ou intégrables : 
+</br><ol>
+		<li><span style="margin-left:-3em;">$X_1 \perp \dots \perp X_d$</span></li>
+		<li><span style="margin-left:-3em;"> $\mathbb{P}_X = \bigotimes_{i=1}^d \mathbb{P}_{X_i}$</span></li>
+		<li><span style="margin-left:-3em;"> $\mathbb{E}[\prod_{i=1}^d h_i(X_i)] = \prod_{i=1}^{d} \mathbb{E}[h_i(X_i)]$</span></li>
+	</ol>
+
+</div>
+
+</section>
+
+<section><h1>Application de Fubini : Indépendance (2/2)</h1>
+On déduit des résultats précédents un corollaire important : 
+<div class="exemple"> 
+	<div id="title">Corollaire</div>
+ $X_1 \perp X_2 \implies \mathrm{Cov}(X_1, X_2) = 0$
+
+</div>
+
+<p>La réciproque est fausse. Soit $X \perp Y$ et $Z=XY$. Alors $X \not\perp XY$ et
+	 $\mathrm{Cov}(X,Z) = \mathbb{E}[X^2Y] = \mathbb{E}[h(X)Y] = 0$ car $X \perp Y$</p>
+
+Deux autres résultats utiles (preuve dans le poly) : 
+<div class="exemple"> 
+	<div id="title">Propriétés</div>
+	On a :</br>
+	<ol>
+		<li><span style="margin-left:-3em;">$X_1 \perp \dots \perp X_d \Leftrightarrow F_X(x_1, \dots, x_d) = \prod_{i=1}^{d} F_{X_i}(x_i)$</span></li>
+		<li><span style="margin-left:-3em;"> Si $X$ admet une densité $f_X$ alors :
+			 <center>
+				$$
+				X_1 \perp \dots \perp X_d \Leftrightarrow f_X(x_1, \dots, x_d) = \prod_{i=1}^{d} f_{X_i}(x_i)
+				$$
+			 </center></span></li>
+
+	</ol>
+ 
+
+</div>
+</section>
+
+<!-- Changement de variables  -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>VI - Changement de Variables</h2>
+</section>
+
+<section>
+	<h1>Position du problème, Méthode de la fonction muette</h1>
+	Soit $X$ vecteur aléatoire dans $\mathbb{R}^d$  tel que:
+	<ul>
+		<li>$X(\Omega)\subset U \subset \mathbb{R}^d$ où $U$ est un ouvert</li>
+		<li>$X$ admet pour densité $f_X$ par rapport à $\lambda_d$ (mesure de Lebesgue sur $\mathbb{R}^d$)</li>
+		<li>$Y:=\phi(X)$ avec $\phi$ une fonction borélienne sur $\mathbb{R}^d$</li>
+		
+	</ul> 
+
+	<center><b>Question : Comment obtenir, quand-elle existe, la densité $f_Y$ de $Y$ p/r à $\lambda_d$ ?</b></center>
+	Calculons $\mathbb{E}(h(Y)) = \int_{U \subset \mathbb{R}^d} (h\circ \phi)\times f_X d\lambda_d $ avec $h$  positive définie sur $\mathbb{R}^d$. 
+	Supposons que l'on arrive à écrire $\mathbb{E}(h(Y))$ sous la forme $\int_{V \subset \mathbb{R}^d} h\times f_Yd\lambda_d$. Si on pose alors $h=\bold{1}_{H}$ on obtient : 
+	<center>
+	$$
+		\mathbb{E}(\bold{1}_{\{Y \in H\}}) = \mathbb{P}(Y \in H) =  \int_{H \subset \mathbb{R}^d} f_Yd\lambda_d \implies f_Y \text{ densité de } Y \text{ par rapport à } \lambda_d.
+
+	$$
+
+</center>
+$\rightarrow$ Cette procédure s'appelle la <b>méthode de la fonction muette</b>. Elle se résume par : </br>
+<div class="exemple">
+<ol>
+	<li><span style="margin-left:-3em;">Considérer une fonction <b>$h$ positive et définie sur $\mathbb{R}^d$</b></span></li>
+	<li><span style="margin-left:-3em;">écrire $\mathbb{E}(h(Y)) = \int_{U \subset \mathbb{R}^d} (h\circ \phi)\times f_X d\lambda_d = \dots = \int_{V \subset \mathbb{R}^d} h\times f_Yd\lambda_d$</span></li>
+	<li><span style="margin-left:-3em;">La fonction $f_Y$ trouvée précédemment est la densité de $Y$ p/r à $\lambda_d$</span></li>
+</ol>
+</div>
+<p>
+<center>
+	Les $\dots$ dans ii. Sont l'objet du <b>changement de variable</b>.
+</center>
+</p>
+</section>
+
+<section>
+	<h1>Jacobien et Difféomorphisme</h1>
+Rappelons quelques notions d'analyses avec $U,V$ deux ouverts de $\mathbb{R}^d$ et $\phi:U \to V$ telle que $\forall x \in U: \phi(x) = (\phi_1(x),\dots, \phi_d(x))$.
+
+<div class="exemple">
+	<div id="title">Définition [Jacobienne et Jacobien]</div>
+	Pour $\phi$ de classe $\mathcal{C}^1$ (les dérivées partielles existent et sont continues) <b>la jacobienne</b> est définie par :
+	<center>
+		 $\tiny{J_{\phi}(x)=\left(\begin{array}{ccc}
+		\frac{\partial\phi_{1}}{\partial x_{1}}\left(x\right)\\
+		 & \vdots\\
+		\dots & \frac{\partial\phi_{i}}{\partial x_{j}}\left(x\right) & \dots\\
+		 & \vdots\\
+		 &  & \frac{\partial\phi_{d}}{\partial x_{d}}\left(x\right)
+		\end{array}\right)}$
+		
+	</center> 
+	<b>Le jacobien de $\phi$ en $x$</b> est alors $|J_{\phi}|(x)=\det(J_{\phi}(x))$
+	</div>
+<p>$\rightarrow$ $\phi$ bijective, de classe $\mathcal{C}^1$ et d'inverse de classe $\mathcal{C}^1$ est un $\mathcal{C}^1$- difféomorphisme. </br>
+
+$\rightarrow$ De plus :  $\phi$ de classe $\mathcal{C}^1$ est un difféomorphisme $\Leftrightarrow \forall x, |J_{\phi}|(x) \neq 0$  et alors :
+	<center style="margin-top:-0.3em;">
+	$$J_{\phi^{-1}} = \frac{1}{J_\phi \circ \phi^{-1}} \qquad \left( J_{\phi^{-1}}(u) = [J_\phi]^{-1}(x)_{\mid x = \phi^{-1}(u) } \right) \implies |J_{\phi^{-1}}| = \frac{1}{|J_\phi| \circ \phi^{-1}}$$
+</center>
+</p>
+</section>
+<section>
+	<h1>Théorème de changement de variables</h1>
+
+	<div class="exemple">
+		<div id="title">Théorème [Changement de variables]</div>
+        Soit $U,V \subset \mathbb{R}^d$ deux ouverts et $\phi:U\to V$ un difféomorphisme. Pour toute fonction $f$ positive borélienne et définie  sur V,
+		<center>
+			$$
+			\int_{U}f \circ \phi = \int_{V}\frac{f}{||J_{\phi}| \circ \phi^{-1}|}  
+			$$
+		</center>
+		</div>
+	<p><b>Application : </b> pour la méthode de la fonction muette, on a alors : 
+	<center>
+		$$
+		f_Y = \frac{f_X\circ \phi^{-1}}{||J_{\phi}|\circ \phi^{-1}|}\bold{1}_{V} = f_X\circ \phi^{-1}\times |\det(J_{\phi^{-1}})|\bold{1}_{V}
+		$$
+	</center>
+	</p>
+	En particulier on a :
+
+	<div class="exemple">
+		<div id="title">Propriété</div>
+		Si on a un vecteur aléatoire $Y=AX+B$ avec $A$ une matrice inversible et $B$ un vecteur déterministe alors : 
+		<center>
+			$$
+			f_Y(y)=\frac{1}{|\det(A)|}f_X(A^{-1}(y-B))
+			$$
+		</center>
+		</div>
+		<p><b>Preuve :</b> Au tableau</p>
+</section>
+
+<!-- Fonction caractéristique  -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>VII - Fonction Caractéristique</h2>
+</section>
+
+<section><h1>Motivations et prérequis</h1>
+La fonction caractéristique est un outils très utile en pratique pour :
+<ul>
+	<li>Déterminer la loi de somme de v.a. indépendantes</li>
+	<li>Développer le théorème central limite</li>
+	<li>Calculer des moments de tout ordre ($\mathbb{E}(X^p)$ quand ils existent</li>
+	<li>Développer la théorie autour des vecteurs Gaussiens</li>
+</ul>
+<p>Au préalable, nous définissons les fonctions mesurables à valeur dans $\mathbb{C}$ comme suit : 
+<ul>
+	<li>$f=f_\Re + if_\Im$ à valeurs dans $\mathbb{C}$ est mesurables $\Leftrightarrow f_\Re, f_\Im$ sont mesurables </li>
+	<li>$f$ est intégrable p/r $\mu \Leftrightarrow \int|f|d\mu < \infty $ et alors : 
+		<center>
+			$$
+			\int fd\mu := \int f_\Re d\mu + i \int f_\Im d\mu 
+			$$
+	    </center>
+	</li>
+	<li>Le théorème de convergence dominée reste valable en remplaçant la valeur absolue par le module d'un nombre complexe (linéarité etc.)</li>
+</ul>
+
+
+</p>
+
+
+	Enfin, pour deux vecteurs colonnes $\bold{a},\bold{b} \in \mathbb{R}^d,$ on définit le produit scalaire $<.,.>$ comme suit : 
+	<center style="margin-top:-1.2em;">
+		$$
+		<\bold{a},\bold{b}> = \sum_{k=1}^d a_kb_k = \bold{a}^\top \bold{b}
+		$$
+	</center>
+
+
+</section>
+
+<section>
+	<h1>Définition et premières propriétés</h1>
+	On considère $(\mathbb{R}^d, \mathcal{B}(\mathbb{R}^d), \mu)$ un espace mesurable avec $\mu$ finie ou de probabilité.
+
+	<div class="exemple">
+		<div id="title">Définition [Fonction Caractéristique]</div>
+		La fonction caractéristique de $\mu$ est définie par 
+		<center>
+			$$
+			\forall \bold{t} \in \mathbb{R}^d, \varphi_{\mu}(\bold{t} ) = \int e^{i<\bold{t}, \bold{x}>}d\mu(\bold{x})
+			$$
+		</center>
+		</div>
+	<p><b>Remarque: </br></b>
+		$ \rightarrow \varphi$ est bien définie puisque $\mu$ est finie ou de probabilité et $|e^{i<\bold{t}, \bold{x}>}| = 1$</br>
+		$\rightarrow$ si $\mu$ est de probabilité, $\forall \bold{t} \in \mathbb{R}^d, |\varphi_\mu(t)| \leq \int |e^{i<\bold{t}, \bold{x}>}|d\mu(\bold{x}) = 1$
+	</p>
+
+	On a de plus la propriété suivante : 
+
+	<div class="exemple">
+		<div id="title">Propriété</div>
+		Soit $\mu$ de probabilité. Alors $\varphi_{\mu}$ est continue. 
+		</div>
+	<p><b>Preuve : </b> Au tableau. </p>
+</section>
+<section><h1>Fonction caractéristique d'un vecteur aléatoire</h1>
+Soit $X$ un vecteur aléatoire réel sur $(\Omega, \mathcal{F}, \mathbb{P})$ de dimension $d$ et $\mathbb{P}_{X}$ sa loi. 
+<div class="exemple">
+	<div id="title">Définition</div>
+	La fonction caractéristique d'un vecteur aléatoire réel $X$ noté $\varphi_{X}$ (rarement $\varphi_{\mathbb{P}_X})$ est donnée par 
+	<center>
+		$$
+		\forall \bold{t} \in \mathbb{R}^d, \varphi_{X}(\bold{t} ) = \int e^{i<\bold{t}, \bold{x}>}d\mathbb{P}_{X}(\bold{x}) = \mathbb{E}(e^{i<\bold{t}, X>})
+		$$
+	</center>
+	Si $X$ admet p/r à $\lambda_d$ une densité $f$ pour tout  $\bold{x} = (x_1, \dots, x_d) \in \mathbb{R}^d$. Alors : 
+	<center>
+		$$
+		\forall \bold{t} \in \mathbb{R}^d, \varphi_{X}(\bold{t} ) = \int e^{i<\bold{t}, \bold{x}>}f(x_1,\dots, x_d)dx_1, \dots, dx_d
+		$$
+	</center>
+	</div>
+
+	<p>
+		Ainsi, pour un vecteur aléatoire admettant une densité, $\varphi_X$ peut-être vu comme la transofrmée de Fourier de $f(-x)$.
+	</p>
+
+	<p><b>Exemple</b> : Soit $X:\Omega \to \mathbb{R}^d$ et $Y=AX+\bold{b}, A\in \mathbb{R}^ {m\times d}, \bold{b} \in \mathbb{R}^m$.  Pour $\bold{u} \in \mathbb{R}^m$ : 
+
+		<center>
+
+			$$\begin{aligned}
+			\varphi_{Y}(\bold{u}) &=\mathbb{E}(e^{i<\bold{u}, Y>}) =\mathbb{E}(e^{i<\bold{u}, AX+\bold{b}>}) = \mathbb{E}(e^{i< A^{\top} \bold{u}, X >})e^{i<\bold{u}, \bold{b}>}   \\
+			\end{aligned}	
+			$$
+		</center>
+
+    Soit $\boxed{\varphi_{AX+\bold{b}}(\bold{u}) =\varphi_{X}(A^\top \bold{u})e^{i< \bold{u}, \bold{b}>}}$
+	</p>
+</section>
+
+<section><h1>Caractérisation de la loi</h1>
+On a le théorème suivant (admis) : 
+
+<div class="exemple">
+	<div id="title"> Théorème [Caractérisation de la loi]</div>
+	
+	Soient $\mu,\nu$ deux mesures de probabilités sur $\mathbb{R}^d$. $\varphi_\mu = \varphi_\nu \Leftrightarrow \mu = \nu$
+	</div>
+
+<p>On peut en déduire le corollaire suivant : </p>
+
+<div class="exemple">
+	<div id="title"> Corollaire</div>
+	
+	Soit $X = [X_1, \dots, X_d]^\top$. alors : 
+	<center>
+		$$ X_1 \perp \dots \perp X_d \Leftrightarrow \forall \bold{t} = (t_1, \dots, t_d) \in \mathbb{R}^d, \varphi_X(\bold{t}) = \prod _{i=1}^{d} \varphi_{X_i}(t_i)$$
+	</center>
+	</div>
+	<p><b>Preuve :</b> Au tableau. </br>
+		<b>Exercice : </b> Soit $X \sim \mathcal{N}(0,1)$
+	<ul>
+		<li> $\forall t \in \mathbb{R}$ montrer que $\varphi^\prime_{X}(t) = -t \varphi_X(t)$</li>
+		<li>Résoudre l'équation précédente et en déduire que $\varphi_{X}(t) = e^{-t^2/2}$</li>
+		<li>En remarquant que $Z \sim \mathcal{N}(m, \sigma^2) \Leftrightarrow Z = \sigma X + m$ montrer que 
+			<center>$\varphi_{Z}(t) = e^{itm}e^{-\sigma^2t^2/2}$</li>
+	</ul>
+	</p>
+
+</section>
+<section>
+	<h1>Calculs des moments (1/2)</h1>
+Soit $X: \Omega \to \mathbb{R}^d$ un vecteur aléatoire réel d'ordre $p \in \mathbb{N}^\star$ (i.e. $\mathbb{E}(|X_i|^p) < \infty, \forall i$)
+<div class="exemple">
+<div id="title"> Propriété</div>
+	On a les résultats suivants :</br>	
+    $\rightarrow$ Si $d=1$, alors $\varphi_X$ est de classe $\mathcal{C}^p$ et  la dérivée p-ème $\varphi_X^{(p)}$ de $\varphi_X$ vérifie : 
+	<center>
+		$$ \varphi_X^{(p)}(t) = \mathbb{E}[i^p X^p e^{i <t,X>}]$$
+	</center>
+	En particulier : 
+	<center>
+	$\boxed{\mathbb{E}[X^p] = \frac{\varphi_X^{(p)}(0)}{i^p}}$
+    </center>	
+
+	$\rightarrow$ Si $d>1$, alors pour $X=[X_1, \dots, X_d]^\top, t=[t_1, \dots, t_d]$ et $i_1, \dots i_d \in \llbracket 1,d \rrbracket$ : 
+
+	<center>
+		$$\frac{\partial^p \varphi_X}{\partial t_{i_1} \dots \partial t_{i_p}} (\bold{t}) = \mathbb{E}(i^p X_{i_1} \dots X_{i_p}e^{i <\bold{t}, X>})$$
+		</center>
+
+	En particulier : 
+	<center>
+		$\boxed{\mathbb{E}[X_{i_1} \dots X_{i_p}] = \frac{\frac{\partial^p \varphi_X}{\partial t_{i_1} \dots \partial t_{i_p}} (\bold{0})}{i^p}}$ 
+		</center>	
+
+	
+</div>
+<p><b>Preuve : </b> Rapide esquisse pour $d=p=1$</p>
+</section>
+
+<section>
+	<h1>Calculs des moments (2/2)</h1>
+	<p><b>Application : </b> Soit $X \sim \mathcal{N}(0,1)$</p> Alors: </br>
+	<ul>
+		<li>$\mathbb{E}[X] = \varphi_X^\prime(0)/i =  -0 \times e^{-0^2 /2} /i = 0 $</li>
+		<li>De même on a $\mathbb{E}[X^2] = 1, \mathbb{E}[X^3]=0,\mathbb{E}[X^4]=2$ etc...</li>
+
+	</ul>
+</section>
+
+<!-- Vecteurs Gaussiens  -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>VIII - Vecteurs Gaussiens</h2>
+</section>
+
+
+<section>
+	<h1>Espérance/Covariance d'un vecteur aléatoire (1/2)</h1>
+	On considère $X=(X_1, \dots, X_d):\Omega \to \mathbb{R}^d$ un vecteur aléatoire réel. 
+	<p>Afin de définir les vecteurs Gaussiens, nous allons d'abord définir l'espérance et la covariance d'un vecteur aléatoire : </p>
+
+	<div class="exemple">
+		<div id="title"> Définition [Espérance et covariance]</div>
+			On définit <b> l'espérance d'un vecteur $X$ </b> comme : 
+			<center>
+				$$
+				\mathbb{E}[X] = (\mathbb{E}[X_1], \dots, \mathbb{E}[X_d])^\top
+				$$
+			</center>
+		
+		   <b>La covariance dun vecteur $X$</b> est définie comme la matrice suivante :
+		   <center>
+			$$
+			\mathrm{Cov}(X) = \left(\begin{array}{cccc}
+			\mathrm{Cov}\left(X_{1},X_{1}\right) & \dots & \dots & \mathrm{Cov}\left(X_{1},X_{d}\right)\\
+			\vdots & \vdots & \vdots & \vdots\\
+			\mathrm{Cov}\left(X_{d,}X_{1}\right) & \dots & \dots & \mathrm{Cov}\left(X_{d,}X_{d}\right)
+			\end{array}\right)
+			$$
+		   </center> 	
+		</div>
+<p><b>Remarques : </b>
+<ul>
+	<li>$\mathbb{E}(AX+b) =  A\mathbb{E}(X) + b$</li>
+	<li>$\mathrm{Cov}(X)$ est symétrique ($\mathrm{Cov}(X,Y) = \mathrm{Cov}(Y,X)$)</li>
+	<li>Si $X_1, \dots, X_d$ sont décoréllées alors $\mathrm{Cov}(X)=\mathrm{Diag}(\{\mathrm{Var}(X_i)\}_{i \in \llbracket 1, d\rrbracket})$</li>
+</ul>
+</p>
+
+</section>
+
+<section>
+	<h1>Espérance/Covariance d'un vecteur aléatoire (2/2)</h1>
+	Nous donnons quelques propriétés sur la covariance. $X_c := X - \mathbb{E}(X)$ désigne le vecteur recentré.
+
+	<div class="exemple">
+		<div id="title"> Propriétés</div>
+		On a les résultats suivants  sur la covariance : </br>
+		<ol style="margin-top:0.5em;">
+			<li><span style="margin-left:-3em;">$\mathrm{Cov}(X) = \mathbb{E}(X_cX_c^\top)$</span></li>
+			<li><span style="margin-left:-3em;">$\mathrm{Cov}(AX+b) = A\mathrm{Cov}(X)A^\top$</span></li>
+			<li><span style="margin-left:-3em;">$\mathrm{Cov}(X)$ est semi-définie positive</span></li>
+			<li><span style="margin-left:-3em;">$X \perp Y \implies \mathrm{Cov}(X+Y) = \mathrm{Cov}(X) + \mathrm{Cov}(Y)$ </span></li>
+		</ol>	
+		</div>
+		<p><b>Preuve:</b> Au tableau.</p>
+</section>
+<section>
+<h1>Vecteur Gaussien : Définition et Premières Propriétés</h1>	
+<p><b>Rappel : </b>
+La loi gaussienne $\mathcal{N}(m, \sigma^2)$ admet pour densité $f(x)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-m)^2}{2\sigma^2}}$ et fonction caractéristique $\varphi (t) = e^{itm}e^{-\frac{\sigma^2t^2}{2}}$.
+</p>
+
+<div class="exemple">
+	<div id="title"> Définition [vecteur gaussien]</div>
+	On  dit que $X:\Omega \to \mathbb{R}^d$ est un <b>vecteur gaussien</b> (VG) si $\forall \bold{a} \in \mathbb{R}^d, <\bold{a}, X>$ suit une loi gaussienne. 	
+	</div>
+
+<p>	On a alors les propriétés suivantes :</p>
+
+<div class="exemple">
+	<div id="title"> Définition [vecteur gaussien]</div>
+	On a les résultats suivants  pour $X=(X_1, \dots, X_d)$ une VG : </br>
+	<ol style="margin-top:0.5em;">
+		<li><span style="margin-left:-3em;">$\forall k \in \llbracket 1,d \rrbracket, X_k$ est une variable gaussienne</span></li>
+		<li><span style="margin-left:-3em;">Tout sous vecteur $(X_{i_1}, \dots, X_{i_m})$ est gaussien</span></li>
+	</ol>		
+	</div>
+<p><b>Preuve : </b> Au tableau.</p>
+</section>
+<section><h1>Fonction Caractéristique et Indépendance</h1>
+La propriété suivante nous permet de caractériser les vecteur Gaussiens.
+
+<div class="exemple">
+	<div id="title"> Propriété</div>
+	Les assertions suivantes sont équivalentes :  </br>
+	<ol style="margin-top:0.5em;">
+		<li><span style="margin-left:-3em;">$X$ est un VG d'espérance $\bold{m}\in \mathbb{R}^d$ et de covariance $\mathrm{Cov}(X) = \Sigma \in \mathbb{R}^{d\times d}$</span></li>
+		<li><span style="margin-left:-3em;">$\forall t \in \mathbb{R}^d, \varphi_{X}(\bold{t}) = e^{i<\bold{t},\bold{m}>}e^{\frac{-\bold{t}^\top\Sigma\bold{t}}{2}}$</span></li>
+	</ol>
+<p>On écrira alors $X \sim \mathcal{N}_{d}(\bold{m}, \Gamma)$</p>
+	</div>
+
+<p><b>Preuve : </b> Au tableau.</p>
+
+On a alors le résultat suivant sur l'indépendance de variables gaussiennes : 
+
+<div class="exemple">
+	<div id="title"> Propriété</div>
+	Les assertions suivantes sont équivalentes avec $\forall k \in \llbracket 1, d\rrbracket, X_k \sim \mathcal{N}(m_k,\sigma_k^2)$ :  </br>
+	<ol style="margin-top:0.5em;">
+		<li><span style="margin-left:-3em;">$X_1 \perp \dots \perp X_d$ et sont des variables gaussiennes</span></li>
+		<li><span style="margin-left:-3em;">$X=(X_1,\dots,X_d) \sim \mathcal{N}_{d}\left(\bold{m},\mathrm{Diag}[\{\sigma_k\}_{k \in \llbracket 1, d \rrbracket}]\right)$
+         avec $\bold{m}=(m_1, \dots,m_d)^\top$
+
+		</span></li>
+	</ol>
+
+	<p><b>Preuve : </b> Au tableau.</p>
+	</div>
+
+</section>
+
+<section><h1>Transformation Affine</h1>
+	<div class="exemple">
+		<div id="title"> Théorème</div>
+		
+		Si $X \sim \mathcal{N}_d (\bold{m}, \Sigma)$ alors $AX+\bold{b} \sim \mathcal{N}_d(A\bold{m} + \bold{b}, A\Sigma A^\top)$
+	
+
+		</div>
+		<p><b>Preuve : </b> Au tableau.</p>
+	<p><b>Exemple :</b> Exercice 41</p>
+</section>
+<section>
+<h1>Densité d'un vecteur Gaussien</h1>
+On a le résultat suivant : 
+
+<div class="exemple">
+	<div id="title"> Propriété</div>
+	Si $X\sim\mathcal{N}_{d}(\bold{m},\Sigma)$ avec $\Sigma$ définie positive (et donc $\Sigma$ inversible). Alors, $X$  admet pour densité :  </br>
+	<center>
+		$$
+		f_X(\bold{x}) = \frac{1}{\sqrt{(2\pi)^d \det \Sigma}}\exp\left(-\frac{1}{2}(\bold{x}-\bold{m})^\top\Sigma^{-1}(\bold{x}-\bold{m})\right)
+		$$
+	</center>
+
+	</div>
+
+	<p><b>Preuve : </b> Au tableau.</p>
+
+	<p><b>Remarque : </b> Si $\Sigma$ n'est pas inversible, alors $X$ n'admet pas de densité p/r à $\lambda_d$.</p>
+</section>
+
+<!-- Probabilité et espérance conditionnelle  -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>IX - Probabilité et Espérance Conditionnelle</h2>
+</section>
+
+<section>
+<h1>Motivations et théorème de Radon-Nikodym</h1>
+$\mathbb{P}_{Y \mid X=x} (G) \overset{\text{def}}{=} \mathbb{P}(Y\in G \mid X=x) \overset{?}{=} \frac{\mathbb{P}(Y\in G, X=x)}{\mathbb{P}(X=x)}$
+<p><b>Problème :</b> $\mathbb{P}(X=x)=0$ pour une variable à densité donc pas de sens. </br>
+Intuitivement, on aimerait écrire $\mathbb{P}_{X,Y} (H \times G) = \int_H f_{Y \mid X=x}(G)d\mathbb{P}_X(x)$. 
+C'est à dire que $\mathbb{P}_{X,Y} $ admette une densité par rapport à $\mathbb{P}_X$.
+Un théorème fondamental en théorie de la mesure va nous permettre de construire une telle densité :
+
+<p></p>
+
+<div class="exemple">
+	<div id="title"> Théorème [Radon-Nikodym]</div>
+	Soient $\mu$ et $\nu$ deux mesures $\sigma$-finies sur $(F, \mathcal{F})$. Alors : </br>
+
+	$\mu$ admet une densité p/r à  $\nu \Leftrightarrow (\forall A \in \mathcal{F}, \mu_{A} = 0 \implies \nu_{A}=0)$ est vérifiée. 
+	</div>
+<p><b>Remarque :</b> La propriété $(\forall A \in \mathcal{F}, \mu_{A} = 0 \implies \nu_{A}=0)$ se dit aussi "$\mu$ est absolument continue p/r à $\nu$" et on note $"\mu \ll \nu"$</p>
+</section>
+
+<section><h1>Probabilité conditionnelle</h1>
+	On considère :
+	
+	<ul>
+		<li>$(\Omega, \mathcal{F}, \mathbb{P})$ un espace de probabilité, $(E, \mathcal{E}), (F, \mathcal{G})$ des espaces mesurables</li>
+		<li>$X:\Omega \to E, Y:\Omega \to F$ deux v.a.</li>
+	 <li> $\mathbb{P}_{X,Y}, \mathbb{P}_{X}, \mathbb{P}_{Y}$ la loi jointe et ses marginales respectivement </li>
+	
+	</ul></br>
+	 Le théorème précédent entraîne directement que $H \mapsto \mathbb{P}_{(X,Y)}(H \times G)$ est absolument continue par rapport à la mesure $\mathbb{P}_X$. D'où la définition suivante : 
+
+<div class="exemple">
+	<div id="title"> Définition [Probabilité conditionnelle]</div>
+	$\forall G \in \mathcal{G}, \mathbb{P}_{Y \mid X=x}(G)$ est la fonction de $x$, définie de manière unique $\mathbb{P}_X$- p.p., telle que
+
+	<center>
+		$$
+\forall H \in \mathcal{E}, \mathbb{P}_{X,Y}(H \times G) = \int_H \mathbb{P}_{Y \mid X=x}(G)d\mathbb{P}_{X}(x)
+		$$
+	</center>
+	On appelle $G \mapsto \mathbb{P}_{Y \mid X=x}(G)$ <b>la loi conditionnelle de $Y$ sachant $X=x$</b>.
+	</div>
+</section>
+
+<section>
+<h1>Propriétés</h1>
+On a les résultats suivants : 
+<div class="exemple">
+	<div id="title"> Propriétés</div>
+	<ol style="margin-top:0.5em;">
+		<li><span style="margin-left:-3em;">Si $X \perp Y$ alors $\mathbb{P}_{Y \mid X=x} = \mathbb{P}_Y$</span></li>
+		<li><span style="margin-left:-3em;">Si $Y=f(X)$ alors  pour toute application $f$ mesurable $\mathbb{P}_{Y \mid X=x} = \delta_{f(x)}$ 
+
+		</span></li>
+	</ol>
+	</div>
+	<p><b>Preuve :</b> Au tableau .</p>
+</section>
+
+<section><h1>Vecteurs aléatoires à densité</h1>
+On suppose que : </br>
+<ul>
+	<li>$(X,Y)$ admet une densité $f_{X,Y}(x,y)$ p/r à $\mu \otimes \nu$</li>
+	<li>$\mu,\nu$ sont respectivement des mesures de réferences sur $E$ et $F$</li>
+	<li>$X$ admet une densité $f_{X}$ p/r à $\mu$</li>
+	<li>$d\mathbb{P}_{X,Y}(x,y) = f_{X,Y}(x,y)d\mu(x)d\nu(y)$</li>
+</ul> </br>
+On définit la densité conditionnelle comme suit  
+<div class="exemple">
+	<div id="title"> Définition [Densité conditionnelle]</div>
+	La densité conditionnelle de $Y$ sachant $X=x$ est ($\forall y$ et  $\forall x~ \mathbb{P}_X$- p.p. :) : 
+
+	<center>
+		$f_{Y \mid X=x}(y) = \frac{f_{X,Y}(x,y)}{f_X(x)}$
+	</center>
+	</div>
+On a alors la relation suivante entre la loi conditionnelle et la densité de probabilité : 
+<div class="exemple">
+	<div id="title"> Théorème</div>
+
+
+	<center>
+		$\forall G \in \mathcal{G}, \forall x ~ \mathbb{P}_X$-p.p., $\mathbb{P}_{Y \mid X =x} (G) = \int_{G} f_{Y \mid X =x}(y) d\nu(y)$
+	</center>
+	</div>
+	<p><b>Preuve : </b> Au tableau.</p>
+</section>
+
+<section>
+	<h1>Exemple avec des variables aléatoires discrètes</h1>
+On pose : 
+<ul>
+	<li>$(X,Y)$ vecteur aléatoire discret à valeurs dans $\mathbb{N}^2$</li>
+	<li>$(X,Y)$ admet une densité $f_{X,Y}(x,y)$ p/r à $\mu \otimes \nu = \sum_{(x,y) \in \mathbb{N}^2}\delta(x,y)$</br>
+		$\quad \rightarrow$ on sait d'ailleurs que $f_{X,Y}(x,y) = \mathbb{P}(X=x, Y=y)$
+
+	</li>
+	<li>$X$ admet une densité $f_{X}(x)$ p/r à $\mu = \sum_x \delta_{x}$ avec $f_X(x) = \mathbb{P}(X=x)$</li>
+ Par conséquent on a :
+<center>
+	$$
+	f_{Y\mid X=x}(y) = \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{\mathbb{P}(X=x, Y=y)}{\mathbb{P}(X=x)} := \mathbb{P}(Y=y \mid X=x)
+	$$
+</center>
+</ul> </br>
+</section>
+
+<section>
+<h1>Exemple mixte : formule de Bayes (1/2)</h1>
+On suppose: 
+<ul>
+	<li>$X \sim \beta(a,b)$ une loi beta de densité $f_X(x) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{a-1}(1-x)^{b-1}\bold{1}_{[0,1]}(x)$</li>
+	<li>$Y$ une variable aléatoire discrète sur $\{0,1\}$</li>
+	<li>On suppose que $\mathbb{P}_{Y\mid X=x} = x \delta_{1} + (1-x)\delta_0$ pour $x \in [0,1]$</li>
+</ul>
+Si on analyse, $Y\mid X=x$ revient à prendre $x$ issue d'une loi beta sur $[0,1]$ et de tirer une Bernoulli avec probabilité $x$ de succès. 
+
+Soit $Y\mid X=x \sim \mathcal{B}(x)$.
+
+<p><b>Quelle est la loi de $X \mid Y=y$ ?</b></br>
+<ul>
+	<li>$(X,Y)$ admet une densité $f_{X,Y}(x,y)$ p/r à $(\mu=\lambda) \otimes (\nu = \delta_0 + \delta_1)$</li>
+	<li>$f_X(x)f_{Y \mid X=x}(y) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{a-1}(1-x)^{b-1}\bold{1}_{[0,1]}(x) x^{y}(1-x)^{1-y} = f_{X,Y}(x,y)$</li>
+	<li>Donc : $f_{X \mid Y=y}(x) = \frac{f_{X,Y}(x,y)}{f_Y(y)}= \underbrace{\frac{\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}}{\int f_{X,Y}(x,y)dy}}_{:=C_y}x^{a-1+y}(1-x)^{b-y} \bold{1}_{[0,1]}(x) =C_y x^{a-1+y}(1-x)^{b-y} \bold{1}_{[0,1]}(x)$ </li>
+
+</ul>
+
+
+</p>
+
+</section>
+<section>
+	<h1>Exemple mixte : formule de Bayes (2/2)</h1>
+	Pour que $\int f_{X \mid Y=y}(x)dx = 1$, il faut que $C_y = \frac{\Gamma(a+b+1)}{\Gamma(a+y)\Gamma(b+1-y)}$
+<p>
+	<b>Conclusion : </b> $X\mid Y=y \sim \beta(a+y, b+1-y)$
+</p>
+
+<p>
+	<b>Remarque : </b> On avait $f_{Y\mid X=x}$ et on voulait $f_{X|Y=y}$. La formule employé s'appelle <b>la formule de Bayes : </b>
+
+	<center>
+		$$
+		\boxed{f_{X \mid Y=y}(x) = \frac{f_{Y\mid X=x}(y)f_X(x)}{f_Y(y)}}
+		$$
+	</center>
+</p>
+</section>
+
+<section>
+	<h1>Espérance conditionnelle</h1>
+Soit $X$ une v.a. et $Y$ une v.a.r.  telle que $Y \geq 0$ ou $\mathbb{E}(|Y|) < \infty$. 
+
+<div class="exemple">
+	<div id="title"> Définition [Espérance conditionnelle]</div>
+	$x \mapsto \mathbb{E}(Y \mid X=x)$ est l'unique ($\mathbb{P}_X$ - pp) fonction mesurable telle que :
+
+	<center>
+		$\forall H \in \mathcal{E}, \mathbb{E}(Y\bold{1}_{H}(X)) = \int_{H} \mathbb{E}(Y \mid X=x)d\mathbb{P}_X(x)$
+	</center>
+	</div>
+<p><b>Preuve:</b> cf. Poly (Radon-Nikodym sur la mesure $H \to \mathbb{E}(Y\bold{1}_{H}) $)</p>
+
+<p>Remarque : si on prend $\bold{1}_{H} = 1$ alors on obtient $\boxed{\mathbb{E}(Y) = \int \mathbb{E}(Y \mid X=x)d\mathbb{P}_X(x)}$</p>
+
+
+	
+
+</section>
+
+<section>
+	<h1>Théorème de transfert généralisé et corollaires</h1>
+
+	On peut alors montrer que (cf. poly pour les preuves) :
+<div class="exemple">
+	<div id="title"> Théorème et corollaires [de transfert généralisé]</div>
+	$\rightarrow \forall \psi(x,y)$ mesurable tq $\mathbb{E}|\psi(x,y)| < \infty$ on a :
+
+
+	<center>
+		$$
+		\mathbb{E}(\psi(X,Y) \mid X=x) = \int \psi(x,y)d\mathbb{P}_{Y \mid X=x}(y) \quad \texttt{(Théorème de transfert)}
+		$$
+	</center>
+	$\rightarrow $ En particulier pour $\psi(x,y) = y$ on a : 
+
+	<center>
+		$$
+		\mathbb{E}(Y \mid X=x) = \int yd\mathbb{P}_{Y \mid X=x}(y)
+		$$
+	</center>
+
+	$\rightarrow$ Dans le cas où $(X,Y)$ de densité $f_{X,Y}$ p/r à $\mu \otimes \nu$ : 
+
+
+<center>
+	$$
+	\mathbb{E}(\psi(X,Y) \mid X=x) = \int \psi(x,y)f_{Y \mid X=x}(y)d\nu(y)
+	$$
+</center>
+
+$\rightarrow$ Si $g$ mesurable et $\mathbb{E}|g(X)Y| < \infty$ alors : 
+
+<center>
+	$$
+	\mathbb{E}(\psi(X,Y) \mid X=x) = \int \psi(x,y)f_{Y \mid X=x}(y)d\nu(y)
+	$$
+</center>
+
+Si $X\perp Y$ alors : 
+
+<center>
+	$$
+	\mathbb{E}(Y \mid X=x) = \mathbb{E}(Y)
+	$$
+</center>
+</div>
+	
+</section>
+
+<!-- Convergences en loi -->
+<section class="cover" data-background="figures/background.png" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>X - Convergence de variables aléatoires</h2>
+</section>
+
+<section>
+	<h1>Convergence presque sûre et en probabilité (1/2)</h1> 
+	<div class="exemple">
+		<div id="title"> Définition [Convergence presque sûre, Convergence en probabilité]</div>
+		Soit $(X_n)_n,X$ des v.a.r. sur $\Omega \to \mathbb{R}^d$. Alors : 
+		<ol style="margin-top:0.5em;">
+			<li><span style="margin-left:-3em;"><b>$X_n$ converge presque sûrement vers $X$</b> 
+				si
+				<center> $$\mathbb{P}(\lim_{n\to +\infty} (X_n)=X) = 1$$ 
+				</center>
+				(i.e. $\forall \omega ~\mathbb{P}\text{-pp}, X_n(\omega) \to X(\omega)$). On note alors  $X_n \overset{p.s.}{\to} X$.	
+			</span></li>
+			<li><span style="margin-left:-3em;"><b>$X_n$ converge en probabilité vers $X$</b> 
+				si 
+				<center>
+					$$\forall \epsilon >0, \lim_{n\to +\infty} \mathbb{P}(||X_n - X|| >\epsilon) = 0$$	
+				
+	</center>	On note alors  $X_n \overset{\mathbb{P}}{\to} X$.
+			</span></li>
+		</ol>
+		</div>
+
+
+<p>On a la propriété suivante :</p> 
+
+<div class="exemple">
+	<div id="title"> Propriété </div>
+	La convergence presque sûre implique la convergence en probabilité .
+	</div>
+	<p><b>Preuve : </b> esquisse au tableau.</p>
+</section>
+
+<section><h1>Convergence presque sûre et  en probabilité (2/2)</h1>
+<b>Contre-exemple : </b> convergence en probabilité mais pas convergence presque sûre.</br>
+
+Soit $([0,1], \mathcal{B}([0,1]), \lambda)$ et les variables aléatoires : 
+<center>
+$$
+Y_{2^n,j}(\omega) = \bold{1}_{]\frac{j}{2^n}, \frac{j+1}{2^n}]}(\omega), \quad j \in \llbracket 0, 2^n-1\rrbracket , n\geq 1\\
+
+$$
+$$
+X_p=
+\begin{cases}
+Y_{2^n,j} & \text{si } p = 2^n +j, j \in \llbracket 0, 2^n-1\rrbracket , n\geq 1 \\
+0 & \text{sinon}
+\end{cases}
+$$
+</center>
+Autrement dit, 
+<center>
+$$
+X_p(\omega)=
+\begin{cases}
+1 & \text{ si } \omega \in  ]\frac{j}{2^n}, \frac{j+1}{2^n}]\\
+0 & \text{sinon}
+\end{cases}
+$$
+</center>
+
+Ces valeurs étant pris alernativement (on pourrait extraire une sous suite qui convient), on a $\lim \inf _{n \to \infty} X_n(\omega) = 0$ et $\lim \sup_{n \to \infty}X_n(\omega) = 1$. 
+Il est donc clair que $X_n(\omega)$ ne converge pas p.s. . En revanche pour tout $\epsilon>0$ on a par l'inégalité de Markov que : 
+
+<center>
+	$$
+	\mathbb{P}(|X_n| > \epsilon) \leq \frac{\mathbb{E}(X_n)}{\epsilon} = \frac{\mathbb{P}(X_n)}{\epsilon} \leq \frac{\lambda(]\frac{j}{2^n}, \frac{j+1}{2^n}])}{\epsilon} = \frac{2^{-n}}{\epsilon} \underset{n\to \infty}{\to} 0
+	$$
+</center>
+
+Donc la convergence en probabilité est assurée. 
+</section>
+
+<section>
+
+	<h1>Propriété de continuité</h1>
+	On admet les propriétés suivante (connue ausi sous le nom de "mapping theorem")
+	<div class="exemple">
+		<div id="title"> Propriété </div>
+		<ol style="margin-top:0.5em;">
+			<li><span style="margin-left:-3em;">Soit $X_n \overset{p.s.}{\to} X$ et $f:\mathbb{R}^d \to \mathbb{R}^{m}$ continue. Alors		
+				<center>
+					$$f(X_n) \overset{p.s.}{\to} f(X)$$
+				</center>
+			</span></li>
+			<li><span style="margin-left:-3em;">On a le même résultat pour la convergence en probabilité.
+			</span></li>
+		</ol>
+		</div>
+</section>
+
+<section>
+	<h1>Loi forte, loi faible des grands nombres</h1>
+On a le théorème suivant sur la convergence presque sûre de somme de v.a. 
+<div class="exemple">
+	<div id="title"> Théorème[Loi forte des grands nombres] </div>
+	Soit $(X_n)$ i.i.d. telle que $\mathbb{E}(||X_1||) < \infty$. Alors : 
+	<center>
+		$$
+		\frac{1}{n} \sum_{i=1}^n X_i  \overset{p.s.}{\to} \mathbb{E}(X_1)
+		$$
+	</center>
+	</div>
+<p>Ce théorème ne sera pas démontré ici (cf. <a href="https://www.techno-science.net/glossaire-definition/Loi-forte-des-grands-nombres-page-2.html">ici</a> pour une preuve)</p>. 
+Une version avec des <span style="color:red">hypothèses et résultats plus faible en rouge</span>, appellée la loi faible des grands nombres, existe également : 
+
+<div class="exemple">
+	<div id="title"> Théorème[Loi faible des grands nombres] </div>
+	Soit $(X_n)$ i.i.d. telle que $\color{red}{\mathbb{E}(||X_1||^2) < \infty}$. Alors : 
+	<center>
+		$$
+		\frac{1}{n} \sum_{i=1}^n X_i  \color{red}{\overset{\mathbb{P}}{\to}} \color{black}{\mathbb{E}(X_1)}
+		$$
+	</center>
+	</div>
+	<p><b>Preuve: </b> Au tableau (cas dans $\mathbb{R}$)</p>
+	<p><b>Applications : </b> Au tableau</p>
+
+</section>
+
+<section>
+<h1>Convergence en loi (ou en distribution)</h1>	
+
+<div class="exemple">
+	<div id="title"> Définition[Convergence en loi/distribution] </div>
+	Soit $(X_n)_n,X$ des v.a.r. sur $\Omega \to \mathbb{R}^d$. Alors <b>$X_n$ converge en loi vers $X$</b> 
+			si
+			<center> $$F_{X_n}(x) \to F_X(x) \qquad \forall x\text{ point de continuité de } F_X$$  
+			</center>
+			On note alors  $X_n \overset{\mathscr{L}}{\to} X$.	
+	</div>
+<p><b>Remarque :</b> dans le cas discret : $X_n \overset{\mathscr{L}}{\to} X \Leftrightarrow \forall k \in \mathbb{N}, \mathbb{P}(X_n=k) \underset{n\to \infty}{\to} \mathbb{P}(X=k)$</p>
+<p><b>Exemple : </b> $X_n(\omega)= \frac{1}{n}$ Alors on n'a pas $\lim_{n\to \infty}F_{X_n}(x) = F_{X}(x)$ pour $x=0$. Mais ce point est discontinue donc la définition de C.V. en loi reste valable et
+$X_n \overset{\mathscr{L}}{\to} 0$ </p>
+<p><b>Exercice : </b> $X_n \sim \mathcal{B}(n, \frac{\lambda}{n})$ : 
+	<ol>
+		<li> Calculer $\ln[\mathbb{P}(X_n=k)]$ et montrer que $\ln[\mathbb{P}(X_n=k)] \underset{n\to\infty}{=} -\lambda + \ln \frac{\lambda^k}{k!} + \circ(1)$</li>
+		<li>Déterminer alors $\lim_{n \to \infty}(\mathbb{P}(X_n=k))$</li>
+	</ol>
+</p>
+<div class="exemple">
+	<div id="title"> Propriété </div>
+	<center>
+	$$ X_n \overset{p.s.}{\to} X\implies X_n \overset{\mathbb{P}}{\to} X \implies X_n \overset{\mathscr{L}}{\to} X$$
+</center>
+	</div>
+
+</section>
+
+<section>
+<h1>Caractérisation de la CV en loi</h1>
+
+
+<div class="exemple">
+	<div id="title"> Propiétés </div>
+	Les propriétés suivantes sont équivalentes : 
+<ol style="margin-top:0.5em;">
+	<li><span style="margin-left:-3em;">$X_n \overset{\mathscr{L}}{\to} X$</span></li>
+	<li><span style="margin-left:-3em;">$\forall f:\mathbb{R}^n \to \mathbb{R}$ continue et bornée, $\mathbb{E}[f(X_n)] \to \mathbb{E}[f(X)]$</span></li>
+	<li><span style="margin-left:-3em;">$\forall t \in \mathbb{R}^n, \varphi_{X_n}(t) \overset{\mathscr{L}}{\to} \varphi_{X}(t)$</span></li>
+	<li><span style="margin-left:-3em;">$\forall H \in \mathbb{B}^{\mathbb{R}^n}$ tel que $\mathbb{P}(X \in \partial H) =0 (\text{frontière : } \partial H = \bar{H} \backslash \circ{H})$</br>
+	$\mathbb{P}(X_n \in \mathbb{H}) \to \mathbb{P}(X \in H)$	
+	</span></li>
+</ol>
+</div>
+
+<p>Le "mapping theorem" est également valable pour les convergences en loi</p>
+
+<div class="exemple">
+	<div id="title"> Propiété </div>
+ Soit $X_n \overset{\mathscr{L}}{\to} X$ et $f$ continue. Alors $$f(X_n) \overset{\mathscr{L}}{\to} f(X)$$
+</ol>
+</div>
+
+</section>
+
+
+<section>
+<h1>Théorème central limite</h1>
+On a enfin le théorème de convergence suivant sur une somme de variables centrées i.i.d. 
+
+<div class="exemple">
+	<div id="title"> Théorème [central limite] </div>
+Soit $(X_n)_n$ une suite de v.a. i.i.d. sur $\Omega \to \mathbb{R}^d$ et telles que $\mathbb{E}(||X_1||^2) < \infty$, alors 
+<center>
+	$$
+	\frac{1}{\sqrt{n}}\sum_{i=1}^{n}(X_i - \mathbb{E}(X_1)) \overset{\mathscr{L}}{\to}\mathcal{N}(0, \mathrm{Cov}(X_1))
+	$$
+</center>
+</div>
+<p><b>Preuve : </b> Dans le cas réel centrée réduit.</p>
+</section>
+</div>
+
+<div class='footer'>
+	<img src="css/theme/img/logo-Telecom.svg" alt="Logo"/>
+	<div id="middlebox">Probabilités - MDI104</div>
+	<ul>
+	</ul>
+</div>
+			</div>
+
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: false,
+				slideNumber: true,
+				minScale: 0.1,
+				maxScale: 5,
+				transition: 'none', //
+
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/math-katex/math-katex.js', async: true },
+					{ src: 'plugin/reveald3/reveald3.js' },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+
+	</body>
+
+</html>
