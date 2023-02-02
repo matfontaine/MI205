@@ -798,7 +798,7 @@ Posons $\nu_0 = 0.1, \nu_1=0.13$ et $A_0=A_1/10$.
 				<!-- <h3 style='margin-top:0.5em;'>Cumulants</h3>
 				<ul>
 					<li style='margin-top:-0.8em;'>Définition: $
-						\ln\left(\phi_x(\bold{f})\right) =
+						\log\left(\phi_x(\bold{f})\right) =
 						 \sum\limits_{n=1}^{+\infty}\frac{(-2i\pi)^n}{n!}\sum\limits_{k_1=1}^M\dots\sum\limits_{k_n=1}^M
 						 \kappa^{n}_{k_{1}\dots k_{n}}[\bold{x}]f_{k_1}\dots f_{k_n}$</li>
 					<li>$\kappa^n[\bold{x}]$ est un tenseur d'ordre $n$ de coefficients $\kappa^{n}_{k_{1}\dots k_{n}}[\bold{x}]$</li>
@@ -1279,8 +1279,8 @@ Posons $\nu_0 = 0.1, \nu_1=0.13$ et $A_0=A_1/10$.
 	<h3 style='margin-top:0.5em;'>Formation de voies</h3>
 	<ul>
 	<li>Hypothèses : ondes planes, champ lointain, pas de réverbération, antenne linéaire</li>
-	<li>Modèle : $a_{mn}(f)=e^{-2i\pi f\tau_{mn}}$ où $\tau_{mn}=\frac{d_m}{c}\sin(\theta_n)$</li>
-	<li>Paramètres : positions $d_m$ des capteurs et les angles $\theta_n$ des sources</li>
+	<li>Modèle : $a_{mn}(f)=e^{-2i\pi f\tau_{mn}}$ où $\tau_{mn}=\frac{d_m}{c}\sin(\Theta_n)$</li>
+	<li>Paramètres : positions $d_m$ des capteurs et les angles $\Theta_n$ des sources</li>
 	</ul>
 
 	<h3 style='margin-top:0.5em;'>Modèle anéchoïque</h3>
@@ -1360,6 +1360,451 @@ avec <center>
 	</div>
 </section>
 
+<section class="cover" data-background="figures/background-blur.jpg" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>III - Espérance-Maximisation</h2>
+</section>	
+<section>
+	<h1>Motivations, principe du maximum de vraisemblance</h1>
+	<ul>
+		<li>On a maintenant des modèles pour l'audio (+ des connaissances en optimisation)</li>
+		<li>Cependant pas d'estimation des paramètres</li>
+		<li>Un modèle probabiliste a été cependant établi (modèle Gaussien)</li>
+		<div class="remarque" style='margin-top:0.5em; margin-bottom:0.5em;'>
+			Comment exploiter ce modèle pour estimer les matrices de covariances ?
+			</div>
+	</ul>
+	$\rightarrow$ <b>Solution : </b> Exploiter le maximum de vraisemblance ! <br>
+	$\rightarrow$ <b>Idée :</b> trouver les paramètres d'un modèle de probabilité les plus "vraisemblables" pour expliquer des données 
+	observées.
+	<ul>
+		<li>Dans notre cas, on avait $\bold{x}(f,t)$ des GCCC </li>
+		<li>Notons $\bold{X} = \left\{\bold{x}(f,t)\right\}_{f,t=1}^{F,T}$ et $\Theta=\{\Sigma{(f,t)}\}_{f,t=1}^{F,T}$ les paramètres.
+		<li>Par indépendance $p(\bold{X}\mid \Theta) = \prod_{f,t=1}^{F,T} p(\bold{x}(f,t)\mid \Sigma(f,t))$</li>
+	</ul>
+	<br>
+	<p>Ici on a le problème d'optimisation :</p>
+	<center>
+    $$
+	\Theta^\star = \underset{\Theta}{\text{argmax}} \log(p(\bold{X}\mid \Theta))
+	$$
+	</center>
+
+	<div class="affirmation" style='margin-top:0.5em; margin-bottom:0.5em;'>
+		Ce problème est appelé <b>le principe du maximum de (log)-vraisemblance (ML)</b>
+		</div>
+</section>
+
+<section>
+ <h1>Motivations, limites du modèle</h1>
+ On a cependant à faire à un certain nombre de limitations que voici:
+ <ul>
+	<li>Les paramètres que l'on cherche (considérés comme "cachés") sont également les $\Sigma_n(f,t)$</li>
+	<li>Le problème d'optimisation précédent n'est pas forcément trivial à résoudre (non convexité etc.)</li>
+	<li>En réalité, on a un échantillon TF pour estimer chaque $\Sigma_n(f,t)$ (on verra que la MNMF permet de résoudre se problème)</li>
+ </ul>
+
+ <div class="remarque" style='margin-top:0.5em; margin-bottom:0.5em;'>
+	L'algorithme d'espérance-maximisation va nous permettre de résoudre partiellement les deux premiers points.
+	</div>
+
+	Dans la suite, on notera $L(\Theta) = \log(p(\bold{X} \mid \Theta)$ (à noter que le log est une fonction croissante. donc cela ne change pas le problème)
+</section>
+
+   <section>
+	<h1>Espérance-Maximisation (EM) (1/4)</h1>
+	L'EM est un algorithme itératif qui met à jour les $\Theta$. Il permet d'effectuer la ML en présente de données cachées (latentes) $\bold{Z}$ ou de données manquantes.
+	<ul>
+		<li>Ces données cachées peuvent être définies pour une estimation des $\Theta$ plus accessible.</li>
+		<li>On note $\Theta_n$ les paramètres estimés à l'itération $n$</li>
+		<li>Comme on veut maximiser $L(\Theta)$, on voudrait une mise à jour des $\Theta$ tel que : 
+			<center>
+				$$
+				L(\Theta) > L(\Theta_n)
+				$$
+			</center>
+
+		</li>
+		<li>De manière équivalente, on veut maximiser la différence :
+
+			<center>
+				$$
+				L(\Theta) - L(\Theta_n) = \log(P(\bold{X} \mid \Theta)) - \log(P(\bold{X} \mid \Theta_n))
+				$$
+			</center>
+		</li>
+		<li>
+			La formule des probabilité totale nous permet d'écrire :
+			<center>
+			$$
+			L(\Theta) - L(\Theta_n)  =
+			 \log\sum_{\bold{z} \in \bold{Z}} P(\bold{X} \mid \bold{z}, \Theta)P(\bold{z} \mid \Theta) - \log(P(\bold{X} \mid \Theta_n))
+			 
+		    $$
+		</center>
+		</li>
+		<li>L'inégalité de Jensen ($\sum \lambda_i = 1, \lambda_i,  \geq 0 \forall i, \log(\sum\lambda_i x_i) \geq \sum \lambda_i \log(x_i)$) 
+			s'applique ici (car les $\lambda_i = P(\bold{z} \mid \bold{X}, \Theta_n) \geq 0$ et $\sum_i \lambda_i = 1$) </li>
+	</ul>
+
+   </section>
+
+   <section>
+	<h1>Espérance-Maximisation (EM) (2/4)</h1>
+	En continuant de dérouler les calculs, on obtient : 
+	$$\begin{aligned}
+L(\Theta)-L\left(\Theta_n\right) & =\log \sum_{\mathbf{z}} \mathcal{P}(\mathbf{X} \mid \mathbf{z}, \Theta) \mathcal{P}(\mathbf{z} \mid \Theta)-\log \mathcal{P}\left(\mathbf{X} \mid \Theta_n\right) \\
+& =\log \sum_{\mathbf{z}} \mathcal{P}(\mathbf{X} \mid \mathbf{z}, \Theta) \mathcal{P}(\mathbf{z} \mid \Theta) \cdot \frac{\mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right)}{\mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right)}-\log \mathcal{P}\left(\mathbf{X} \mid \Theta_n\right) \\
+& =\log \sum_{\mathbf{z}} \mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right)\left(\frac{\mathcal{P}(\mathbf{X} \mid \mathbf{z}, \Theta) \mathcal{P}(\mathbf{z} \mid \Theta)}{\mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right)}\right)-\log \mathcal{P}\left(\mathbf{X} \mid \Theta_n\right) \\
+& \geq \sum_{\mathbf{z}} \mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right) \log \left(\frac{\mathcal{P}(\mathbf{X} \mid \mathbf{z}, \Theta) \mathcal{P}(\mathbf{z} \mid \Theta)}{\mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right)}\right)-\log \mathcal{P}\left(\mathbf{X} \mid \Theta_n\right) \\
+& =\sum_{\mathbf{z}} \mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right) \log \left(\frac{\mathcal{P}(\mathbf{X} \mid \mathbf{z}, \Theta) \mathcal{P}(\mathbf{z} \mid \Theta)}{\mathcal{P}\left(\mathbf{z} \mid \mathbf{X}, \Theta_n\right) \mathcal{P}\left(\mathbf{X} \mid \Theta_n\right)}\right) \\
+& := \Delta\left(\Theta \mid \Theta_n\right)
+\end{aligned}$$
+Si on pose alors : $l (\Theta \mid \Theta_n) := \Delta\left(\Theta \mid \Theta_n\right) + L(\Theta_n)$. On a (et on peut montrer) :
+<center>
+	$$
+	L(\Theta) \geq l(\Theta \mid \Theta_n) \quad\text{et}\quad l(\Theta_n \mid \Theta_n) = L(\Theta_n)
+	$$
+</center>
+   </section>
+
+   <section>
+	<h1>Espérance-Maximisation (EM) (3/4)</h1>
+	<ul>
+		<li> Rappel : On cherche $\Theta$ qui maximise $L(\Theta)$</li>
+		<li>Quand $\Theta$ augmente $l(\Theta \mid \Theta_n)$, il augmente $L(\Theta)$</li>
+		<li>L'algorithme EM alors cherche un $\Theta$ tel que $l(\Theta \mid \Theta_n)$ est maximum</li>
+		<li>Cette nouvelle valeur est alors notée $\Theta_{n+1} :=\underset{\Theta}{\text{argmax}}(l(\Theta \mid \Theta_n))$</li>
+	</ul>
+	
+	<p>
+		<center><figure>
+			<img src="figures/images/fonction_EM.png" width="80%">
+			<figcaption><em>Illustration de l'algorithme EM.</em></figcaption>
+			</figure>
+			</center>
+		</p>
+</section>
+
+<section>
+	<h1>Espérance-Maximisation (EM) (4/4)</h1>
+	On peut alors montrer que :
+	<center>
+		$$\begin{aligned}
+		\Theta_{n+1} &:=\underset{\Theta}{\text{argmax}}(l(\Theta \mid \Theta_n)) \\
+		 &= \underset{\Theta}{\text{argmax}}\left[\sum_{\bold{z}}P(\bold{z} \mid \bold{X}, \Theta_n)\log P(\bold{X},\bold{z} \mid \Theta)\right] \\
+		 &= \underset{\Theta}{\text{argmax}}\left[\mathbb{E}_{\bold{Z} \mid \bold{X}, \Theta_n} \log(P(\bold{X},\bold{z} \mid \Theta))\right]
+		\end{aligned}
+		$$
+	</center>
+
+	On voit alors les deux étapes essentielles de l'algorithme EM apparaître :
+	<div class="exemple">
+	<p><ol>
+		<li>$E$-step : Déterminer l'espérance conditionelle $\mathbb{E}_{\bold{Z} \mid \bold{X}, \Theta_n} \log(P(\bold{X},\bold{z} \mid \Theta))$</li>
+		<li>$M$-step : Maximiser l'expression précédente en fonction de $\Theta$</li>
+	</ol></p>
+</div>
+	<div class="remarque">
+		En soit, on a "troqué" une maximisation de vraisemblance par celle d'une fonction $l$. L'idée est de proposer une fonction $l$ simple à maximiser
+		et qui fait apparaître des variables latentes interprétables ou qui sont essentielles afin de résoudre le problème.
+	</div>
+	<p>
+	<div class="references">
+		<ul>
+			<li>A. P. Dempster, N. M. Laird, and D. B. Rubin. Maximum likelihood from incomplete data via the EM algorithm. Journal of the Royal Statistical Society:
+				Series B, 39(1):1–38, November 1977.</li>
+		</ul>
+	</p>
+	</div>
+</section>
+
+<section>
+	<h1 style="margin-top:-1em;">Application : famille exponentielle (1/3)</h1>
+	Supposons un jeu de données complet ($x_i, z_j$) i.i.d. de cardinal $N$ qui appartient à une famille exponentielle canonique :
+	<center>
+		$$
+		P(x_i, z_j \mid \bold{\eta}) = h(x_i, z_j) e^{\bold{\eta}^\top T_{ij}(x_i, z_j) - A(\bold{\eta})}
+		$$
+	</center>
+	On obtient alors : 
+	<center>
+		$$
+		P(\bold{X}, \bold{Z} \mid \bold{\eta}) = \prod_{i,j}h(x_i, z_j) e^{\bold{\eta}^\top T_{ij}(x_i, z_j) - A(\bold{\eta})}
+		$$
+	</center>
+	L'espérance $\mathbb{E}_{\bold{Z} \mid \bold{X}, \eta_n} \log(P(\bold{X}, \bold{Z} \mid \bold{\eta}))  = \sum_{i,j} \mathbb{E}_{z_i \mid x_i, \eta_n} \log(P(x_i, z_j \mid \eta))$ devient :
+	<center>
+		$$
+		\begin{aligned}
+		&\sum_{i,j} \mathbb{E}_{z_j \mid x_i, \eta_n} \log(P(x_i, z_j \mid \eta)) \\
+		 &= \sum_{i,j} \mathbb{E}_{z_j \mid x_i, \eta_n} \left[\log(h(x_i, z_j)) + \bold{\eta}^\top [ T_{ij}(x_i, z_j)] - A(\bold{\eta})\right]
+		 \end{aligned}
+		 $$
+	</center>
+	La dérivation par rapport à $\eta$ et l'annulation du gradient implique que :
+	<center>
+		$$
+		\sum_{i,j} \mathbb{E}_{z_j \mid x_i, \eta_n}[T_{ij}(x_i, z_j)] = N\frac{\partial A(\eta)}{\partial \eta}
+		$$
+	</center>
+	<div class="remarque">
+		<b> Remarque :</b> L'étape E revient alors à calculer les espérances conditionnelles des $T_{ij}$.
+	</div>
+</section>
+
+<section>
+	<h1>Application : famille exponentielle (2/3)</h1>
+	Prenons un modèle de mélange simple monocanal
+	<center>
+	$$x(f,t) = \sum_{n=1}^{N} s_n(f,t)$$
+</center> où toutes les variables sont indépendantes et $s_n(f,t) \sim \mathcal{N}_{\mathbb{C}}(\sigma^2_n(f,t))$ .
+ On peut montrer que $P\left(\boldsymbol{X},\boldsymbol{s}\mid\Theta\right)$ est une famille exponentielle (car gaussienne) avec
+ <center>
+ $$T_n(f,t) = (\bold{y}_n(f,t), \bold{y}_n(f,t)\bold{y}_n(f,t)^\top)^\top$$
+ où $\bold{y}_n(f,t) = [s_n(f,t), x(f,t)]^\top$
+</center>
+
+Dans ce cas précis (comme il s'agit des espérances conditionnelles) l'étape E se réduit au final à déterminer les
+espérances et variances conditionnelles ($\hat{s}_n(f,t),\sigma^2_{n\mid x}(f,t)$). On a donc :
+<center>
+	$$\begin{aligned}
+	\hat{s}_n(f,t) &= \frac{\sigma_n^2(f,t)}{\sum_{n^\prime=1}^{N}\sigma_{n^\prime}^2(f,t)}x(f,t) \\
+	\sigma_{n \mid x}(f,t) &= \hat{s}_n(f,t)\hat{s}^{\star}_n(f,t) + \left(1- \frac{\sigma_n^2(f,t)}{\sum_{n^\prime=1}^{N}\sigma_{n^\prime}^2(f,t)}\right)\sigma_n^2(f,t)
+	\end{aligned}
+	$$
+</center>
+
+</section>
+<section>
+	<h1>Application : famille exponentielle (3/3)</h1>
+L'étape M revient donc à calculer les dérivées partielles par rapport aux $\sigma_n(f,t)$. On obtient au final tout simplement :
+<center>
+	$$\begin{aligned}
+   \sigma_n^2(f,t) = \sigma_{n \mid x}^2(f,t)
+	\end{aligned}
+	$$
+</center>
+Pour résumer on pourrait avoir l'algorithme suivant : 
+<div class="exemple">
+	<div id="title">[Algorithme de séparation "naïf" EM]</div>
+	<ol> <li><b>Entrées</b>
+		<ul>
+			<li> Données observées $\bold{X}$</li>
+			<li>Nombre d'itérations $I$ de l'algorithme EM</li>
+		</ul>
+	</li>
+	<li>
+		<b>Initialisation</b>
+		<ul>
+			<li>Initialiser les $\sigma^2_{n, (0)}(f,t), \forall n,f,t$</li>
+		</ul>
+	</li>
+	<li>
+		<b>Algorithme EM pour $i=1, \dots, I$ </b>
+			<ul>
+				<li>Etape-E en calculant $\hat{s}_{n, (i)}(f,t)$ et $\sigma_{n \mid x, (i)}^2(f,t)$</li>
+				<li>Etape-M (un peu inutile ici ...) on a $\sigma_{n,(i)}^2(f,t) = \sigma_{n \mid x, (i)}^2(f,t)$</li>
+			</ul>
+	</li>
+	</ol>
+</div>
+<p>
+<div class="remarque">En pratique, il faut initialiser les variances... (Dans le cas du débruitage, l'énergie du bruit peut être initialisé via un détecteur d'activité vocal)
+</div>
+</p>
+</section>
+
+<section>
+	<h1>Méthodes inspirées de l'algorithme EM (1/2)</h1>
+	<h2>Algorithme de maximisation-minimisation</h2>
+	Purement un problème d'optimisation itératif. Problème trop compliqué, alors on prend une fonction concave.<br>
+	<ul>
+		<li>Soit $f(\Theta)$ la fonction à majorer</li>
+		<li>On construit $g(\Theta \mid \Theta_i)$ concave à chaque iteration qui va minorer $f(\theta)$ comme suit :
+
+			<center>
+				$$
+				\begin{aligned}
+				g(\Theta \mid \Theta_i) &\leq f(\Theta) \forall \Theta \\
+				g(\Theta_i \mid \Theta_i) &= g(\Theta_i)
+				\end{aligned}
+				$$
+			</center>
+		</li>
+		<li> On maximise alors $g$ : $\Theta_{i+1}=\underset{\Theta}{\text{argmax }} g(\Theta \mid \Theta_i)$</li>
+		<li>Remarquons que $f(\Theta_{i+1})\geq f(\Theta_{i})$</li>
+	</ul>
+	<p>
+	<div class="references">
+		<ul>
+			<li> Kenneth Lange: "MM Optimization Algorithms", SIAM, ISBN 978-1-611974-39-3 (2016)</li>
+		</ul>
+	</div>
+</p>
+</section>
+
+<section>
+	<h1>Méthodes inspirées de l'algorithme EM (2/2)</h1>
+	<h2>Méthode de la fonction auxiliaire</h2>
+     <ul>
+		<li>On cherche à résoudre :
+
+				$\Theta^\star = \underset{\Theta}{\text{argmin }}J(\Theta)$
+
+		</li>
+		<li>On prend une <b>fonction auxiliaire </b> $Q(\Theta, \tilde{\Theta})$ tel que :<br>
+		$\quad \rightarrow J(\Theta) = \underset{\tilde{\Theta}}{\min~}Q(\Theta, \tilde{\Theta})$ <br>
+		$\quad Q(\Theta, \Theta) = J(\Theta)$
+	</li>
+	<li>On minimise alors alternativement les $\Theta$ et $\tilde{\Theta}$ :<br>
+	$\quad \rightarrow \tilde{\Theta}^{(i+1)}= \underset{\tilde{\Theta}}{\text{argmin }}Q(\Theta^{(i)}, \tilde{\Theta})$<br>
+	$\quad \rightarrow \Theta^{(i+1)} = \underset{\Theta}{\text{argmin }}Q(\Theta, \tilde{\Theta}^{(i+1)})$</li>
+	<li>Dans ce cas là, on a également que $Q(\Theta, \tilde{\Theta}) \geq J(\Theta)$.</li>
+	 </ul>
+<p>
+	 <div class="affirmation">
+		Utilisation d'un exemple concret en séparation de sources sonores ?
+	 </div>
+	</p>
+
+
+	<div class="references">
+		<ul>
+	<li>Lee, D., & Seung, H. S. (NEURIPS, 2000). Algorithms for non-negative matrix factorization.
+		 .</li>
+		 </ul>
+		</li>
+</section>
+
+<section>
+	<h1 style="margin-top:-1em;">AuxIVA (Auxiliary Independent component analysis) (1/2)</h1>
+	<ul>
+		<li>On reprend le modèle convolutif avec l'approximation en bande étroite :
+		<center>
+			$$
+			\bold{x}(f,t) = A(f)\bold{s}(f,t)
+			$$
+		</center>
+		</li>
+		<li>On cherche $W(f)=[\bold{w}_1(f), \dots, \bold{w}_N(f)]$ tel que $\bold{y}(f,t) = W(f)\bold{x}(f,t)$ avec $\bold{y}(f,t) = [y_1(f,t), \dots, y_n(f,t)]^\top$</li>
+		<li>On suppose cette fois-ci les vecteurs $\bold{y}_n^{(t)} = [y_n(1,t), \dots, y_n(F,t)]^\top$ indépendants</li>
+		<div class ="affirmation">C'est l'hypothèse de l'IVA !</div><br>
+		<li>La fonction de coût du problème est définie par
+			<center>
+				$$J_t(W) = \sum_{n=1}^{N} \mathbb{E}[-\log P(\bold{y}_n^{t})] - \sum_{f=1}^{F} \log \left|\det W(f) \right|$$
+			</center>
+		</li>
+		<li>
+			Le modèle souvent employé pour les $\bold{y}_n^{t}$ sont les modèles sphériques gaussiens :
+			<center>
+				$$
+				P(\bold{y}_n^{t}) = \frac{1}{\pi^F (r_n^{(t)})^F}e^{-\frac{||\bold{y}_n^{(t)}||^2}{r_n(t)}}
+				$$
+			</center>
+		</li>
+	<li>La fonction auxiliaire $Q(\bold{W}, \bold{V})$ est alors 
+		<center>
+			$$
+			Q(\bold{W}, \bold{V}) = \sum_{n,f=1}^{N,F}\bold{w}_{n}(f)\mathbb{E}[\frac{-\log P(||\bold{y}_n^{(t)}||^2)^{\prime}}{r_n^{(t)}}]
+			\bold{w}_{n}^\mathsf{H}(f)^
+			 - \log|\det(W(f))| + C
+			$$
+		</center>
+	</li>
+	</ul>
+</section>
+
+<section>
+	Au final, on dérive par rapport aux variables souhaitées et aux variables auxilaires pour obtenir l'algorithme suivant 
+	(avec $\bold{e}_n = [0, \dots, \underbrace{1}_{\text{n ème position}}, 0,\dots, 0]^\top$) 
+	:
+
+	<div class="exemple">
+		<div id="title">[Algorithme AuxIVA]</div>
+		<ol> <li><b>Entrées</b>
+			<ul>
+				<li> Données observées $\bold{X}$</li>
+				<li>Nombre d'itérations $I$ de l'algorithme itératif</li>
+			</ul>
+		</li>
+		<li>
+			<b>Initialisation</b>
+			<ul>
+				<li>Initialiser les $W(f), \forall n,f,t$</li>
+			</ul>
+		</li>
+		<li>
+			<b>Algorithme itératif pour $i=1, \dots, I$ </b>
+				<ul>
+					<li>mise à jour des $r_n^{(t)} = \sqrt{\sum_{f=1}^{F}|\bold{w}_{n}^\mathsf{H}(f)\bold{x}(f,t)|}$</li>
+					<li>mise à jour des $V_n(f) = \mathbb{E}[\frac{-\log P(||\bold{y}_n^{(t)}||^2)^{\prime}}{r_n^{(t)}}]$</li>
+					<li>mise à jour des $\bold{w}_n(f) = (W(f)V_n(f))^{1}\bold{e}_n$</li>
+					<li>mise à jour des  $\bold{w}_n(f) = \frac{\bold{w}_n(f)}{\sqrt{\bold{w}_n(f)^\mathsf{H}V_n(f)\bold{w}_n(f)}}$</li>
+				</ul>
+		</li>
+		</ol>
+	</div><br>
+	<div class="references">
+		<ul>
+			<li>Ono, N. Stable and fast update rules for independent vector analysis based on auxiliary function technique. WASPAA (2011)</li>
+		</ul>
+	</div>
+</section>
+
+<section>
+	<h2>Exemple d'AuxIVA </h2>
+	<img src="figures/images/config_2_sobi.png" alt="" style="margin-left:auto; margin-right:auto; display:block; margin-top:0.8em" width=60%>
+	<div class="multiCol" style="margin-top:0.1em">
+		<div class="col">
+			<label for="no_sp">
+			&nbsp&nbsp&nbsp	&nbsp&nbsp&nbsp	&nbsp&nbsp 3 locuteurs<br>
+			</label>
+				<audio id="no_sp" controls>
+				<source
+						type="audio/mpeg"
+						src="multimedia/audio/multi_sp_SOBI.wav"/>
+					</audio> <br>
+
+		
+			<label for="cl_sp">
+				&nbsp&nbsp&nbsp	&nbsp&nbsp&nbsp	&nbsp&nbsp locuteur 2 (auxIVA)<br>
+				</label>
+					<audio id="cl_sp" controls>
+					<source
+							type="audio/mpeg"
+							src="multimedia/audio/multi_sp_K=2_auxIVA.wav"/>
+						</audio>
+
+		</div>
+		<div class="col">
+			<label for="cl_sp">
+			&nbsp&nbsp&nbsp	&nbsp&nbsp&nbsp	&nbsp&nbsplocuteur 1 (auxIVA)<br>
+			</label>
+				<audio id="cl_sp" controls>
+				<source
+						type="audio/mpeg"
+						src="multimedia/audio/multi_sp_K=1_auxIVA.wav"/>
+					</audio> <br>
+		
+			<label for="cl_sp">
+				&nbsp&nbsp&nbsp	&nbsp&nbsp&nbsp	&nbsp&nbsp locuteur 3 (auxIVA)<br>
+				</label>
+					<audio id="cl_sp" controls>
+					<source
+							type="audio/mpeg"
+							src="multimedia/audio/multi_sp_K=3_auxIVA.wav"/>
+						</audio>
+
+
+
+		</div>
+
+
+
+
+
+
+</section>
 </div>
 
 
