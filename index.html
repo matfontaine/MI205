@@ -1625,8 +1625,8 @@ Pour résumer on pourrait avoir l'algorithme suivant :
 			<center>
 				$$
 				\begin{aligned}
-				g(\Theta \mid \Theta_i) &\leq f(\Theta) \forall \Theta \\
-				g(\Theta_i \mid \Theta_i) &= g(\Theta_i)
+				g(\Theta \mid \Theta_i) &\leq f(\Theta),~ \forall \Theta \\
+				g(\Theta_i \mid \Theta_i) &= f(\Theta_i)
 				\end{aligned}
 				$$
 			</center>
@@ -1687,15 +1687,14 @@ Pour résumer on pourrait avoir l'algorithme suivant :
 		</center>
 		</li>
 		<li>On cherche $W(f)=[\bold{w}_1(f), \dots, \bold{w}_N(f)]$ tel que $\bold{y}(f,t) = W(f)\bold{x}(f,t)$ avec $\bold{y}(f,t) = [y_1(f,t), \dots, y_n(f,t)]^\top$</li>
-		<li>On suppose cette fois-ci les vecteurs $\bold{y}_n^{(t)} = [y_n(1,t), \dots, y_n(F,t)]^\top$ indépendants</li>
-		<div class ="affirmation">C'est l'hypothèse de l'IVA !</div><br>
+		<li>On suppose les vecteurs $\bold{y}_n^{(t)} = [y_n(1,t), \dots, y_n(F,t)]^\top$ indépendants (IVA)</li>
 		<li>La fonction de coût du problème est définie par
 			<center>
 				$$J_t(W) = \sum_{n=1}^{N} \mathbb{E}[-\log P(\bold{y}_n^{t})] - \sum_{f=1}^{F} \log \left|\det W(f) \right|$$
 			</center>
 		</li>
 		<li>
-			Le modèle souvent employé pour les $\bold{y}_n^{t}$ sont les modèles sphériques gaussiens :
+			Le modèle employé pour les $\bold{y}_n^{t}$ sont les modèles sphériques gaussiens :
 			<center>
 				$$
 				P(\bold{y}_n^{t}) = \frac{1}{\pi^F (r_n^{(t)})^F}e^{-\frac{||\bold{y}_n^{(t)}||^2}{r_n(t)}}
