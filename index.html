@@ -1797,12 +1797,239 @@ Pour résumer on pourrait avoir l'algorithme suivant :
 
 
 		</div>
+</section>
+
+<section class="cover" data-background="figures/background-blur.jpg" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>IV - Factorisation de matrices non négatives (NMF) </h2>
+</section>	
+
+<section>
+
+	<h1>Introduction</h1>
+	<ul>
+		<li>Technique très populaire pour l'analyse de données</li>
+		<li>Très employé (+ de 7000 citations pour le papier original)</li>
+		<li>Utilisables dans pleins de domaines (audio, computer vision, système de recommendations etc.)</li>
+	</ul>
+
+	<div class="references">
+		<ul>
+			<li>Lee, D., Seung, H. ”Learning the parts of objects by
+				non-negative matrix factorization.” Nature vol. 401, pp. 788–791
+				(1999).</li>
+		</ul>
+
+	</div>
+
+</section>
+
+<section>
+	<h1>Application en audio ?</h1>
+	<ul>
+		<li>Séparation de sources sonores</li>
+		<li>Restauration de fichiers audios</li>
+		<li>Transcription musicale</li>
+	</ul>
+</section>
+<section>
+	<h1>Idée générale de la NMF (1/2)</h1>
+	<ul>
+		<li>Soit $V$ une matrice avec des coefficients $\geq 0$</li>
+		<li>On veut décomposer $V$ comme un produit de matrice non négative $W$ et $H$ de rang plus faible :
 
 
+			
+		</li>
+	</ul>
+	<center>
+		$$
+		V \approx WH
+		$$
+		<img src="figures/images/NMF.png">
+	</center>
+</section>
 
+<section>
+	<h1>Idée générale de la NMF (2/2)</h1>
+	<ul>
+		<li>Autre point de vue : décomposition en pleins de matrices de rang $1$ et sommation</li>
+		<li>Un piano qui joue c'est plusieurs notes qui s'activent au cours du temps</li>
 
+	</ul>
 
+	<center>
+		$$
+		V \approx WH
+		$$
+		<img src="figures/images/NMF_rank1.png">
+	</center>
+	
+</section>
 
+<section>
+	<h1>NMF en audio (1/6)</h1>
+	<center>
+	<img src="figures/images/note_NMF.png">
+</center>
+</section>
+
+<section>
+	<h1>NMF en audio (2/6)</h1>
+	<center>
+	<img src="figures/images/notes_NMF.png", width="70%">
+</center>
+</section>
+<section>
+	<h1>NMF en audio (3/6)</h1>
+	<center>
+	<img src="figures/images/NMF_musique.png", width="80%">
+</center>
+</section>
+<section>
+	<h1>NMF en audio (4/6)</h1>
+	<center>
+	<img src="figures/images/NMF_musique2.png", width="80%">
+</center>
+</section>
+<section>
+	<h1>NMF en audio (5/6)</h1>
+	<center>
+	<img src="figures/images/NMF_musique3.png", width="80%">
+</center>
+</section>
+<section>
+	<h1>NMF en audio (6/6)</h1>
+	<ul>
+		<li>Exemple sur un Piano</li>
+		<li>$W$: dictionnaire de notes</li>
+		<li>$H$: activation des notes</li>
+	</ul>
+	<center>
+	<img src="figures/images/piano_NMF.png", width="100%">
+</center>
+</section>
+<section>
+	<h1>Exemples d'applications (1/3)</h1>
+	<ul>
+		<li>Ici, si $W$ représente les notes. Alors $H$ est transcription approximative.</li>
+	</ul>
+	<center>
+		<img src="figures/images/piano_NMF.png", width="100%">
+	</center>
+</section>
+
+<section>
+	<h1>Exemples d'applications (2/3)</h1>
+	<ul>
+		<li>Séparation de sources</li>
+	</ul>
+	<center>
+		<img src="figures/images/NMF_musique3.png", width="80%">
+	</center>
+</section>
+
+<section>
+	<h1>Exemples d'applications (3/3)</h1>
+	<ul>
+		<li>Restauration de fichiers audios</li>
+		<li>On utilise $W$ et/ou $H$ pour la restauration</li>
+	</ul>
+	<center>
+		<img src="figures/images/restore_NMF.png", width="80%">
+	</center>
+	<div class="remarque">Comment estime-t-on $W$ et $H$ ?</div>
+</section>
+
+<section>
+	<h1>Résolution du problème</h1>
+	<ul>
+		<li>On cherche $W$ et $H$ telle que l'erreur
+			d'une certaine metrique soit minimisé entre $V$ et $WH$ :
+			<center>
+				$$
+				\underset{W \geq 0,H \geq 0}{\min}d(V \mid WH)
+				$$
+			</center>
+	    </li>
+		<li>Ces distances sont plutôt coordonnées par coordonnées :
+			 $$d(V \mid WH) = \sum_{f,t=1}^{F,T} d (v_{ft} \mid \sum_{k=1}^{K}w_{fk}h_{kt})$$</li>
+		<li> $||V-WH||^2$ la distance euclidienne.</li>
+		<li>$V\log\frac{V}{WH} - V + WH$: la divergence de Kullback-Leibler</li>
+		<li>$\frac{V}{WH} - \log(\frac{V}{WH}) -1$ : la divergence d'Itakura-Saito</li>
+
+	</ul>
+	<p>
+	<center>
+		<div class="remarque">On se concentra ici sur la divergence de Kullback-Leibler</div>
+	</center>
+</p>
+</section>
+<section>
+	<h1>Résolution du problème</h1>
+	<ul><li>Soit $V=\{v_{ft}\}_{f,t=1}^{F,T}, W=\{w_{fk}\}_{f,k=1}^{F,K}, H=\{h_{kt}\}_{k,t=1}^{K,T}$</li>
+		<li>On calcule simplement les dérivées partielles $\frac{\partial}{\partial w_{fk}}$ et $\frac{\partial}{\partial h_{kt}}$</li>
+	</ul>
+	On a alors au choix deux solutions : 
+	<ul>
+		<li>Soit on fait une descente du gradient $w_{fk}^{(i)} \leftarrow w_{fk}^{(i-1)} - \eta \nabla w_{fk}^{(i-1)}$</li>
+		<li>Soit on regarde l'annulation du gradient et on obtient les mises à jours suivantes:
+			<center>
+				$$W \leftarrow W \circ \frac{\frac{V}{WH}H^\top}{\bold{1}H^\top}$$
+			</center>
+			<center>
+				$$H \leftarrow H \circ \frac{W^\top\frac{V}{WH}}{W^\top\bold{1}}$$
+			</center>
+
+		</li>
+	<li> $\circ$ : produit terme à terme</li>
+	<li>$\frac{.}{.}$ : division terme à terme</li>
+	<li>$\bold{1}$ : matrice remplie de $1$ (afin d'avoir la bonne dimension)</li>
+</ul>
+</section>
+
+<section>
+	<h1>Algorithme NMF en audio (avec divergence de Kullback-Leibler)</h1>
+	<div class="exemple">
+		<div id="title">Algorithme KL-NMF</div>
+		<ol> <li><b>Entrées</b>
+			<ul>
+				<li> Données observées $\bold{X}$</li>
+				<li>Nombre d'itérations $I$ de l'algorithme itératif</li>
+			</ul>
+		</li>
+		<li>
+			<b>Initialisation</b>
+			<ul>
+				<li>Initialiser les matrices $W,H, \forall n,f,t$</li>
+				<li> Calculer $V = |X|^2$ (spectrogramme de puissance)</li>
+			</ul>
+		</li>
+		<li>
+			<b>Algorithme itératif pour $i=1, \dots, I$ </b>
+				<ul>
+					<li>mise à jour $W \leftarrow W \circ \frac{\frac{V}{WH}H^\top}{\bold{1}H^\top}$</li>
+					<li>mise à jour des $H \leftarrow H \circ \frac{W^\top\frac{V}{WH}}{W^\top\bold{1}}$</li>
+				</ul>
+		</li>
+		</ol>
+	</div>
+	<p>
+	<div class="remarque">Comment reconstruire le signal après estimation de $W$ et $H$?</div>
+    </p>
+</section>
+<section>
+	<h1>Reconstruction des sources</h1>
+	<ul>
+		<li>On utilise le filtrage de Wiener comme suit:
+		<center>
+		$$x_{kft} = x_{ft} \frac{w_{fk}h_{kt}}{\sum_{k^\prime=1}^{K}w_{fk^\prime}h_{k^\prime t}}$$
+		</center></li>
+		<li>En matriciel, cela donne:
+			<center>
+				$$\bold{X}_k = \bold{X} \circ \frac{\bold{W}(:,k)\bold{H}(k, :)}{\bold{W}\bold{H}}$$
+				</center>
+		</li>
+	</ul>
 </section>
 </div>
 
