@@ -2031,6 +2031,483 @@ Pour résumer on pourrait avoir l'algorithme suivant :
 		</li>
 	</ul>
 </section>
+
+<section class="cover" data-background="figures/background-blur.jpg" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>V/1 - Factorisation de matrices non négatives multicanal (MNMF) : cas de mélange convolutif </h2>
+</section>	
+
+<section>
+	<h1>Motivations</h1>
+<ul>
+	<li>Séparation de sources en multicanal même dans le cas sous-déterminé ($M < N$)</li>
+	<li>En considérant plusieurs sources polyphoniques (NMF)</li>
+	<li>Combinaison de modèle multicanal + NMF $\implies$ MNMF</li>
+	<li>On étudie alors des <b>tenseurs</b> de taille $ M \times F \times T$</li>
+</ul>
+<center>
+<img src="figures/images/MNMF.png">
+</center>
+</section>
+
+<section>
+	<h1>Modèle de mélange convolutif bruité + NMF</h1>
+	<ul>
+		<li>On reprend un modèle de mélange convolutif avec approximation par
+			bande étroite  de $N$ sources dans le domaine temps-fréquence à laquelle on 
+			ajoute un bruit gaussien décorrélé et stationnaire :
+			
+			<center>
+				$$
+				\bold{x}(f,t) = \bold{A}(f)\bold{s}(f,t) + \bold{b}(f,t)
+				$$
+			</center>
+		</li>
+		<li>Chaque entrée $s_n(f,t)$ de $\bold{s}(f,t)=[s_1(f,t), \dots, s_N(f,t)]^\top \in \mathbb{C}^{N}$ est  indépendante des autres tel que :
+			<center>
+				$$
+				p_n(f,t) = \mathbb{E}(|s_n(f,t)|^2) \qquad\texttt{(Spectrogramme de Puissance)}
+				$$
+			</center>
+        Enfin, $\bold{b}(f,t) \sim \mathcal{N}_{\mathbb{C}}^{M}(\text{diag}[\sigma^2_{m}(f)]_{m=1}^{M}\triangleq \Sigma_{b,f})$.  On note $\Sigma_{n,ft}=\text{diag}([p_n(f,t)]_{n=1}^{N})$
+		</li>
+		<li>
+			Chaque source admet une décomposition NMF régie par le modèle suivant 
+			<center>	
+			$$s_n(f,t) = \sum_{k \in \mathcal{K}_n} c_{k}(f,t) \quad \quad  c_{k}(f,t) \sim \mathcal{N}_{\mathbb{C}}(w_{k}(f)h_{k}(t))$$ 
+		</center>
+		Avec $\mathcal{K}_n$ le nombre de composantes latentes (e.g. notes) associée à la source $n$.
+		</li>
+
+	</ul>
+	
+	<p>
+	   <div class="remarque">Estimation des paramètres via l'algorithme EM ?</div>
+	</p>
+	<div class="references">
+		<ul><li>A. Ozerov and C. Fevotte, "Multichannel Nonnegative Matrix Factorization in Convolutive Mixtures for Audio Source Separation,", TASLP. 2010.</li></ul>
+	</div>
+</section>
+
+<section>
+<h1>Log de Vraisemblance complète</h1>
+<ul>
+<li>Comme précédemment dans le cas gaussien monocanal, on prend en compte les données complètes $P(\bold{X}, \bold{C} \mid \Theta)$
+	avec $\bold{X} = \{\bold{x}(f,t)\}_{f,t=1}^{F,T}, \bold{C} = \{c_{kn}(f,t)\}_{n,f,t,k=1}^{N,F,T,K}$
+	 et $\bold{\Theta}=\{\Sigma_{b,f}, \bold{A}(f), w_k(f), h_k(t)\}_{f,t,k=1}^{F,T,K}$.
+</li>
+<li>Le calcul (en considérant $-\log P(\bold{X},\bold{S} \mid \bold{\Theta})$) revient à faire : 
+	<center>
+		$$
+		-\log P(\bold{X},\bold{S} \mid \bold{\Theta}) = -\log P(\bold{X} \mid \bold{S}, \bold{\Theta})  -\log P(\bold{S} \mid \bold{\Theta}) 
+		$$
+	</center>
+</li>
+<li>On peut démontrer que (en omettant les constantes dépendant de $\pi$) :
+	<center>
+		$
+		\begin{aligned}
+		-\log P(\bold{X}\mid \bold{S} , \bold{\Theta}) &= \sum_{f,t=1}^{F,T} \log \det \Sigma_{b,f} + \left(\bold{x}(f,t)-\bold{A}(f)\bold{s}(f,t)\right)^\mathsf{H}\Sigma_{b,f}^{-1}\left(\bold{x}(f,t)-\bold{A}(f)\bold{s}(f,t)\right) \\
+		-\log P(\bold{S} \mid \bold{\Theta}) &= \sum_{k,f,t=1}^{\mathcal{K},F,T}\left(\log(w_k(f)h_k(t))) + \frac{|c_k(f,t)|^2}{w_k(f)h_k(t)}\right)
+		\end{aligned}
+		$
+	</center>
+</li>
+<li> En utilisant la "technique de la trace" et en simplifiant on a :
+	<center>
+		$
+		\begin{aligned}
+	 -\log p(\bold{X}, \bold{S} \mid \bold{\Theta}) = <\eta(\bold{\Theta}),\bold{T}(\bold{X},\bold{S})> + \nu(\bold{\Theta})
+		\end{aligned}
+		$
+	</center>
+Avec $\bold{T}(\bold{X}, \bold{S})$ les statistiques naturelles d'une gaussienne.
+</li>
+
+</ul>
+ <div class="remarque">Une nouvelle fois, on a une famille exponentielle. </div>
+</section>
+
+<section>
+	<h1>Etape E</h1>
+	<ul>
+		<li>Les statistiques suffisantes des données $(\bold{X}, \bold{S})$ sont $\{\bold{R}_{xx,f}, \bold{R}_{xs,f}, \bold{R}_{ss,f}, u_k(f,t) = |c_k(f,t)|^2\}$</li>
+		où $ \bold{R}_{de,f} =\frac{1}{T}\sum_{t}\bold{d}(f,t)\bold{e}(f,t)^{\mathsf{H}}$
+		<li>On doit calculer les espérances $\mathbb{E}_{\bold{S} \mid \bold{X},\bold{\Theta}_i}$ des statistiques suffisantes :</li>
+		<center style="margin-left:-2em; margin-top:-1em;">
+		$\begin{aligned}
+		\mathbb{E}_{\bold{S} \mid \bold{X},\bold{\Theta}_i}[\bold{R}_{xx,f}] &= \hat{\bold{R}}_{xx,f} = \frac{1}{T}\sum_{t=1}^{T}\bold{x}_{ft}\bold{x}_{ft}^{\mathsf{H}} \\
+		\mathbb{E}_{\bold{S} \mid \bold{X},\bold{\Theta}_i}[\bold{R}_{xs,f}] &= \hat{\bold{R}}_{xs,f} = \frac{1}{T} \sum_{t=1}^{T}\bold{x}(f,t)\hat{s}^{\mathsf{H}}_{(i)}(f,t)\\
+		\mathbb{E}_{\bold{S} \mid \bold{X},\bold{\Theta}_i}[\bold{R}_{ss,f}] &= \hat{\bold{R}}_{ss,f} = \frac{1}{T}\sum_{t=1}^{T}\hat{s}_{(i)}(f,t)\hat{s}^{\mathsf{H}}_{(i)}(f,t) + (\bold{I} - \bold{W}_s(f,t)\bold{A}(f))\Sigma_{s, ft} \\
+		\mathbb{E}_{\bold{S} \mid \bold{X},\bold{\Theta}_i}[u_k(f,t)] &= \hat{u}_{k}(f,t) =  [\hat\bold{c}_{(i)}(f,t)\hat\bold{c}_{(i)}(f,t)^\mathsf{H} + (\bold{I} - \bold{W}_{c}(f,t)\bold{A}(f))\Sigma_{c,ft}]_{k,k}
+		\end{aligned}
+		$
+	</center>
+	</ul>
+	Avec $\bold{W}_e(f,t) = \Sigma_{e, ft}\bold{A}(f)^{\mathsf{H}}\Sigma_{x, ft}^{-1}$, $\hat{\bold{e}}(f,t) = \bold{W}_e(f,t)\bold{x}(f,t)$
+</section>
+
+<section>
+	<h1>Etape M</h1>
+
+	En dérivant la somme des espérances conditionnelles précédentes par rapport aux paramètres à updater, on obtient : 
+
+		$\begin{aligned}
+		\bold{A}(f) &= \hat{\bold{R}}_{xs,f}\hat{\bold{R}}_{ss,f}^{-1} \\
+		\Sigma_{b,f} &= \text{Diag}\left(\hat{\bold{R}}_{xx,f} - \bold{A}(f)\hat{\bold{R}}^{\mathsf{H}}_{xs,f} - \hat{\bold{R}}_{xs,f}\bold{A}(f)^{\mathsf{H}}
+                                     + \bold{A}(f)\hat{\bold{R}}_{ss,f}\bold{A}(f)^{\mathsf{H}}\right) \\
+		w_k(f) &= \frac{1}{T}\sum_{t}\frac{\hat{u}_{k}(f,t)}{h_k(t)}; \qquad h_k(t) = \frac{1}{F}\sum_{f}\frac{\hat{u}_{k}(f,t)}{w_k(f)}
+		\end{aligned}
+		$
+</section>
+
+<section>
+	<h1>Reconstruction des sources</h1>
+	<ul>
+		<li>Une fois l'algorithme EM effectué et les paramètres estimés, on effectue un filtrage de Wiener multicanal :
+			<center>$$\bold{s}_{n}(f,t) = \bold{W}_n(f,t)\bold{x}(f,t)$$</center>
+		</li>
+	</ul>
+	<p>
+	<div class="remarque">Cette approche est cependant gourmande en temps de calcul. Autre approche ?</div>
+</p>
+</section>
+
+<section>
+	<h1>Minimisation de la somme des canaux</h1>
+	<ul>
+	<li>Les $\bold{X}= \{x_{m}(f,t)\}_{f,t,m=1}^{F,T,M}$ forment un tenseur.</li> 
+	<li>En considérant tous leurs spectrogrammes de puissance, on peut prendre en compte une factorisationen tenseur non-négatif (NTF)</li>
+	<li>pour une valeur du spectrogramme de puissance (SP) $\hat{p}_m(f,t)$ du mélange on écrit : 
+		<center>
+			$$
+			\hat{p}_m(f,t) = \sum_{n,k=1}^{N,K} q_{nm}(f)w_f(k)h_k(t)
+			$$
+		</center>
+
+
+	</li>
+	<li>Ainsi le SP du mélange et la $\sum$ des SP des sources pondéré par un scalaire lié à chaque microphone et fréquence.</li>
+	<li>Ici, il est proposer de minimiser les divergence d'Itakura-Saito suivante  avec $\Theta = \{\bold{Q}, \bold{W}, \bold{H}\}$ :
+		<center>
+			$$
+			d_{IS}(\bold{X} \mid \Theta) = \sum_{m,f,t = 1}^{M, F, T}d_{IS}(p_m(f,t) := |x_m(f,t)|^2 \mid \hat{p}_m(f,t))
+			$$
+		</center>
+
+	</li>
+</ul>
+<p>
+	<div class="remarque">Le problème est bien plus simple à résoudre ! (Mais les hypothèses plus fortes)</div>
+</p>
+</section>
+
+<section>
+	<h1>Mise à jour des paramètres</h1>
+	Si on dérive par rapport aux paramètres et qu'on regarde quand le gradient s'annule, on obtient les mises à jour suivantes : 
+	<center>
+	$\begin{aligned}
+	  \bold{q}_{mn} &\leftarrow \bold{q}_{mn} \circ
+	   \frac{\left[\hat{\bold{P}}_{m}^{\circ -2} \circ \bold{P}_{m}
+	         \circ (\bold{W}_{n}\bold{H}_{n})\right]\bold{1}_{T \times 1}}
+			 {\left[\bold{P}_{m}^{\circ -1} \circ (\bold{W}_{n}\bold{H}_{n})\right]\bold{1}_{T \times 1}} \\
+		\bold{W}_n &\leftarrow \bold{W}_n \circ \frac{\sum_{m=1}^{M}\text{diag}(\bold{q}_{nm})\left(\hat\bold{P}_{m}^{\circ -2} 
+		                                        \circ \bold{P}_{m}\right)\bold{H}^\top_n}
+												{\sum_{m=1}^{M}\text{diag}(\bold{q}_{nm})\hat\bold{P}_{m}^{\circ -1} 
+		                                        \bold{H}^\top_n} \\
+		\bold{H}_n &\leftarrow \bold{H}_n \circ \frac{\sum_{m=1}^{M}\left(\text{diag}(\bold{q}_{nm})\bold{W}_{n}\right)^\top\left(\hat\bold{P}_{m}^{\circ -2} 
+		                                        \circ \bold{P}_{m}\right)}
+												{\sum_{m=1}^{M}\left(\text{diag}(\bold{q}_{nm})\bold{W}_{n}\right)^\top\hat\bold{P}_{m}^{\circ -1} 
+		                                        } 												
+		 \end{aligned}$
+			  
+	
+</center>
+</section>
+
+<section>
+	<h1>Résumé</h1>
+	<ul>
+		<li>On a vu, deux approches MNMF : <br>
+			$\quad \rightarrow$ La première est basée sur l'utilisation d'un modèle convolutif + développer un algorithme EM <br>
+			$\quad \rightarrow$ La seconde cherche à minimiser une divergence point par point entre le spectrogramme de puissance du mélange et un modèle NTF.
+		</li>
+		<li>
+			Globalement les avantages et inconvénient sont :<br>
+			$\quad \rightarrow$ (EM) : compliqué à dériver et lourd en calcul mais précis <br>
+			$\quad \rightarrow$ multiplicative update (MU) : simple à dériver mais des hypothèses fortes (distance point par point qui ne prend pas totalement en compte 
+			l'inter corrélation entre les microphones)
+		</li>
+	</ul>
+</section>
+
+<section class="cover" data-background="figures/background-blur.jpg" data-state="no-title-footer no-progressbar has-dark-background">
+	<h2 id='coverh2'>V/2 - Autre modèle spatial</h2>
+</section>	
+
+<section>
+	<h1>Modèle de diffusion</h1>
+
+	Soit $s_n(f,t)$ une source ponctuelle et $s_n(f,t,\psi)$ avec $\psi \in \Psi_n$ une source diffuse.
+	On note par ailleurs, $\bold{y}_n(f,t)=[y_{1n}(f,t), \dots, y_{Mn}(f,t)]^\top$ la source image captée par les $M$ microphones.
+	<ul>
+		<li>$\Psi_n$ est l'aire où se trouve la source (elle n'est pas forcément ponctuelle).</li>
+		<li>dans le cas ponctuel, on rappelle que l'approximation à bande étroite donne :
+			<center>
+				$$
+				\bold{y}_n(f,t) = \bold{a}_n(f)s_n(f,t)
+				$$
+			</center>
+			où $\bold{a}_{n}(f) \in \mathbb{C}^M$.
+
+		</li>
+		<li>
+			avec un modèle de diffusion, on aura plutôt une contribution pour tous les points de $\Psi_n$ i.e.:
+			<center>
+				$$
+				\bold{y}_{n}(f,t) = \int_{\psi \in \Psi_n} s(f,t,\psi)\bold{a}_{n\psi}(f)d\psi
+				$$
+			</center>
+		</li>
+	</ul>
+	<p>
+	<div class="remarque"> Comment exploiter ce modèle de diffusion ? </div>
+    </p>
+</section>
+
+<section>
+	<h1>Hypothèse et matrice de covariance spatiale</h1>
+	Supposons que les $s_n(f,t,\psi) \sim \mathcal{N}_{\mathbb{C}}^1 (0, p_n(f,t))$.
+	On regarde alors la matrice de covariance des $\bold{y}_{n}(f,t)$ : 
+	<center>
+	$$
+	\mathbb{E}[\bold{y}_n(f,t)\bold{y}_n(f,t)^\mathsf{H}]=\int_{\psi \in \Psi_n}\mathbb{E}[s(f,t,\psi)s(f,t,\psi)^\star]\bold{a}_{n\psi}(f)\bold{a}_{n\psi}(f)^\mathsf{H}d\psi
+	$$
+	</center>
+	Cependant, les $s(f,t,\psi)$ ont même distribution:
+	$$
+	\quad \rightarrow \mathbb{E}[s(f,t,\psi)s(f,t,\psi)^\star] = p_n(f,t) \geq 0
+	$$
+	<p>
+		Donc finalement :
+		$$
+		\begin{aligned}
+		\mathbb{E}[\bold{y}_n(f,t)\bold{y}_n(f,t)^\mathsf{H}] &= p_n(f,t)\int_{\psi \in \Psi_n}\underbrace{\bold{a}_{n\psi}(f)\bold{a}_{n\psi}(f)^\mathsf{H}}_{\in \mathbb{C}^{M\times M}}d\psi \\
+		&= p_n(f,t)\bold{R}_n(f)
+		\end{aligned}
+		$$
+
+	</p>
+	<div class="remarque">
+		La matrice $\bold{R}_n(f)$ est appellée la matrice de covariance spatiale. Elle représente le chemin acoustique entre
+ chaque point qui constitue la source et chaque microphone. Le scalaire $p_n(f,t)$ peut-être vu comme le spectrogramme de puissance.
+	</div>
+</section>
+
+<section>
+	<h1>Modèle spatial </h1>
+Ainsi, nos sources images $\bold{y}_n(f,t)$ sont supposés admettre le modèle GCCC suivant :
+
+<center>
+	$$
+	\bold{y}_n(f,t) \sim \mathcal{N}_{\mathbb{C}}^M(0,p_n(f,t)\bold{R}_n(f))
+	$$
+</center>
+
+Si on rajoute le modèle de mélange $\bold{x}(f,t) = \sum_{n=1}^{N}\bold{y}_n(f,t)$ et que toutes les sources sont indépendantes $\forall n,f,t,$ on a :
+<center>
+	$$
+	\bold{x}(f,t) \sim \mathcal{N}_{\mathbb{C}}^M(0,\sum_{n=1}^{N}p_n(f,t)\bold{R}_n(f))
+	$$
+</center>
+
+<h2>Mélange convolutif </h2>
+<ul>
+	<li>Si on suppose que les $\bold{R}_n(f) = \bold{a}_n(f)\bold{a}_n^\mathsf{H}(f)$ sont de rang $1$ alors : 
+		<center>
+		$$
+		\bold{x}(f,t) = \sum_{n=1}^{N}\bold{a}_n(f)s_n(f,t) = \bold{A}(f)\bold{s}(f,t)
+		$$
+			</center>
+			Où les $s_n(f,t) \sim \mathcal{N}_{\mathbb{C}}^{M}(0,p_n(f,t))$ 
+	</li>
+</ul>
+	<p>
+	<div class="remarque">
+		Sous ces contraintes, comment estimer les paramètres ?
+	</div>
+    </p>
+
+	<div class="references">
+		<ul>
+			<li>N. Q. K. Duong, E. Vincent and R. Gribonval, "Under-Determined Reverberant Audio Source Separation Using a Full-Rank Spatial Covariance Model," IEEE TASP. 2010. </li>
+		</ul>
+	</div>
+	
+</section>
+
+<section>
+	<h1>Algorithme EM pour la séparation de sources du modèle spatial non contraint (1/2)</h1>
+	<ul>
+		<li>Nous allons refaire appel à l'algorithme EM</li>
+		<li>Soit $\bold{R}_n(f,t) = p_n(f,t)\bold{R}_{n}(f)$, $\bold{R}(f,t) = \sum_{n=1}^{N}\bold{R}_{n}(f,t)$, 
+			$\bold{\Theta} = \{p_n(f,t), \bold{R}_{n}(f)\}_{n,f,k,t = 1}^{N, F, K, T}$
+			et $\bold{X} = \{\bold{x}_{ft}\}_{f,t = 1}^{F,T}$.
+		</li>
+		<li>On peut alors montrer, comme dans le cas Gaussien monocanal, que 
+			$P(\bold{X}, \bold{Y} \mid \bold{\Theta})$ est une famille exponentielle. 
+		</li>
+		<li>L'étape $E$ se résume alors à estimer l'éspérance conditionelle 
+			$\hat\bold{y}_n(f,t)=\mathbb{E}[\bold{y}_n(f,t) \mid \bold{x}(f,t)]$ et la variance conditionnelle $\hat\bold{R}_{n}(f,t)=\text{Var}[\bold{y_n}(f,t) \mid \bold{x}(f,t)]$. On retombe à nouveau 
+			sur un filtrage de Wiener et la variance conditionnelle d'une Gaussienne :
+		<center>
+		$ \begin{aligned}
+			\bold{W}_n(f,t) &= \bold{R}_{n}(f,t)\bold{R}^{-1}(f,t) \quad \quad \texttt{(Masque de Wiener)}\\
+			\hat\bold{y}_n(f,t) &= \bold{W}_n(f,t)\bold{x}(f,t) \\
+			\hat\bold{R}_n(f,t) &= \hat\bold{y}_n(f,t)\hat\bold{y}^{\mathsf{H}}_n(f,t) + (\bold{I}_{M} - \bold{W}_n(f,t))\bold{R}_{n}(f,t)
+		\end{aligned}
+			$
+
+	    </center>
+		</li>
+
+	</ul>
+</section>
+
+<section>
+	<h1>Algorithme EM pour la séparation de sources du modèle spatial non contraint (2/2)</h1>
+	<ul>
+		<li>Un calcul assez laborieux des dérivées le long de $p_n(f,t)$ et $\bold{R}_n(f,t)$ nous donne :
+			<center>
+				$\begin{aligned}
+				  p_n(f,t) &= \frac{1}{M}\text{Tr}(\bold{R}_{n}^{-1}(f)\hat\bold{R}_n(f,t)) \\
+				  \bold{R}_{n}(f) &= \frac{1}{M} \sum_{t=1}^{T}\frac{\hat\bold{R}_n(f,t)}{p_n(f,t)}
+				  \end{aligned}
+				$
+
+			</center>
+
+		</li>
+	</ul>
+	<p>
+	<b>Remarque : </b> Comme il s'agit de la somme de matrice de rang $1$, on peut aisément supposer les $\bold{R}_{n}(f)$ de rang plein.
+</p>
+<div class ="remarque">Version avec un modèle NMF + MU ? </div>
+</section>
+<section>
+	<h1>Divergence d'Itakura-Saito et NLL Gaussienne (1/2)</h1>
+	<h2>Disgression : cas monocanal</h2>
+	<ul>
+		<li>Prenons $\bold{X} = \{x(f,t)\}_{f,t=1}^{F,T}$ les observations et $\Theta = \{w_k(f), h_k(t)\}_{f,k,t=1}^{F,K,T}$ les paramètres. 
+			On suppose que  les entrées indépendantes et $x(f,t) \sim \mathcal{N}_{\mathbb{C}}(\sum_{k=1}^{K}w_k(f)h_k(t))$.
+		</li>
+		<li>
+			Les paramètres à optimiser sont uniquement les $w_k(f)$ et $h_k(t)$. Le reste sera "spdg" appellée "constante" 
+			(la dérivation n'influencera pas l'estimation des paramètres). <br>
+			$\quad \rightarrow$ On notera notamment $\overset{c}{=}$ qui signifie "égal à une constante additive près"
+		</li>
+		<li>
+			Si on regarde $-\log p(\bold{X} \mid \bold{\Theta})$ alors on peut prouver que :
+			<center>
+			$$
+			-\log p(\bold{X} \mid \bold{\Theta}) \overset{c}{=} \sum_{f,t=1}^{F,T} d_{\text{IS}}(|x(f,t)|^2 \mid \sum_{k=1}^{K}w_k(f)h_k(t))
+			$$
+		</center>
+		Où $d_{IS}(x \mid y) = \frac{x}{y} - \log\frac{x}{y}  -1$
+		</li>
+	</ul>
+	<p>
+	<div class="remarque">Dans le cas monocanal, minimiser la NLL est équivalent à minmiser la $d_{IS}$. 
+		Mais quel est le lien exact entre les deux ?
+	</div>
+</p>
+</section>
+
+<section>
+	<h1>Divergence d'Itakura-Saito et NLL Gaussienne (2/2)</h1>
+	<ul>
+		<li>Posons pour alléger $\tilde{x}(f,t) = |x(f,t)|^2$ et $\hat{x}(f,t) = \sum_{k=1}^{K}w_k(f)h_k(t)$</li>
+		<li>On peut alors montrer que (les densités ici sont toutes gaussiennes) :
+			<center>
+				$$
+				d_{\text{IS}}(|x(f,t)|^2 \mid \hat{x}(f,t)) = \log P(x(f,t) \mid \tilde{x}(f,t)) - \log P(x(f,t) \mid \hat{x}(f,t))
+				$$
+			</center>
+		</li>
+	</ul>
+	<h2>Extension au cas multicanal</h2>
+	Maintenant, dans le cas multicanal considérons un modèle avec une covariance spatiale latente (diffusion des sources latentes) :
+	<ul>
+		<li>Soit $\hat\bold{X}(f,t) = \sum_{k=1}^{K}\bold{R}_k(f)w_k(f)h_k(t)$ et $\tilde{\bold{X}}(f,t) = \bold{x}(f,t)\bold{x}(f,t)^\mathsf{H}$</li>
+		<li>On définit alors une divergence d'IS basée sur le cas monocanal comme suit :
+			<center>
+			$\begin{aligned}
+
+			d_{\text{IS}}(\bold{X}(f,t) \mid \tilde\bold{X}(f,t)) &= \log P(\bold{x}(f,t) \mid \tilde\bold{X}(f,t)) - \log P(\bold{x}(f,t) \mid \hat\bold{X}(f,t)) \\
+			&= \mathrm{Tr}(\tilde\bold{X}(f,t)\hat\bold{X}(f,t)^{-1}) - \log \det \tilde\bold{X}(f,t)\hat\bold{X}(f,t)^{-1} - M
+			\end{aligned}
+			$
+		</center>
+		</li>
+	</ul>
+	<p>
+		<div class="remarque">On va maintenant utiliser la méthode de la fonction auxiliaire</div>
+	</p>
+	<div class="references">
+		<ul><li>
+		H. Sawada, H. Kameoka, S. Araki and N. Ueda, "Multichannel Extensions of Non-Negative Matrix Factorization With Complex-Valued Data," TASLP. 2013.</li>
+		</ul>
+	</div>
+</section>
+
+<section>
+	<h1>Fonction Auxiliaire</h1>
+<ul>
+	<li>Il a été montré (non trivial !) que :
+		<center style="margin-left:-4em;">
+			$\begin{aligned}
+			f^{+}(\bold{W}, \bold{H}, \bold{R}, \bold{U}, \bold{V}) \\
+			=  \sum_{f,t=1}^{F,T} \left[
+			\sum_{k=1}^{K}\frac{\mathrm{Tr}(\tilde{\bold{X}}(f,t)\bold{U}_k(f,t)^\mathsf{H}
+			                                       \bold{R}_k(f)\bold{U}_k(f,t))}{w_k(f)h_k(t)}
+								         + \log \det \bold{V}(f,t) + \frac{\det \hat\bold{X}(f,t) - \det \bold{V}(f,t)}{\det \bold{V}(f,t)}
+			\right]
+			\end{aligned}
+			$
+		</center>
+	</li>
+	vérifie :
+	<center> 
+	$f^{+}(\bold{W}, \bold{H}, \bold{R}, \bold{U}, \bold{V}) \geq \sum_{f,t} d_{\text{IS}}(\bold{X}(f,t) \mid \tilde\bold{X}(f,t)) $
+</center>
+<li>Avec égalité pour $\bold{U}_k(f,t) = w_k(f)h_k(t)R_k(f)\hat\bold{X}(f,t)^{-1}$, $\bold{V}(f,t)=\hat\bold{X}(f,t)$</li>
+</ul>
+<div class="remarque">On effectue donc les dérivées et on regarde quand le gradient s'annule par rapport à ces fonctions</div>
+</section>
+
+<section>
+	<h1>Mise à jour des paramètres</h1>
+Les paramètres de la NMF sont mis à jour comme suit :
+
+		$
+		\begin{aligned}
+		w_k(f) &\leftarrow w_k(f) \frac{\sum_{t=1}^{T}h_k(t)\mathrm{Tr}(\hat\bold{X}(f,t)^{-1}\tilde\bold{X}(f,t)\hat\bold{X}(f,t)^{-1}\bold{R}_k(f))}{\sum_{t=1}^{T}h_k(t)\mathrm{Tr}(\hat\bold{X}(f,t)^{-1}\bold{R}_k(f))} \\
+		h_k(t) &\leftarrow h_k(t) \frac{\sum_{f=1}^{F}w_k(f)\mathrm{Tr}(\hat\bold{X}(f,t)^{-1}\tilde\bold{X}(f,t)\hat\bold{X}(f,t)^{-1}\bold{R}_k(f))}{\sum_{f=1}^{F}w_k(f)\mathrm{Tr}(\hat\bold{X}(f,t)^{-1}\bold{R}_k(f))}
+		\end{aligned}
+		$
+
+<p>
+Quand on regarde la dérivée par rapport à $\bold{R}_k(f)^{\mathsf{H}}$ et qu'on regarde l'annulation du gradient on trouve que :
+</p>
+<center>
+$$
+\bold{R}_k(f)\left[\sum_{t=1}^{T}w_k(f)\hat\bold{X}(f,t)^{-1}\right]\bold{R}_k(f) = 
+\bold{R}_k(f)^{\prime}\left[\sum_{t=1}^{T}\hat\bold{X}(f,t)^{-1}\tilde\bold{X}(f,t)\hat\bold{X}(f,t)^{-1}\bold{R}_k(f)\right]\bold{R}_k(f)^{\prime}
+$$
+</center>
+<p>
+<div class="remarque">Le problème précédent est une équation de Ricatti et peut être résolu en pratique</div>
+</p>
+</section>
 </div>
 
 
